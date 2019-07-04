@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'IFTTT.TITLE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="container" padding>
+    <div>
+      <div padding margin-bottom class="kanban-side step">
+        <h3 align="center">{{ 'IFTTT.WHAT_IS_THIS' | translate }}</h3>
+        <img src="assets/img/promo_ifttt.png">
+        <span class="describe-text" [innerHtml]="'IFTTT.DESCRIBE.ABOUT' | translate: { value: themeService.productName }"></span>
+      </div>
+      <div padding margin-bottom class="kanban-side step">
+        <h3 align="center">{{ 'IFTTT.TRY_SAYING' | translate }}</h3>
+        <br>
+        <span class="describe-text" [innerHtml]="'IFTTT.DESCRIBE.TEST_SENTENCES' | translate "></span>
+      </div>
+    </div>
+    <div padding class="step">
+      <h3 align="center" padding-bottom>{{ 'IFTTT.CONNECT_WITH_IFTTT' | translate }}</h3>
+      <span class="describe-text" [innerHtml]="'IFTTT.DESCRIBE.HOW_TO' | translate: { value: appConfig.app.ifttt.actionName }"></span>
+      <button ion-button color="primary" class="full-button" full round (click)="openIfttt()" margin-vertical>{{ 'IFTTT.GO_TO_IFTTT' | translate }}</button>
+    </div>
+    <div padding class="step">
+      <span class="describe-text">
+        {{ 'IFTTT.DESCRIBE.MORE_INFOMATION' | translate }}
+        <br>
+        <a ion-text color="bluish" (click)="openIftttDoc()">Connect a Smart Home Device to IFTTT</a>
+      </span>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

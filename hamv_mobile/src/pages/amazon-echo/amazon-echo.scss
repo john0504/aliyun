@@ -1,0 +1,38 @@
+page-amazon-echo {
+  .item-md,
+  .item-ios {
+    padding-left: 0;
+  }
+  .container {
+    min-height: 100%;
+    .describe-text {
+      font-size: 1.4rem;
+      text-align: center;
+      display: block;
+    }
+    .control-item-text {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .step {
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-weight: 600;
+      }
+    }
+    .kanban-side {
+      text-align: center;
+      border-radius: 5px;
+      background: map-get($colors, lightGrey);
+      img {
+        max-height: 75px;
+        margin: 8px 0;
+      }
+      .describe-text {
+        font-weight: bold;
+      }
+    }
+  }
+}

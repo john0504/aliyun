@@ -1,0 +1,10 @@
+button-group-control {
+  .all-devices-button {
+    margin: 10px 15px;
+    width: calc(100% - 30px);
+
+    span {
+      font-weight: 700;
+    }
+  }
+}

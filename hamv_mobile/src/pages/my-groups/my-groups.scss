@@ -1,0 +1,64 @@
+page-my-groups {
+  div.empty {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .no-groups-image {
+      align-items: center;
+      display: flex;
+      height: 120px;
+      justify-content: center;
+      width: 120px;
+    }
+    .full-button {
+      margin-bottom: 15vh;
+    }
+  }
+  .ungroup-header {
+    padding: 12px 0;
+    background-color: color($colors, lightGrey);
+    border-top: 1px solid color($colors, grey);
+    border-bottom: 1px solid color($colors, grey);
+    .ungroup-title {
+      text-align: center;
+      padding-top: 8px;
+      .ungroup-title-text {
+        margin: 8px;
+        font-weight: 700;
+      }
+    }
+  }
+  .no-device-text {
+    text-align: center;
+  }
+  .dnd {
+    &::before {
+      content: attr(data-line);
+      color: color($colors, grey);
+      text-align: center;
+      display: block;
+      padding: 20px 0;
+    }
+    &.has-child::before {
+      content: "";
+      padding: 0;
+    }
+    .device-action {
+      touch-action: none;
+    }
+  }
+  .finger-over {
+    background-color: color($colors, lightGrey);
+  }
+  .gu-transit {
+    .device-header {
+      background-color: color($colors, primary);
+    }
+  }
+}

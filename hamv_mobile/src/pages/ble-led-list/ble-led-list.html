@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'BLUETOOTH.CONNECT_TO_DEVICE' | translate: { value: appConfig.app.ble.bleProductName } }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="main">
+      <h1 align="center">{{ 'BLUETOOTH.CONNECT_TO_DEVICE' | translate }}</h1>
+      <img class="hint" src="assets/img/phone_graphic2.png">
+      <p align="center" [innerHTML]="'BLUETOOTH.HOW_TO_BEGIN' | translate: { bleProductName: appConfig.app.ble.bleProductName, bleName: appConfig.app.ble.bleName }"></p>
+      <ion-list class="item item-checkbox" *ngFor="let device of bluetoothList">
+        <ion-item>
+          <ion-label>{{device.name}}</ion-label>
+          <ion-checkbox [(ngModel)]="device.checked" (click)="connectToDevice(device)"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div>
+      <button ion-button color="primary" class="bottom-button full-button" [disabled]="!canContinue" (click)="gotoDevicePage()" full>{{ 'DEVICE_CREATE.CONTINUE' | translate }}</button>
+    </div>
+  </div>
+  <div *ngIf="isShowLog == 1">
+    <div class="col" *ngFor="let log of logs">{{log}}</div>
+  </div>
+</ion-content>

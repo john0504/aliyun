@@ -1,0 +1,20 @@
+<ion-header no-border>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'DEVICE_HISTORY.HISTORY' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ng-container ion-fixed>
+    <div *ngIf="!ready; else showHistory" class="empty" padding>
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+    <ng-template #showHistory>
+      <scrollable-tabs [tabs]="tabs" [selectedTabIndex]="currentTab" (tabSelected)="tabSelected($event)"></scrollable-tabs>
+      <div class="main-content" padding>
+        <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [model]="model" color="primary"
+          [data]="deviceCore"></ui-component>
+      </div>
+    </ng-template>
+  </ng-container>
+  <extra-page-space></extra-page-space>
+</ion-content>

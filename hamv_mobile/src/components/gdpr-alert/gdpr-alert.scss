@@ -1,0 +1,15 @@
+gdpr-alert {
+  .scroll-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .gdpr-title {
+      font-weight: 600;
+      font-size: 13pt;
+    }
+  }
+  .divider {
+    height: 20px;
+  }
+}

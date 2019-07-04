@@ -1,0 +1,133 @@
+large-toggle-with-range {
+  $font-bold: 900;
+  $font-title: 1.3rem;
+  $padding-none: 0;
+  $text-left: left;
+  $text-right: right;
+
+  .basic-text {
+    font-size: $font-title + 0.4rem;
+    font-weight: $font-bold;
+    margin-right: 8px;
+  }
+
+  .none-padding {
+    padding: $padding-none;
+  }
+
+  .text-disabled {
+    color: color($colors, grey);
+  }
+
+  .text-overflow {
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+  }
+
+  .main-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .title-text {
+      font-size: $font-title;
+      font-weight: $font-bold;
+    }
+  }
+
+  .sub-block {
+    @extend .main-block;
+    justify-content: space-between;
+
+    ion-icon {
+      font-size: $font-title + 0.9rem;
+    }
+
+    .item-text {
+      @extend .basic-text;
+    }
+
+    .toggle-block {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 auto;
+      margin-right: 8px;
+
+      .toggle-status {
+        @extend .main-block;
+        font-size: 1.7rem;
+        font-weight: $font-bold;
+        justify-content: flex-start;
+        margin: 0;
+        min-height: 31px;
+        text-align: $text-left;
+
+        span {
+          @extend .text-overflow;
+        }
+      }
+
+      .big-toggle {
+        padding: 12px 1px;
+
+        button {
+          padding: 0 6px;
+        }
+
+        &.toggle-md {
+          height: 21px;
+          top: 4.5px;
+          width: 46px;
+
+          .toggle-inner {
+            height: 30px;
+            top: -5.5px;
+            width: 30px;
+          }
+        }
+
+        &.toggle-ios {
+          padding: 6px 1px;
+          .toggle-icon {
+            top: 2px;
+            bottom: 2px;
+          }
+        }
+      }
+    }
+
+    .range-block {
+      flex: 1 1 auto;
+
+      .range-status {
+        @extend .main-block;
+        @extend .toggle-status;
+        justify-content: flex-end;
+        min-height: 31px;
+        text-align: $text-right;
+
+        span {
+          @extend .text-overflow;
+        }
+      }
+
+      .range-bar-status {
+        padding: 0px 8px;
+
+        .range-tick {
+          display: none;
+        }
+
+        .range-bar {
+          border-radius: 4px;
+        }
+
+        .range-knob {
+          outline: none;
+        }
+      }
+    }
+  }
+}

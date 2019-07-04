@@ -1,0 +1,36 @@
+<div class="main-block">
+  <span class="title-text">{{ title | translate }}</span>
+</div>
+<div class="sub-block" margin-top>
+  <div class="toggle-block">
+    <ion-label class="toggle-status" [ngClass]="{'text-disabled': disabled}">
+      <span class="item-text">{{ (toggleState?.currentValueItem?.text | translate) | replace: toggleState?.currentValueItem?.value }}</span>
+      <ion-icon [name]="toggleState?.currentValueItem?.icon"></ion-icon>
+    </ion-label>
+    <ion-toggle
+      [(ngModel)]="toggleState.currentState"
+      (ngModelChange)="sendToggleValue()"
+      [color]="color"
+      [disabled]="disabled || toggleState.disableState"
+      class="big-toggle"
+      margin-right
+    ></ion-toggle>
+  </div>
+  <div class="range-block">
+    <div class="range-status" [ngClass]="{'text-disabled': disabled}">
+      <span class="item-text">{{ (rangeState?.currentValueItem?.text | translate) | replace: rangeState?.currentValueItem?.value }}</span>
+      <ion-icon [name]="rangeState?.currentValueItem?.icon"></ion-icon>
+    </div>
+    <ion-range
+      (ionBlur)="sendRangeValue($event)"
+      (ionChange)="rangeValueChanges($event)"
+      [(ngModel)]="rangeState.currentIndex"
+      [disabled]="disabled || rangeState.disableState"
+      [max]="rangeState.status.max"
+      [min]="rangeState.status.min"
+      [step]="rangeState.status.step"
+      class="range-bar-status"
+      snaps
+    ></ion-range>
+  </div>
+</div>

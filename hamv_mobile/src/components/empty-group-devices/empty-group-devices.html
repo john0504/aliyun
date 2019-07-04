@@ -1,0 +1,8 @@
+<div class="empty" padding>
+  <div class="no-groups-image">
+    <img [src]="themeService.logoUrl" />
+  </div>
+  <h4>{{ 'GROUP_ITEM.NO_DEVICES' | translate }}</h4>
+  <button ion-button color="primary" class="full-button" round full (click)="goToGroupsPage()">{{ 'GROUP_ITEM.GO_GROUPS' | translate }}</button>
+  <extra-page-space></extra-page-space>
+</div>

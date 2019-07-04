@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ groupCore.groupName }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="groupCore.controllers.length > 0" class="control-content">
+    <div *ngFor="let m of groupCore.controllers; let i = index;">
+      <ui-component (exoChange)="groupCore.send($event)" [(ngModel)]="groupCore.status" [model]="m" color="primary"></ui-component>
+      <div *ngIf="i < groupCore.controllers.length - 1" class="control-item-divider"></div>
+    </div>
+  </div>
+  <div *ngIf="groupCore.controllers.length <= 0" class="control-content">
+    <p ion-text>{{ 'GROUP_CONTROL_PANEL.NO_CONTROLS' | translate }}</p>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

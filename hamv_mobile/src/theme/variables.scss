@@ -1,0 +1,319 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+
+// Font path is used to include ionicons,
+// roboto, and noto sans fonts
+$font-path: "../assets/fonts";
+
+
+// The app direction is used to include
+// rtl styles in your app. For more info, please see:
+// http://ionicframework.com/docs/theming/rtl-support/
+$app-direction: ltr;
+
+
+@import "ionic.globals";
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #2EB427,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222,
+  brightSkyBlue: #00baff,
+  darkBlue: #1e95c3,
+  darkGrey: #2c2c2c,
+  bluish: #1e95c3,
+  warmGrey: #7a7a7a,
+  grey: #d2d2d2,
+  lightGrey: #f3f3f3,
+  white: #ffffff,
+  orange: #f6a623,
+  fbBlue: #4267b2,
+  warningRed: #d0011b,
+  transparent: rgba(255, 255, 255, 0)
+);
+
+button[ion-button][disabled] {
+  opacity: .7;
+  background-color: color($colors, grey);
+}
+
+.label-ios[floating], .label-md[floating] {
+  font-weight: 900;
+}
+
+.label-ios[stacked], .label-md[stacked] {
+  font-weight: 900;
+}
+
+.item-input ion-label {
+  font-size: 1.5rem;
+}
+
+.full-button {
+  span{
+    font-weight: 700;
+  }
+}
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+$range-ios-bar-height: 8px;
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+$range-md-bar-height: 8px;
+$range-md-knob-width: 40px;
+$text-input-md-show-focus-highlight: false;
+// $text-input-md-show-invalid-highlight: false;
+// $text-input-md-show-valid-highlight: false;
+$label-md-text-color-focused: initial;
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "roboto";
+@import "noto-sans";
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url("#{$font-path}/Nunito_Sans/NunitoSans-Regular.ttf") format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url("#{$font-path}/Nunito_Sans/NunitoSans-SemiBold.ttf") format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url("#{$font-path}/Nunito_Sans/NunitoSans-Bold.ttf") format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url("#{$font-path}/Nunito_Sans/NunitoSans-Black.ttf") format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url("#{$font-path}/fonts/icomoon.eot?lpb5ko");
+  src:  url("#{$font-path}/icomoon.eot?lpb5ko#iefix") format('embedded-opentype'),
+    url("#{$font-path}/icomoon.ttf?km4z63") format('truetype'),
+    url("#{$font-path}/icomoon.woff?km4z63") format('woff'),
+    url("#{$font-path}/icomoon.svg?km4z63#icomoon") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$font-family-md-base: 'Nunito Sans', sans-serif;
+$font-family-ios-base: 'Nunito Sans', sans-serif;
+$font-family-wp-base: 'Nunito Sans', sans-serif;
+
+[class^="icon-"],
+[class*=" icon-"],
+[class^="ion-ios-icon"],
+[class*="ion-ios-icon"],
+[class^="ion-md-icon"],
+[class*="ion-md-icon"]{
+  @extend .ion !optional;
+  font-family: "Ionicons", "icomoon" !important;
+  speak: none;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  // Better Font Rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-calendar_icon:before {
+  content: "\e900";
+}
+.icon-clock_icon:before {
+  content: "\e901";
+}
+.icon-fan_icon:before {
+  content: "\e902";
+}
+.icon-flair_icon:before {
+  content: "\e903";
+}
+.icon-horizontal_swing_auto_icon:before {
+  content: "\e904";
+}
+.icon-horizontal_swing_center_icon:before {
+  content: "\e905";
+}
+.icon-horizontal_swing_lc_icon:before {
+  content: "\e906";
+}
+.icon-horizontal_swing_left_icon:before {
+  content: "\e907";
+}
+.icon-horizontal_swing_rc_icon:before {
+  content: "\e908";
+}
+.icon-horizontal_swing_right_icon:before {
+  content: "\e909";
+}
+.icon-light_full_icon:before {
+  content: "\e92c";
+}
+.icon-light_icon:before {
+  content: "\e92d";
+}
+.icon-settings_icon:before {
+  content: "\e92e";
+}
+.icon-snowflake_icon:before {
+  content: "\e92f";
+}
+.icon-thermostat_icon:before {
+  content: "\e930";
+}
+.icon-timer_icon:before {
+  content: "\e931";
+}
+
+@mixin makeIcon($arg, $val) {
+  .ion-ios-#{$arg},
+  .ion-ios-#{$arg}-outline,
+  .ion-ios-#{$arg}:before,
+  .ion-ios-#{$arg}-circle:before,
+  .ion-ios-#{$arg}-circle-outline:before,
+  .ion-ios-#{$arg}-outline:before,
+  .ion-md-#{$arg},
+  .ion-md-#{$arg}-outline,
+  .ion-md-#{$arg}:before,
+  .ion-md-#{$arg}-circle:before,
+  .ion-md-#{$arg}-circle-outline:before,
+  .ion-md-#{$arg}-outline:before {
+    content: $val;
+  }
+}
+@include makeIcon(brand-logo, url(../assets/img/logo.png));
+@include makeIcon(level0, url(../assets/img/level0.png));
+@include makeIcon(level1, url(../assets/img/level1.png));
+@include makeIcon(level2, url(../assets/img/level2.png));
+@include makeIcon(level3, url(../assets/img/level3.png));
+@include makeIcon(level4, url(../assets/img/level4.png));
+@include makeIcon(level5, url(../assets/img/level5.png));
+@include makeIcon(schedules, '\e900');
+@include makeIcon(fan, '\e902');
+@include makeIcon(fan-auto, '\e904');
+@include makeIcon(fan-left, '\e907');
+@include makeIcon(fan-lc, '\e906');
+@include makeIcon(fan-center, '\e905');
+@include makeIcon(fan-rc, '\e908');
+@include makeIcon(fan-right, '\e909');
+@include makeIcon(light-full, '\e92c');
+@include makeIcon(light, '\e92d');
+@include makeIcon(timer, '\e931');
+@include makeIcon(thermostat, '\e930');
+
+// Dragula
+.gu-mirror {
+  font-family: 'Nunito Sans' !important;
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 19999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+.gu-hide {
+  display: none !important;
+}
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+.input-with-eye-toggle.item.item-block {
+  .item-inner {
+    padding-right: 0;
+    [item-right] {
+      margin: 0;
+      align-self: flex-end;
+      padding: 1em;
+      height: auto;
+    }
+  }
+}
+
+.range-slider {
+  pointer-events: none;
+}
+.range-knob-handle {
+  pointer-events: auto;
+}
+button.picker-opt {
+  width: 4rem;
+}
+
+@import 'node_modules/app-engine/styles.scss';

@@ -1,0 +1,20 @@
+@mixin page-nav-statusbar-padding($toolbar-height, $toolbar-padding, $content-padding, $cordova-statusbar-padding, $modal-max-width, $style-title: false) {
+  page-nav>.ion-page,
+  page-nav>.ion-page>ion-header {
+    @include toolbar-statusbar-padding($toolbar-height, $toolbar-padding, $content-padding, $cordova-statusbar-padding);
+    @if ($style-title) {
+      @include toolbar-title-statusbar-padding($toolbar-height, $toolbar-padding, $content-padding, $cordova-statusbar-padding);
+    }
+  }
+  @media only screen and (max-width: $modal-max-width) {
+    .modal-wrapper>.ion-page>ion-header {
+      @include toolbar-statusbar-padding($toolbar-height, $toolbar-padding, $content-padding, $cordova-statusbar-padding);
+      @if ($style-title) {
+        @include toolbar-title-statusbar-padding($toolbar-height, $toolbar-padding, $content-padding, $cordova-statusbar-padding);
+      }
+    }
+  }
+}
+.ios {
+  @include page-nav-statusbar-padding($toolbar-ios-height, $toolbar-ios-padding, $content-ios-padding, $cordova-ios-statusbar-padding, $cordova-ios-statusbar-padding-modal-max-width, true);
+}

@@ -1,0 +1,3 @@
+<ng-container *ngIf="_group?.devices.length > 1">
+  <button ion-button color="primary" class="all-devices-button" round outline (click)="goGroupDetail(_group)">{{ _group?.properties?.displayName }}</button>
+</ng-container>

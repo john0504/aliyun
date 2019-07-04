@@ -1,0 +1,7 @@
+{
+  "name": "Exosite Home Automation Micro-Vertical",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

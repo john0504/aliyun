@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'MY_ACCOUNT.MY_ACCOUNT' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="page-spaces" ion-fixed>
+    <span class="section-text">{{ 'MY_ACCOUNT.MY_LANGUAGE' | translate }}</span>
+    <language-selector margin-top></language-selector>
+    <span class="section-text">{{ 'MY_ACCOUNT.MY_DATA' | translate }}</span>
+    <button ion-button color="primary" full round (click)="requestData()" margin-top>
+      {{ 'MY_ACCOUNT.REQUEST_DATA' | translate }}
+    </button>
+    <button ion-button color="warningRed" full round (click)="deleteAccount()" margin-top>
+      {{ 'MY_ACCOUNT.DELETE_MY_ACCOUNT' | translate }}
+    </button>
+  </div>
+</ion-content>

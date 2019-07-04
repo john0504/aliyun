@@ -1,0 +1,16 @@
+<div class="main-block">
+  <span class="title-text">{{ title | translate }}</span>
+  <div class="toggle-block">
+    <ion-label class="toggle-status" [ngClass]="{'text-disabled': disabled}">
+      {{ (toggleState?.currentValueItem?.text | translate) | replace: toggleState?.currentValueItem?.value }}
+    </ion-label>
+    <ion-toggle [(ngModel)]="toggleState.currentState" (ngModelChange)="sendToggleValue()" [color]="color" [disabled]="disabled || toggleState.disableState"></ion-toggle>
+  </div>
+</div>
+<div *ngIf="!toggleState.currentState" class="sub-block" margin-top>
+  <button (click)="onButtonClicked(button.value)" [disabled]="disabled || btnGroupState.disableState" [ngClass]="{'control-item-active': btnGroupState.currentValueItem.value === button.value}"
+    [ngStyle]="{ 'max-width': '100%' }" *ngFor="let button of btnGroupState.buttons" class="control-button" clear ion-button round>
+    <span [ngClass]="{'text-off-status': !disabled && btnGroupState.disableState && (btnGroupState.currentValueItem.value === button.value)}">{{ button.text | translate }}</span>
+    <ion-icon *ngIf="button.icon" [name]="button.icon"></ion-icon>
+  </button>
+</div>

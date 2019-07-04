@@ -1,0 +1,74 @@
+color-text {
+  $font-bold: 900;
+  $font-title: 1.7rem;
+
+  .basic-text {
+    font-size: $font-title + 0.4rem;
+    font-weight: $font-bold;
+    margin-right: 8px;
+  }
+
+  .text-disabled {
+    color: color($colors, grey);
+  }
+
+  .main-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .title-text {
+      font-size: $font-title;
+      font-weight: $font-bold;
+    }
+
+    .value-block {
+      @extend .main-block;
+      justify-content: flex-end;
+
+      .circle_in_color {
+        width:60px;height:60px; //正圓形，所以寬與高都設一樣
+        border-radius:999em;
+        background-color:white;
+      }
+
+      .circle_in_green {
+        background-color:#00FF00;
+      }
+
+      .circle_in_yellow {
+        background-color:#FFFF00;      
+      }
+
+      .circle_in_orange {
+        background-color:#FF9934;
+      }
+
+      .circle_in_red {
+        background-color:#FF0000;
+      }
+
+      .circle_in_purple {
+        background-color:#990099;
+      }
+
+      .circle_in_purple {
+        background-color:#990000;
+      }
+
+      .item-text {
+        @extend .basic-text; 
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:60px;
+        height:60px; 
+      }
+
+      ion-icon {
+        font-size: $font-title + 0.9rem;
+      }
+    }
+  }
+}

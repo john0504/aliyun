@@ -1,0 +1,10 @@
+<!-- Reference: https://stackoverflow.com/a/45305076/6781151 -->
+<ng-container *ngComponentOutlet="_groupComponent; ndcDynamicInputs: _data; content: [[emptyStatus], [groupStatus]]"></ng-container>
+
+<div #emptyStatus>
+  <ng-content select="[empty-status]"></ng-content>
+</div>
+
+<div #groupStatus>
+  <ng-content select="[group-controller]"></ng-content>
+</div>

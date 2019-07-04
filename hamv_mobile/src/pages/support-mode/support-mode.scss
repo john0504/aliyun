@@ -1,0 +1,76 @@
+support-mode {
+  display: block;
+  position: relative;
+  div.group-container {
+    margin-top: 10px;
+  }
+  ion-card {
+    background-color: color($colors, lightGrey);
+    .popit-title {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      ion-card-title {
+        flex: 1 0 0;
+        word-break: break-word;
+        margin: 0;
+        font-size: 2.6rem;
+        font-weight: 600;
+      }
+      button.popit-fab {
+        flex: 0 0 auto;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 2.5rem;
+        ion-icon {
+          font-size: 2.5rem;
+          line-height: 1;
+        }
+      }
+    }
+    ion-card-content {
+      background-color: color($colors, lightGrey);
+    }
+    .control-item-divider {
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid color($colors, grey);
+    }
+    .popit-other-items {
+      margin: 26px 0 13px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .other-item {
+        flex: 1 1 auto;
+        font-size: 1.3rem;
+      }
+    }
+    .popit-expand-button {
+      font-weight: 700;
+      margin: 0 auto;
+      height: 5rem;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .updating-button {
+      border-radius: 5px 5px 0 0;
+      font-weight: 700;
+      margin: 0;
+
+      ion-icon {
+        font-size: 20px;
+        font-weight: 700;
+        padding: 5px;
+      }
+    }
+
+    &.is-owner {
+      .other-item {
+        flex: 0 0 45%;
+      }
+    }
+  }
+}

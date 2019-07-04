@@ -1,0 +1,39 @@
+<ion-header no-border>
+  <ion-toolbar color="white">
+    <ion-title>{{ 'PROVISION_DONE.ADD_PRODUCT' | translate: { productName: themeService.productName } }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="main">
+      <h1 align="center">{{ 'PROVISION_DONE.SUCCESS' | translate }}</h1>
+      <svg height="128" viewBox="0 0 500 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+        <title>Success Graphic</title>
+        <desc>Created with Sketch.</desc>
+        <defs></defs>
+        <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Graphic-/-Success" stroke-width="5">
+            <g id="Success-Graphic" transform="translate(116.000000, 46.000000)">
+              <path class="primary" d="M226.550907,93.7528426 C226.847968,96.7950551 227,99.8797755 227,103 C227,154.914157 184.914157,197 133,197 C129.827547,197 126.691798,196.842835 123.600112,196.535868" id="Circle" stroke="#00BAFF" stroke-linecap="round"></path>
+              <path class="primary" d="M42.2925903,78.249633 C53.156204,38.3430611 89.6518574,9 133,9 C153.545778,9 172.552152,15.5918847 188.01953,26.7760618 L188.01953,26.7760618" id="Circle" stroke="#00BAFF" stroke-linecap="round"></path>
+              <path d="M60.9499926,174.599051 L61.0523449,174.496698 L59.2845779,172.728932 L2.93726479,116.381618 C2.35492958,115.799283 2.35440844,114.847845 2.9368996,114.265354 L28.969976,88.2322776 C29.556163,87.6460906 30.5001524,87.6465549 31.0862404,88.2326428 L87.4335535,144.579956 L89.2013204,146.347723 L90.9690874,144.579956 L231.996436,3.55260707 C232.585253,2.9637904 233.532425,2.96394083 234.119631,3.55114701 L264.224916,33.6564313 C264.807049,34.2385643 264.807547,35.1955347 264.223456,35.7796264 L94.2393395,205.763742 C93.6505229,206.352559 92.7033506,206.352409 92.1161444,205.765203 L60.9499926,174.599051 Z" id="Check" stroke="#1F1F1F"></path>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <p align="center" [innerHTML]="'PROVISION_DONE.READY_FOR_USE' | translate: { productName: themeService.productName }"></p>
+      <ion-item color="lightGrey">
+        <ion-label color="primary" stacked>
+          <p><b>{{ 'PROVISION_DONE.RENAME_DEVICE' | translate }}</b></p>
+        </ion-label>
+        <ion-input [(ngModel)]="newDeviceName" type="text" placeholder="{{ ('PROVISION_DONE.MY_NEW_PRODUCT') | translate: { productName: themeService.productName } }}" maxlength="128">
+        </ion-input>
+      </ion-item>
+    </div>
+    <div>
+      <button ion-button color="primary" class="bottom-button full-button" (click)="onNext()" full>{{ 'PROVISION_DONE.DONE' | translate }}</button>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

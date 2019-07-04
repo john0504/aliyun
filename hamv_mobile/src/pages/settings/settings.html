@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'SETTINGS.SETTINGS' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="page-spaces" ion-fixed>
+    <!-- <span class="section-text">{{ 'SETTINGS.CONNECTIONS' | translate }}</span>
+    <button ion-button color="primary" full round icon-left (click)="goAmazonEchoPage()" margin-top>
+      <i class="fab fa-amazon text-icon"></i>
+      {{ 'SETTINGS.AMAZON_ECHO' | translate }}
+    </button>
+    <button ion-button color="primary" full round (click)="goIftttPage()" margin-top>
+      {{ 'SETTINGS.IFTTT' | translate }}
+    </button>
+    <button ion-button color="primary" full round icon-left (click)="goGoogleHomePage()" margin-vertical>
+      <i class="fab fa-google text-icon"></i>
+      {{ 'SETTINGS.GOOGLE_HOME' | translate }}
+    </button> -->
+    <span class="section-text">{{ 'SETTINGS.ACCOUNT' | translate }}</span>
+    <!-- <button ion-button color="primary" full round icon-left (click)="goMyAccountPage()" margin-top>
+      <i class="fas fa-user-circle text-icon"></i>
+      {{ 'SETTINGS.MY_ACCOUNT' | translate }}
+    </button>
+    <button ion-button color="primary" full round icon-left *ngIf="!appConfig.app.disableLog" send-log-report margin-top>
+      <i class="far fa-envelope-open text-icon"></i>
+      {{ 'SETTINGS.SEND_FEEDBACK' | translate }}
+    </button> -->
+    <button ion-button color="warningRed" full round (click)="logout()" margin-top>
+      {{ 'SETTINGS.LOG_OUT' | translate }}
+    </button>
+  </div>
+</ion-content>

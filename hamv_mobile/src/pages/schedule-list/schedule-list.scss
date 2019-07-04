@@ -1,0 +1,107 @@
+page-schedule-list {
+  $background-color: #F0F4F4;
+  $font-bold: 900;
+  $font-bold-light: $font-bold - 200;
+  $text-center: center;
+  $margin-auto: auto;
+  display: flex;
+  flex-direction: row;
+
+  .list-schedule-title {
+    text-align: $text-center;
+  }
+
+  .schedule-content {
+    .schedule-block {
+      background: $background-color;
+      border-radius: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      margin: 0 5px 10px;
+
+      .schedule-item-main {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px 8px 0px 16px;
+        max-width: 100%;
+      }
+
+      .schedule-item-title {
+        font-weight: $font-bold;
+        margin: 0 5px 0 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .schedule-item-toggle {
+        flex: 0 0 auto;
+      }
+
+      .schedule-item-sub {
+        background-color: $background-color;
+        border-radius: 0 0 10px 10px;
+
+        .schedule-item-text-block {
+          margin-top: 0;
+
+          .schedule-item-time {
+            margin: 5px 0;
+          }
+
+          .schedule-item-days {
+            font-weight: $font-bold-light;
+          }
+        }
+      }
+    }
+
+    .no-schedule-block {
+      height: 100%;
+
+      .no-schedule-main-block {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+
+        .no-schedule-add {
+          font-weight: $font-bold-light;
+          margin-bottom: 15vh;
+        }
+
+        .no-schedule-content {
+          font-weight: $font-bold-light;
+          font-size: 18px;
+          text-align: $text-center;
+        }
+
+        .no-schedule-image {
+          background-color: color($colors, grey);
+          border-radius: 10rem;
+          height: 10rem;
+          width: 10rem;
+          margin: 0 $margin-auto;
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          justify-content: center;
+
+          ion-icon {
+            align-items: center;
+            color: color($colors, white);
+            display: flex;
+            flex-direction: row;
+            font-size: 6.6rem;
+            justify-content: center;
+            text-align: $text-center;
+          }
+        }
+      }
+
+      .no-schedule-title {
+        text-align: $text-center;
+      }
+    }
+  }
+}

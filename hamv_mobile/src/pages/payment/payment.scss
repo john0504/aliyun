@@ -1,0 +1,68 @@
+page-payment {
+  .page-spaces {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    width: 100%;
+  }
+
+  .section-text {
+    font-size: 1.4rem;
+    font-weight: 900;
+    width: 100%;
+
+    &:not(:first-child) {
+      margin-top: 36px;
+    }
+  }
+
+  .text-icon {
+    font-size: 1.8rem;
+    right: 15px;
+    position: relative;
+  }
+  .container {
+    min-height: 100%;
+    .describe-text {
+      font-size: 1.4rem;
+      text-align: center;
+      display: block;
+    }
+    .control-item-text {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .step {
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-weight: 600;
+      }
+    }
+    .kanban-side {
+      text-align: center;
+      border-radius: 5px;
+      background: map-get($colors, lightGrey);
+      img {
+        max-height: 150px;
+        margin: 8px 0;
+      }
+      .describe-text {
+        font-weight: bold;
+      }
+    }
+  }
+  .container2 {
+    ion-item {      
+      ion-label {
+        p {
+          color: color($colors, dark);
+        }
+      }
+      ion-input {
+        color: color($colors, dark);
+      }
+    }
+  }
+}

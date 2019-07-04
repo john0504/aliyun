@@ -1,0 +1,20 @@
+<div class="range-main-block">
+  <span class="range-title-text">{{ title | translate }}</span>
+  <div class="range-value-block" [ngClass]="{'text-disabled': disabled}">
+    <span class="range-item-text">{{ (state?.currentValueItem?.text | translate) | replace: state.currentValueItem?.value }}</span>
+    <ion-icon [name]="state.currentValueItem?.icon"></ion-icon>
+  </div>
+</div>
+<div class="range-sub-block">
+  <ion-range
+    (ionBlur)="sendValue($event)"
+    (ionChange)="valueChanges($event)"
+    [(ngModel)]="state.currentIndex"
+    [disabled]="disabled || state.disableState"
+    [max]="state.status.max"
+    [min]="state.status.min"
+    [step]="state.status.step"
+    class="range-range-status"
+    snaps
+  ></ion-range>
+</div>

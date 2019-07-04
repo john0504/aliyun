@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ deviceCore.deviceName }}</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="presentActions()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <button ion-button color="dark" full ion-fixed class="device-state" *ngIf="deviceCore.device" [ngClass]="{'online': deviceCore.isAvailable}"
+    (click)="showInfo()">
+    {{ (deviceCore.isUpdating ? 'DEVICE_DETAIL.UPDATING' : !deviceCore.isConnected ? 'DEVICE_DETAIL.OFFLINE' : '') | translate }}
+  </button>
+  <img class="banner-image" jy-lazy-load [source]="deviceCore.banner?.uri" placeholder="assets/img/model_image_banner_placeholder.png">
+  <div class="main-content">
+    <div *ngFor="let m of deviceCore.controllers; let i = index;">
+      <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [disabled]="!deviceCore.isAvailable"
+        [model]="m" color="primary" *ngIf="isVisable(m)"></ui-component>
+      <div *ngIf="i < deviceCore.controllers.length - 1 && isVisable(m)" class="control-item-divider"></div>
+    </div>
+  </div>
+</ion-content>

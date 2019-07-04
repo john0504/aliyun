@@ -1,0 +1,3 @@
+<ng-container *ngIf="_group?.devices.length > 1">
+  <button ion-button class="all-devices-button" (click)="goGroupDetail(_group)">{{ _group?.properties?.displayName }}</button>
+</ng-container>

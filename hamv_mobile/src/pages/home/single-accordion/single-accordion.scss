@@ -1,0 +1,67 @@
+page-single-accordion {
+  device-item-wrapper {
+    margin: 0 5px;
+  }
+
+  .fixed-content {
+    display: flex;
+    flex-direction: column;
+    >div {
+      z-index: 2;
+      &.empty {
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+  ion-navbar {
+    position: relative;
+    .center-logo {
+      height: 80%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0;
+      right: 0;
+    }
+    .center-logo-ios {
+      height: 60%;
+      margin: auto auto 2px;
+    }
+  }
+  ion-spinner {
+    height: 100px;
+    width: 100px;
+    * {
+      height: 100px;
+      width: 100px;
+    }
+  }
+  .main-content {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    will-change: scroll-position, transform;
+    contain: size style layout;
+
+    transform: translateZ(0);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .init-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: color($colors, darkGrey);
+    z-index: 9998;
+  }
+}

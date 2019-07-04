@@ -1,0 +1,14 @@
+group-detail {
+  display: flex;
+  flex-direction: column;
+  .control-content {
+    border-radius: 0;
+    padding: 20px;
+    width: 100%;
+  }
+  .control-item-divider {
+    border-bottom: 1px solid color($colors, grey);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+}

@@ -1,0 +1,19 @@
+gray-button-group-control {
+  .all-devices-button {
+    background-color: color($colors, lightGrey);
+    border-radius: 5px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);
+    color: #000000;
+    height: 45px;
+    margin: 5px 8px 0px;
+    width: calc(100% - 16px);
+
+    span {
+      font-weight: 700;
+    }
+
+    &.activated {
+      background-color: color($colors, grey);
+    }
+  }
+}

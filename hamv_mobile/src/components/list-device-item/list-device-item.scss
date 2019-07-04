@@ -1,0 +1,34 @@
+list-device-item {
+  display: block;
+  width: 100%;
+
+  .device-name {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    font-weight: 600;
+    margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    word-wrap: break-word;
+  }
+
+  .list-button {
+    padding: 0 15px;
+
+    ion-label {
+      &:first-of-type {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+
+  .thumb-image {
+    height: 60px;
+    margin-right: 15px;
+    width: 60px;
+  }
+}

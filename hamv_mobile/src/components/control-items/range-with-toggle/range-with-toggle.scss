@@ -1,0 +1,72 @@
+range-with-toggle {
+  $font-bold: 900;
+  $font-title: 1.3rem;
+  .basic-text {
+    font-size: $font-title + 0.4rem;
+    font-weight: $font-bold;
+    margin-right: 8px;
+  }
+
+  .text-disabled {
+    color: color($colors, grey);
+  }
+
+  .main-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    .title-text {
+      font-size: $font-title;
+      font-weight: $font-bold;
+    }
+    .toggle-block {
+      @extend .main-block;
+      justify-content: flex-end;
+
+      ion-toggle {
+        padding-left: 8px;
+      }
+
+      .toggle-status {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        .item-text {
+          font-size: 1.7rem;
+          font-weight: 900;
+          margin-right: 8px;
+        }
+
+        ion-icon {
+          font-size: 2.2rem;
+        }
+      }
+    }
+  }
+  .sub-block {
+    .range-status {
+      .range-tick {
+        display: none;
+      }
+      .range-bar {
+        border-radius: 4px;
+      }
+      .range-knob {
+        outline: none;
+      }
+    }
+    .value-block {
+      @extend .main-block;
+      justify-content: flex-end;
+      .item-text {
+        @extend .basic-text;
+      }
+      ion-icon {
+        font-size: $font-title + 0.9rem;
+      }
+    }
+  }
+}

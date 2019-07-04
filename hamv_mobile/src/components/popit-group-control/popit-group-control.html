@@ -1,0 +1,4 @@
+<ng-container *ngIf="_group?.devices.length > 1">
+  <group-control-panel [expand]="_expand" [group]="_group"></group-control-panel>
+  <div *ngIf="_showDevicesInGroupString" class="devices-in-groups">{{ 'HOME.DEVICES_IN_GROUP' | translate }}</div>
+</ng-container>

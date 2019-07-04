@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'SCHEDULE_LIST.TITLE' | translate }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addSchedule()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="schedule-content">
+  <div *ngIf="!scheduleList || scheduleList.length === 0; else listSchedule" class="no-schedule-block" padding>
+    <h3 *ngIf="deviceCore?.deviceName" class="no-schedule-title">{{ 'SCHEDULE_LIST.DEVICE_TITLE' | translate: { deviceName: deviceCore?.deviceName } }}</h3>
+    <div class="no-schedule-main-block">
+      <div class="no-schedule-image">
+        <ion-icon isActive="false" name="schedules"></ion-icon>
+      </div>
+      <p class="no-schedule-content">{{ 'SCHEDULE_LIST.NO_SCHEDULES' | translate }}</p>
+      <button color="primary" (click)="addSchedule()" class="no-schedule-add" full ion-button round>{{ 'SCHEDULE_LIST.CREATE_A_SCHEDULE' | translate }}</button>
+    </div>
+  </div>
+  <ng-template #listSchedule>
+    <h4 *ngIf="deviceCore?.deviceName" class="list-schedule-title">{{ 'SCHEDULE_LIST.DEVICE_TITLE' | translate: { deviceName: deviceCore?.deviceName } }}</h4>
+    <div *ngFor="let scheduleItem of scheduleList; let i = index" class="schedule-block">
+      <div class="schedule-item-text-block" no-margin>
+        <div class="schedule-item-main">
+          <ion-label tappable (click)="scheduleSelected(i)" *ngIf="scheduleItem.core.name" no-margin class="schedule-item-title">
+            {{ scheduleItem.core.name | uppercase }}
+          </ion-label>
+          <ion-toggle color="primary" [(ngModel)]="scheduleItem.isActive" (ngModelChange)="scheduleActive(scheduleItem, i)" class="schedule-item-toggle"
+            clear item-right></ion-toggle>
+        </div>
+      </div>
+      <div tappable detail-none ion-item no-lines (click)="scheduleSelected(i)" class="schedule-item-sub">
+        <ion-label class="schedule-item-text-block">
+          <h1 class="schedule-item-time">
+            {{ scheduleItem.core.start | remarkTime }} - {{ scheduleItem.core.end | remarkTime }}
+          </h1>
+          <h2 class="schedule-item-days">
+            {{ (scheduleItem.core.schedule | scheduleRepeatTime) }}
+          </h2>
+        </ion-label>
+      </div>
+    </div>
+  </ng-template>
+  <extra-page-space></extra-page-space>
+</ion-content>

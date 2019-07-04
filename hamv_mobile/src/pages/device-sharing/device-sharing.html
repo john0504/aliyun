@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'DEVICE_SHARING.FAMILY_SHARING' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="container" padding>
+    <div padding>
+      <h2 align="center">{{ 'DEVICE_SHARING.ADD_GUEST' | translate }}</h2>
+      <button ion-button color="primary" class="full-button" full round icon-left (click)="addGuest()" margin-vertical>{{ 'DEVICE_SHARING.SHARE_DEVICE' | translate: { deviceName: deviceName } }}</button>
+    </div>
+    <div padding>
+      <h2 align="center">{{ 'DEVICE_SHARING.GUEST_LIST' | translate }}</h2>
+      <ion-list>
+        <ion-item *ngFor="let guest of guestList">
+          {{guest.email}}
+          <ion-icon name="close-circle" item-end color="danger" (click)="removeGuestConfirm(guest)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

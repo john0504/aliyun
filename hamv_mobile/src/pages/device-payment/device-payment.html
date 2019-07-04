@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'PAYMENT.PAYMENT' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="page-spaces" ion-fixed>
+    <div class="container" padding>
+      <div padding margin-bottom class="kanban-side step">
+        <h3 align="center">{{ 'PAYMENT.TITLE' | translate }}</h3>
+        <img src="assets/img/payment-card.jpg">
+        <span class="describe-text">{{ 'PAYMENT.DESCRIPTION_CARD' | translate }}</span>
+      </div>
+    </div>
+    <div class="container2">
+      <ion-item color="lightGrey">
+        <ion-label stacked>
+          <p><b>{{ 'PAYMENT.MACHINE_CODE' | translate }}</b></p>
+        </ion-label>
+        <ion-input disabled="true" [(ngModel)]="serial" type="text" maxlength="128">
+        </ion-input>
+      </ion-item>
+      <ion-item color="lightGrey">
+        <ion-label stacked>
+          <p><b>{{ 'PAYMENT.PAYMENT_CARD' | translate }}</b></p>
+        </ion-label>
+        <ion-input disabled="true" [(ngModel)]="paymentCode" type="text" placeholder="{{ ('PAYMENT.SCAN_PLEASE') | translate }}" maxlength="128">
+        </ion-input>
+      </ion-item>
+    </div>
+    <button ion-button color="orange" class="full-button" full round (click)="onQRcode()" full>{{ 'PAYMENT.QR_CODE' |
+      translate }}</button>
+    <button [disabled]="paymentCode == ''" ion-button color="primary" full round (click)="gotoPay()" margin-top>
+      {{ 'PAYMENT.PAY' | translate }}
+    </button>
+  </div>
+</ion-content>

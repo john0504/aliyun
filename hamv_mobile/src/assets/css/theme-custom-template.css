@@ -1,0 +1,65 @@
+.theme-custom .group-action,
+.theme-custom .gu-transit .device-header,
+.theme-custom .popit-fab,
+.theme-custom .range-bar-active,
+.theme-custom .range-md .range-knob,
+.theme-custom .toggle-ios.toggle-checked .toggle-icon,
+.theme-custom .toggle-md-primary.toggle-checked .toggle-inner,
+.theme-custom [color="primary"] .toolbar-background,
+.theme-custom button[color="primary"]:not([disabled]):not([outline]),
+.theme-custom scrollable-tabs .nav-tabs {
+  background-color: rgb($primaryColor);
+}
+
+.theme-custom button[color="primary"][outline]:not([disabled]),
+.theme-custom .alert-button,
+.theme-custom .group-title > .text,
+.theme-custom [color="bluish"],
+.theme-custom h1[color="primary"],
+.theme-custom ion-icon[color="primary"],
+.theme-custom ion-label[color="primary"] {
+  color: rgb($primaryColor);
+}
+
+.theme-custom .range-md.range-disabled .range-bar-active,
+.theme-custom .range-md.range-disabled .range-knob {
+  background-color: #bdbdbd;
+}
+
+.theme-custom .toggle-md-primary.toggle-checked .toggle-icon {
+  background-color: rgba($primaryColor, 0.5);
+}
+
+.theme-custom button[color="primary"][outline]:not([disabled]),
+.theme-custom page-schedule-edit .schedule-content .schedule-main-content .control-button.control-item-active,
+.theme-custom simple-button-group .popit-control-buttons .control-button.control-item-active,
+.theme-custom button-group-with-toggle .sub-block .control-button.control-item-active {
+  border-color: rgb($primaryColor);
+}
+
+.theme-custom simple-button-group .popit-control-buttons .control-button.control-item-active[disabled],
+.theme-custom button-group-with-toggle .sub-block .control-button.control-item-active[disabled] {
+  border-color: #d2d2d2;
+}
+
+.theme-custom ion-spinner.spinner circle,
+.theme-custom ion-spinner.spinner line {
+  stroke: rgb($primaryColor);
+}
+
+.theme-custom svg .primary {
+  stroke: rgb($primaryColor);
+}
+
+.theme-custom button[color="primary"][outline]:not([disabled]) {
+  background-color: transparent;
+}
+
+.theme-custom .button-effect {
+  background-color: rgb($primaryColor);
+}
+
+.theme-custom ion-checkbox[color="primary"] .checkbox-checked {
+  border-color: rgb($primaryColor);
+  background-color: rgb($primaryColor);
+}

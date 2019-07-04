@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'DEVICE_SETTINGS.SETTINGS' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="container" padding>
+    <div padding-horizontal class="safe-side">
+      <div padding-bottom>
+        <span class="control-item-text">{{ 'DEVICE_SETTINGS.DEVICE_NAME' | translate }}</span>
+        <ion-item>
+          <ion-input [(ngModel)]="deviceName" type="text">
+          </ion-input>
+        </ion-item>
+        <button ion-button color="primary" class="full-button" full round (click)="saveDevice()" [disabled]="!canSaveDeviceName()" margin-vertical>
+          {{ 'DEVICE_SETTINGS.SAVE' | translate }}
+        </button>
+      </div>
+      <div padding-bottom *ngIf="isOwner">
+        <span class="control-item-text">{{ 'DEVICE_SETTINGS.SOFTWARE_VERSION' | translate }}</span>
+        <p>{{ deviceCore.firmwareVersion }}</p>
+        <button ion-button color="primary" class="full-button chk-update-btn" full round (click)="checkForUpdates()" [disabled]="!deviceCore.isAvailable || !deviceCore.firmwareVersion || isVersionLoading"
+          margin-vertical>
+          {{ deviceCore.isUpdating ? ('DEVICE_SETTINGS.UPDATING' | translate) : ('DEVICE_SETTINGS.CHECK_FOR_UPDATES' | translate) }}
+        </button>
+      </div>
+      <div padding-bottom *ngIf="isOwner">
+        <span class="control-item-text">{{ 'DEVICE_SETTINGS.MODEL' | translate }}</span>
+        <p>{{ deviceCore.model }}</p>
+      </div>
+      <div padding-bottom *ngIf="isOwner">
+        <span class="control-item-text">{{ 'DEVICE_SETTINGS.SERIAL' | translate }}</span>
+        <p>{{ deviceCore.macAddress }}</p>
+      </div>
+    </div>
+    <div padding class="danger-side">
+      <h2 align="center">{{ 'DEVICE_SETTINGS.DELETE_DEVICE' | translate }}</h2>
+      <p align="center" *ngIf="isOwner">{{ 'DEVICE_SETTINGS.IS_OWNER_NOTE' | translate }}</p>
+      <p align="center" *ngIf="!isOwner">{{ 'DEVICE_SETTINGS.IS_NOT_OWNER_NOTE' | translate }}</p>
+      <button ion-button class="full-button" full round icon-left color="warningRed" (click)="deleteDeviceConfirm()" margin-vertical>
+        <ion-icon name="close"></ion-icon>
+        {{ 'DEVICE_SETTINGS.DELETE_DEVICE' | translate }}
+      </button>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

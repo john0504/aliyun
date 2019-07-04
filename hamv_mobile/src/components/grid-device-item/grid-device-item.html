@@ -1,0 +1,4 @@
+<button *ngIf="isValidDevice" class="list-button" no-lines detail-none ion-item (click)="goDeviceDetailPage()">
+  <img class="thumb-image" jy-lazy-load [source]="deviceCore.thumbnail?.uri" placeholder="assets/img/model_image_thumbnail.png">
+  <h1 class="device-name">{{ deviceCore.deviceName }}</h1>
+</button>

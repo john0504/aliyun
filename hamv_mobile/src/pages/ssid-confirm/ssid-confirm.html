@@ -1,0 +1,92 @@
+<ion-header no-border>
+  <ion-toolbar color="white">
+    <ion-title>{{ 'SSID_CONFIRM.ADD_PRODUCT' | translate: { productName: themeService.productName } }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closePage()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form #ssidForm="ngForm" novalidate (ngSubmit)="onNext()" class="container">
+    <ion-list class="main">
+      <h1 align="center">{{ 'SSID_CONFIRM.SET_WIFI' | translate }}</h1>
+      <svg height="128" viewBox="0 0 500 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+        <title>assets / Device_Network_Home_Graphic</title>
+        <desc>Created with Sketch.</desc>
+        <defs></defs>
+        <g id="Graphic-/-Device-Network-Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Device-Network-Home-Graphic" transform="translate(119.000000, 36.000000)">
+            <polygon id="Combined-Shape" stroke="#2C2C2C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="179.927365 41.9486987 179.927365 23.7692861 219.927365 23.7692861 219.927365 76.0312636 262.273257 112.11268 225.13606 112.11268 225.139966 231.06645 38.0645616 231.06645 38.0645616 112.11268 0.927364586 112.11268 131.598358 0.769286066"></polygon>
+            <path d="M251,103 L156,22 L251,103 Z" id="Stroke-11-Copy" stroke="#2C2C2C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M91,184 L171,184 C175.418278,184 179,187.581722 179,192 L179,200 C179,204.418278 175.418278,208 171,208 L91,208 C86.581722,208 83,204.418278 83,200 L83,192 C83,187.581722 86.581722,184 91,184 Z M148,200 C150.209139,200 152,198.209139 152,196 C152,193.790861 150.209139,192 148,192 C145.790861,192 144,193.790861 144,196 C144,198.209139 145.790861,200 148,200 Z M162,200 C164.209139,200 166,198.209139 166,196 C166,193.790861 164.209139,192 162,192 C159.790861,192 158,193.790861 158,196 C158,198.209139 159.790861,200 162,200 Z"
+              id="Combined-Shape" fill="#2C2C2C"></path>
+            <path class="primary" d="M155.422065,153.525778 C156.78854,154.892973 156.787957,157.10905 155.420762,158.475525 C154.053567,159.842 151.83749,159.841417 150.471015,158.474222 C139.476324,147.473742 121.844299,147.316237 111.088128,158.078072 C109.721653,159.445267 107.505576,159.44585 106.138381,158.079375 C104.771186,156.7129 104.770603,154.496823 106.137078,153.129628 C119.647205,139.612386 141.713004,139.809497 155.422065,153.525778 Z"
+              id="path" fill="#00BAFF" fill-rule="nonzero"></path>
+            <path class="primary" d="M178.509058,132.665236 C179.875533,134.032431 179.874949,136.248508 178.507755,137.614983 C177.14056,138.981458 174.924483,138.980875 173.558007,137.61368 C168.128092,132.180905 161.933644,127.993506 155.336047,125.054165 C133.566125,115.355297 107.406775,119.245099 89.8411841,136.819939 C88.474709,138.187134 86.2586316,138.187718 84.8914369,136.821242 C83.5242421,135.454767 83.5236588,133.23869 84.8901339,131.871495 C110.533163,106.214962 152.447867,106.590322 178.509058,132.665236 Z"
+              id="path" fill="#00BAFF" fill-rule="nonzero"></path>
+            <path class="primary" d="M200.477383,110.685438 C201.843832,112.052659 201.843206,114.268736 200.475984,115.635185 C199.108763,117.001634 196.892686,117.001007 195.526237,115.633786 C159.828221,79.9155844 102.498365,79.4026063 67.4754762,114.442552 C66.1089739,115.80972 63.8928966,115.810259 62.5257288,114.443757 C61.1585611,113.077255 61.1580216,110.861177 62.5245238,109.494009 C100.301412,71.6987234 162.065041,72.2513742 200.477383,110.685438 Z"
+              id="path" fill="#00BAFF" fill-rule="nonzero"></path>
+          </g>
+        </g>
+      </svg>
+      <p align="center">{{ 'SSID_CONFIRM.NETWORK_INFO' | translate }}</p>
+      <ion-item color="lightGrey" *ngIf="useText">
+        <ion-label floating color="darkGrey">SSID</ion-label>
+        <ion-input [(ngModel)]="wifiAp.ssid" (ngModelChange)="fulfillPassword()" name="ssid" type="text" #ssid="ngModel" maxlength="30" myTabIndex="1">
+        </ion-input>
+      </ion-item>
+      <ion-item color="lightGrey" *ngIf="!useText">
+        <ion-label stacked color="darkGrey">SSID</ion-label>
+        <ion-select [(ngModel)]="selectAp" name="ssidSelect" #ssidSelect="ngModel" placeholder="{{ ('SSID_CONFIRM.CHOOSE' | translate) }}" (ngModelChange)="wifiApSelected()"
+          (ionFocus)="isSelectFocus = true;" (ionBlur)="isSelectFocus = false;" [compareWith]="compareFn" cancelText="{{ 'SSID_CONFIRM.CANCEL' | translate }}" okText="{{ 'SSID_CONFIRM.OK' | translate }}">
+          <ion-option *ngFor="let ap of wifiAps" [value]="ap">{{ ap.ssid }}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item color="lightGrey" *ngIf="needPassword()" class="input-with-eye-toggle">
+        <ion-label floating color="darkGrey">{{ 'SSID_CONFIRM.PASSWORD' | translate }}</ion-label>
+        <ion-input [(ngModel)]="wifiAp.password" name="password" [type]="inputType" #password="ngModel" maxlength="30" myTabIndex="2" clearOnEdit="false">
+        </ion-input>
+        <button (click)="onShowHidePassword()" ion-button icon-only clear item-right type="button">
+          <ion-icon [name]="iconName" color="dark"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item color="lightGrey" *ngIf="useText">
+        <ion-label floating color="darkGrey">{{ 'SSID_CONFIRM.SECURITY' | translate }}</ion-label>
+        <ion-select [(ngModel)]="wifiAp.sec" (ngModelChange)="clearPassword()" name="security" #security="ngModel" cancelText="{{ 'SSID_CONFIRM.CANCEL' | translate }}" okText="{{ 'SSID_CONFIRM.OK' | translate }}">
+          <ion-option value="wpa2" selected="true">WPA2</ion-option>
+          <ion-option value="wpa">WPA</ion-option>
+          <ion-option value="wep">WEP</ion-option>
+          <ion-option value="open">OPEN</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item color="lightGrey">
+        <ion-label color="primary">
+          <p>
+            <b>{{ 'SSID_CONFIRM.REMEMBER_SSID' | translate }}</b>
+          </p>
+        </ion-label>
+        <ion-toggle color="primary" item-right [(ngModel)]="saveSsid" name="saveToggle" #saveToggle="ngModel"></ion-toggle>
+      </ion-item>
+      <ion-item color="lightGrey">
+        <ion-label color="primary">
+          <p>
+            <b>{{ 'SSID_CONFIRM.MANUALLY_SET' | translate }}</b>
+          </p>
+        </ion-label>
+        <ion-toggle color="primary" item-right [(ngModel)]="useText" name="inputToggle" #inputToggle="ngModel" (ngModelChange)="clearSSID()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+    <div>
+      <button ion-button color="primary" class="bottom-button full-button" type="submit" full [disabled]="!isValid()">{{ 'SSID_CONFIRM.START_CONNECTION' | translate }}</button>
+    </div>
+    <div *ngIf="testMode">
+      <div>{{vendorVer}}</div>
+      <div>{{vendorName}}</div>
+      <div>{{semiVer}}</div>
+    </div>
+  </form>
+  <extra-page-space></extra-page-space>
+</ion-content>

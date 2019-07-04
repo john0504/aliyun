@@ -1,0 +1,56 @@
+simple-range {
+  $font-bold: 900;
+  $font-title: 1.3rem;
+
+  .basic-text {
+    font-size: $font-title + 0.4rem;
+    font-weight: $font-bold;
+    margin-right: 8px;
+  }
+
+  .text-disabled {
+    color: color($colors, grey);
+  }
+
+  .range-main-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .range-title-text {
+      font-size: $font-title;
+      font-weight: $font-bold;
+    }
+
+    .range-value-block {
+      @extend .range-main-block;
+      justify-content: flex-end;
+      text-align: right;
+
+      .range-item-text {
+        @extend .basic-text;
+      }
+
+      ion-icon {
+        font-size: $font-title + 0.9rem;
+      }
+    }
+  }
+
+  .range-sub-block {
+    .range-range-status {
+      .range-tick {
+        display: none;
+      }
+
+      .range-bar {
+        border-radius: 4px;
+      }
+
+      .range-knob {
+        outline: none;
+      }
+    }
+  }
+}

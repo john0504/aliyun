@@ -1,0 +1,9 @@
+<ng-content select="[empty-status]"></ng-content>
+
+<div *ngIf="devices && devices?.length > 0">
+  <div class="group-container">
+    <ng-content select="[group-controller]"></ng-content>
+    <device-item-wrapper *ngFor="let deviceSn of devices" [deviceComponent]="_deviceComponent" [data]="{ deviceSn: deviceSn }"></device-item-wrapper>
+  </div>
+  <extra-page-space></extra-page-space>
+</div>

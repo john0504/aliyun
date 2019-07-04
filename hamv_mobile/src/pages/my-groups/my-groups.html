@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'MY_GROUPS.MY_GROUPS' | translate }}</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addGroup()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="empty" padding *ngIf="!groups || groups.length <= 0; else groupBags">
+    <div class="no-groups-image">
+      <img [src]="themeService.logoUrl" />
+    </div>
+    <h4>{{ 'MY_GROUPS.NO_GROUPS' | translate }}</h4>
+    <button ion-button color="primary" class="full-button" round full (click)="addGroup()">{{ 'MY_GROUPS.CREATE_GROUP' | translate }}</button>
+  </div>
+  <ng-template #groupBags>
+    <div>
+      <div *ngFor="let g of groups">
+        <group-bag [group]="g" (groupAction)="presentGroupActions(g)">
+        </group-bag>
+        <div class="dnd" [dragula]="containerName" [dragulaModel]="g.devices" [ngClass]="{'has-child': g.devices?.length > 0 }" attr.data-line="{{ 'MY_GROUPS.DRAG_HERE_TO_ADD' | translate }}">
+          <device-bag *ngFor="let d of g.devices" [deviceId]="d"></device-bag>
+        </div>
+      </div>
+      <div>
+        <div class="ungroup-header">
+          <div class="ungroup-title">
+            <h5 ion-text class="ungroup-title-text">{{ 'MY_GROUPS.DEVICE_NOT_IN_GROUP' | translate }}</h5>
+          </div>
+        </div>
+        <div class="dnd" [dragula]="containerName" [dragulaModel]="unGroup" [ngClass]="{'has-child': unGroup && unGroup.length > 0 }" attr.data-line="{{ 'MY_GROUPS.DRAG_HERE_TO_ADD' | translate }}">
+          <device-bag *ngFor="let d of unGroup" [deviceId]="d"></device-bag>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <extra-page-space></extra-page-space>
+</ion-content>

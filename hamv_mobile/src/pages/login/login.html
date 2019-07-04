@@ -1,0 +1,49 @@
+<ion-header no-border>
+  <ion-navbar color="white">
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <ion-list>
+      <form #loginForm="ngForm" novalidate (ngSubmit)="onLogin(loginForm)">
+        <div class="header-image">
+          <img [src]="themeService.logoUrl">
+        </div>
+        <div class="header-t">
+          <h1 color="primary">{{ 'LOGIN.SIGN_IN' | translate }}</h1>
+        </div>
+        <ion-item *ngIf="!isUserLoggedIn()">
+          <ion-label floating color="darkGrey">{{ 'LOGIN.EMAIL' | translate }}</ion-label>
+          <ion-input [(ngModel)]="login.username" name="username" type="email" #username="ngModel" spellcheck="false" autocapitalize="off"
+            maxlength="100" [pattern]="userV" required myTabIndex="1">
+          </ion-input>
+        </ion-item>
+        <ion-item *ngIf="isUserLoggedIn()">
+          <ion-icon name="person" item-left></ion-icon>
+          <h2>{{ login.username }}</h2>
+        </ion-item>
+        <ion-item class="input-with-eye-toggle">
+          <ion-label floating color="darkGrey">{{ 'LOGIN.PASSWORD' | translate }}</ion-label>
+          <ion-input [(ngModel)]="login.password" name="password" [type]="inputType" #password="ngModel" [pattern]="pwV" minlength="8"
+            maxlength="20" required myTabIndex="2" clearOnEdit="false">
+          </ion-input>
+          <button (click)="onShowHidePassword()" ion-button icon-only clear item-right type="button">
+            <ion-icon [name]="iconName" color="dark"></ion-icon>
+          </button>
+        </ion-item>
+        <div class="divider">
+        </div>
+        <button ion-button color="primary" class="full-button" [disabled]="!loginForm.valid" type="submit" round full>{{ 'LOGIN.SIGN_IN' | translate }}</button>
+        <div class="divider"></div>
+      </form>
+      <!-- <button ion-button class="full-button" color="fbBlue" round full fb-login>{{ 'LOGIN.SIGN_IN_WITH_FB' | translate }}</button> -->
+    </ion-list>
+    <div>
+      <p align="center"><a tappable ion-text (click)="goForgotPassword()" color="bluish" margin-vertical>{{ 'LOGIN.FORGOT_PWD' | translate }}</a></p>
+    </div>
+    <div>
+      <button ion-button color="primary" class="full-button" (click)="onLogout()" *ngIf="isUserLoggedIn()" round full>{{ 'LOGIN.LOG_OUT' | translate }}</button>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

@@ -1,0 +1,37 @@
+<ion-header no-border>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <img class="center-logo" [src]="themeService.navbarLogoUrl" [ngClass]="{'center-logo-ios': isIOS() }">
+    <ion-buttons right>
+      <button ion-button icon-only go-adding-device>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ng-container ion-fixed>
+    <div *ngIf="!ready; else showDevices" class="empty" padding>
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+    <ng-template #showDevices>
+      <scrollable-tabs [tabs]="tabs" [selectedTabIndex]="currentTab" (tabSelected)="tabSelected($event)" *ngIf="groupsList && groupsList.length > 0"></scrollable-tabs>
+      <div class="main-content">
+        <group-item-wrapper *ngIf="!selectedGroup" [groupComponent]="groupComponent" [data]="{ deviceComponent: deviceComponent, group: myDevicesGroup, extraData: extraData }">
+          <empty-devices *ngIf="!myDevicesGroup || myDevicesGroup?.devices.length === 0" empty-status></empty-devices>
+          <gray-button-group-control [group]="myDevicesGroup" group-controller></gray-button-group-control>
+        </group-item-wrapper>
+
+        <group-item-wrapper *ngIf="selectedGroup" [groupComponent]="groupComponent" [data]="{ deviceComponent: deviceComponent, group: selectedGroup, extraData: extraData }">
+          <empty-group-devices *ngIf="!selectedGroup?.devices || selectedGroup?.devices.length === 0" empty-status></empty-group-devices>
+          <gray-button-group-control [group]="selectedGroup" group-controller></gray-button-group-control>
+        </group-item-wrapper>
+      </div>
+    </ng-template>
+  </ng-container>
+</ion-content>
+<div *ngIf="!isLoggedIn" class="init-mask"></div>

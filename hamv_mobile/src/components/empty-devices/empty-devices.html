@@ -1,0 +1,7 @@
+<div class="empty" padding>
+  <div class="no-devices-image">
+    <img [src]="themeService.logoUrl" />
+  </div>
+  <h4>{{ 'MY_DEVICES.EMPTY_DASHBOARD' | translate }}</h4>
+  <button ion-button color="primary" class="full-button" round full go-adding-device>{{ 'MY_DEVICES.ADD_PRODUCT' | translate: { productName: themeService.productName } }}</button>
+</div>

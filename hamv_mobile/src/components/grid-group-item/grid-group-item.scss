@@ -1,0 +1,21 @@
+grid-group-item {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  div.group-container {
+    height: 100%;
+    padding-top: 1.3rem;
+    width: 100%;
+  }
+
+  device-item-wrapper {
+    display: inline-block;
+  }
+
+  .devices-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

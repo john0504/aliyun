@@ -1,0 +1,41 @@
+grid-device-item {
+  display: block;
+
+  .device-name {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 8px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: initial;
+    width: 94%;
+    word-wrap: break-word;
+  }
+
+  .list-button {
+    ion-label {
+      &:first-of-type {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-right: 0;
+      }
+    }
+
+    &.activated {
+      background-color: #FFFFFF;
+    }
+  }
+
+  .thumb-image {
+    border-radius: 50%;
+    height: 120px;
+    margin-bottom: 20px;
+    width: 120px;
+  }
+}

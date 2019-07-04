@@ -1,0 +1,45 @@
+page-device-history {
+  ion-navbar {
+    position: relative;
+  }
+
+  ion-spinner {
+    height: 100px;
+    width: 100px;
+    * {
+      height: 100px;
+      width: 100px;
+    }
+  }
+
+  .fixed-content {
+    display: flex;
+    flex-direction: column;
+
+    > div {
+      z-index: 2;
+
+      &.empty {
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+
+  .main-content {
+    -webkit-overflow-scrolling: touch;
+    contain: size style layout;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transform: translateZ(0);
+    will-change: scroll-position, transform;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

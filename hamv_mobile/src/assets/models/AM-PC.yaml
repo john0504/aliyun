@@ -1,0 +1,844 @@
+---
+familyName: AM-PC
+familyMembers:
+- AM-PC.*
+controlLayout:
+  primary:
+  - H00
+  secondary:
+  - H01
+  - H02
+  - H03
+  - H07
+  - H0B
+  - H0C
+  - H04R
+  - H05
+  - H06
+  - H08
+  - H0E
+  - H0F
+  - H10
+  - H11
+  - H12
+  - H13
+  - H14R
+  - H15R
+  - H16
+  - H17
+  - H18
+  - H19
+  - H1A
+  - H1B
+  - H1C
+  - H1D
+  - H1E
+  - H1F
+  - H20
+  - H21R
+  - H22R
+  - H23R
+  - H24R
+  - H25R
+  - H26R
+  - H27R
+  - H28R
+  - H28_1
+  - H2F
+  - H30
+  - H31
+  - H34
+chartLayout:
+  main:
+  - H28L
+scheduleLayout:
+  primary:
+  - H01
+  - H02
+  - H03
+  - H05
+  - H06
+  - H07
+  - H08
+  - H0E
+  - H0F
+  - H10
+  - H11
+  - H12
+  - H13
+  - H16
+  - H17
+  - H18
+  - H19
+  - H1A
+  - H1B
+  - H1C
+  - H1D
+  - H1E
+  - H1F
+  - H20
+deviceId: 1
+components:
+  H00:
+    type: toggle
+    title: 電源
+    models:
+    - key: H00
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+  H01:
+    type: button-group
+    title: 功能
+    models:
+    - key: H01
+      values:
+      - value: 0
+        text: 冷氣
+      - value: 1
+        text: 除濕
+      - value: 2
+        text: 送風
+      - value: 3
+        text: 自動
+      - value: 4
+        text: 暖氣
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H02:
+    type: button-group
+    title: 風速
+    models:
+    - key: H02
+      values:
+      - value: 0
+        text: 自動
+      - value: 1
+        text: "1"
+      - value: 2
+        text: "2"
+      - value: 3
+        text: "3"
+      - value: 4
+        text: "4"
+      - value: 5
+        text: "5"
+      - value: 6
+        text: "6"
+      - value: 7
+        text: "7"
+      - value: 8
+        text: "8"
+      - value: 9
+        text: "9"
+      - value: 10
+        text: "10"
+      - value: 11
+        text: "11"
+      - value: 12
+        text: "12"
+      - value: 13
+        text: "13"
+      - value: 14
+        text: "14"
+      - value: 15
+        text: "15"
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H03:
+    type: range
+    title: 溫度
+    models:
+    - key: H03
+      values:
+        min: 0
+        max: 35
+        step: 1
+        func: tempCelsius
+      options: 
+        type: 'uint'
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H04R:
+    type: text
+    title: 室溫
+    models:
+    - key: H04
+      values:
+        func: tempInt8
+  H05:
+    type: toggle
+    title: 舒眠
+    models:
+    - key: H05
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+        icon: ios-moon-outline
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H06:
+    type: range
+    title: 舒眠時間
+    models:
+    - key: H06
+      values:
+        min: 30
+        max: 1440
+        step: 30
+        func: text
+      options: 
+        type: 'uint16'
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H07:
+    type: button-group
+    title: Fuzzy
+    models:
+    - key: H07
+      values:
+      - value: 0
+        text: 剛好
+      - value: 1
+        text: 太冷
+      - value: 2
+        text: 太熱
+      - value: 3
+        text: 關閉
+      - value: 4
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H08:
+    type: toggle
+    title: 空氣清淨
+    models:
+    - key: H08
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+        icon: ios-cloud-outline
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H0B:
+    type: range-with-toggle
+    title: 定時開機
+    models:
+    - key: H0B
+      values:
+        min: 30
+        max: 1440
+        step: 30
+        func: timer
+      options: 
+        type: 'uint16'
+    - key: H0B
+      values:
+      - value: 0
+        text: 關閉
+        icon: timer
+      - value: "*"
+        text: ''
+      default: 1
+  H0C:
+    type: range-with-toggle
+    title: 定時關機
+    models:
+    - key: H0C
+      values:
+        min: 30
+        max: 1440
+        step: 1
+        func: timer
+      options: 
+        type: 'uint16'
+    - key: H0C
+      values:
+      - value: 0
+        text: 關閉
+        icon: timer
+      - value: "*"
+        text: ''
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H0E:
+    type: toggle
+    title: 上下吹風自動轉向
+    models:
+    - key: H0E
+      values:
+      - value: 0
+        text: 停止
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H0F:
+    type: button-group
+    title: 上下吹風轉向
+    models:
+    - key: H0F
+      values:
+      - value: 0
+        text: "0"
+      - value: 1
+        text: "1"
+      - value: 2
+        text: "2"
+      - value: 3
+        text: "3"
+      - value: 4
+        text: "4"
+      - value: 5
+        text: "5"
+      - value: 6
+        text: "6"
+      - value: 7
+        text: "7"
+      - value: 8
+        text: "8"
+      - value: 9
+        text: "9"
+      - value: 10
+        text: "10"
+      - value: 11
+        text: "11"
+      - value: 12
+        text: "12"
+      - value: 13
+        text: "13"
+      - value: 14
+        text: "14"
+      - value: 15
+        text: "15"
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H10:
+    type: toggle
+    title: 左右吹風自動轉向
+    models:
+    - key: H10
+      values:
+      - value: 0
+        text: 停止
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H11:
+    type: button-group
+    title: 左右吹風轉向
+    models:
+    - key: H11
+      values:
+      - value: 0
+        text: "0"
+      - value: 1
+        text: "1"
+      - value: 2
+        text: "2"
+      - value: 3
+        text: "3"
+      - value: 4
+        text: "4"
+      - value: 5
+        text: "5"
+      - value: 6
+        text: "6"
+      - value: 7
+        text: "7"
+      - value: 8
+        text: "8"
+      - value: 9
+        text: "9"
+      - value: 10
+        text: "10"
+      - value: 11
+        text: "11"
+      - value: 12
+        text: "12"
+      - value: 13
+        text: "13"
+      - value: 14
+        text: "14"
+      - value: 15
+        text: "15"
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H12:
+    type: toggle
+    title: 濾網清洗
+    models:
+    - key: H12
+      values:
+      - value: 0
+        text: 正常
+      - value: 1
+        text: 須清洗
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+      - conditions:
+        - key: H12
+          op: eq
+          target: 0
+  H13:
+    type: range
+    title: 濕度
+    models:
+    - key: H13
+      values:
+        min: 0
+        max: 99
+        step: 1
+        func: humi
+      default: 1
+      options: 
+        type: 'uint'
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H14R:
+    type: text
+    title: 室內濕度
+    models:
+    - key: H14
+      values:
+        func: humi
+  H15R:
+    type: text
+    title: 點檢查設定
+    models:
+    - key: H15
+      values:
+        func: text
+  H16:
+    type: toggle
+    title: 空氣偵測
+    models:
+    - key: H16
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H17:
+    type: toggle
+    title: 防霉
+    models:
+    - key: H17
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H18:
+    type: toggle
+    title: 自體淨
+    models:
+    - key: H18
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H19:
+    type: button-group
+    title: 動向感應
+    models:
+    - key: H19
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 對人
+      - value: 2
+        text: 不對人
+      - value: 3
+        text: 自動判斷
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H1A:
+    type: toggle
+    title: 快速運轉
+    models:
+    - key: H1A
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H1B:
+    type: toggle
+    title: 節電運轉
+    models:
+    - key: H1B
+      values:
+      - value: 0
+        text: 關閉
+      - value: 1
+        text: 開啟
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H1C:
+    type: range-with-toggle
+    title: 限電模式 
+    models:
+    - key: H1C
+      values:
+        min: 1
+        max: 100
+        step: 1
+        func: humi
+      options: 
+        type: 'uint16'
+    - key: H1C
+      values:
+      - value: 0
+        text: 關閉
+      - value: "*"
+        text: ''
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H1D:
+    type: multi-button-group
+    title: 按鍵鎖
+    models:
+    - key: H1D
+      values:
+      - value: 1
+        text: 開關
+      - value: 2
+        text: 運轉模式
+      - value: 4
+        text: 溫度設定
+      - value: 8
+        text: 風速
+      - value: 16
+        text: 自動風向板(上下左右)
+      - value: 32
+        text: 停止鍵常時有效
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H1E:
+    type: toggle
+    title: SAA提示音
+    models:
+    - key: H1E
+      values:
+      - value: 0
+        text: 有聲
+      - value: 1
+        text: 無聲
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H1F:
+    type: button-group
+    title: 機體顯示
+    models:
+    - key: H1F
+      values:
+      - value: 0
+        text: 亮
+      - value: 1
+        text: 暗
+      - value: 2
+        text: 關
+      - value: 3
+        text: 全關
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H20:
+    type: button-group
+    title: 保濕模式
+    models:
+    - key: H20
+      values:
+      - value: 0
+        text: 無
+      - value: 1
+        text: 低
+      - value: 2
+        text: 高
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H21R:
+    type: text
+    title: 室外溫度
+    models:
+    - key: H21
+      values:
+        func: tempInt8
+  H22R:
+    type: text
+    title: 室內機能力
+    models:
+    - key: H22
+      values:
+        func: text
+  H23R:
+    type: text
+    title: 室外機能力
+    models:
+    - key: H23
+      values:
+        func: text
+  H24R:
+    type: text
+    title: 室外機運轉電流
+    models:
+    - key: H24
+      values:
+        func: text
+  H25R:
+    type: text
+    title: 室外機運轉電壓
+    models:
+    - key: H25
+      values:
+        func: text
+  H26R:
+    type: text
+    title: 室外機運轉功因
+    models:
+    - key: H26
+      values:
+        func: text
+  H27R:
+    type: text
+    title: 室外機即時功率
+    models:
+    - key: H27
+      values:
+        func: text
+  H28R:
+    type: text
+    title: 室外機累積用電量
+    models:
+    - key: H28
+      values:
+        func: text
+  H28_1:
+    type: toggle
+    title: 室外機累積用電量重置
+    models:
+    - key: H28
+      values:
+      - value: 0
+        text: '0'
+      - value: "*"
+        text: '重置'
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+      - conditions:
+        - key: H28
+          op: eq
+          target: 0
+  H2F:
+    type: range-with-toggle
+    title: 定期保養累積運轉小時
+    models:
+    - key: H2F
+      values:
+        min: 0
+        max: 1
+        step: 1
+        func: text
+      options: 
+        type: 'uint16'
+      disable:
+      - conditions:
+        - key: H2F
+          op: gte
+          target: 1
+    - key: H2F
+      values:
+      - value: 0
+        text: '0'
+      - value: "*"
+        text: ''
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+      - conditions:
+        - key: H2F
+          op: eq
+          target: 0
+  H30:
+    type: range-with-toggle
+    title: 濾網清洗累積運轉小時
+    models:
+    - key: H30
+      values:
+        min: 0
+        max: 1
+        step: 1
+        func: text
+      options: 
+        type: 'uint16'
+      disable:
+      - conditions:
+        - key: H30
+          op: gte
+          target: 1
+    - key: H30
+      values:
+      - value: 0
+        text: '0'
+      - value: "*"
+        text: ''
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+        - key: H30
+          op: eq
+          target: 0
+  H31:
+    type: range
+    title: 系統時間-年設定
+    models:
+    - key: H31
+      values:
+        min: 1
+        max: 3000
+        step: 1
+        func: text
+      options: 
+        type: 'uint16'
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  H34:
+    type: range-with-toggle
+    title: 定時開關機
+    models:
+    - key: H34
+      values:
+        min: 30
+        max: 1440
+        step: 30
+        func: timer
+      options: 
+        type: 'uint16'
+    - key: H34
+      values:
+      - value: 0
+        text: 關閉
+        icon: timer
+      - value: "*"
+        text: ''
+      default: 1
+chartComponents:
+  H28L:
+    type: line-chart
+    title: 室外機累積用電量
+    models:
+    - key: H28
+      values:
+        min: 0
+        max: 10000
+        step: 1
+        func: text

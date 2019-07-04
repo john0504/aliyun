@@ -1,0 +1,123 @@
+page-home-list {
+  device-item-wrapper {
+    margin: 10px 8px;
+  }
+
+  .fixed-content {
+    display: flex;
+    flex-direction: column;
+    >div {
+      z-index: 2;
+      &.empty {
+        height: 100%;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+  ion-navbar {
+    position: relative;
+    .center-logo {
+      height: 80%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0;
+      right: 0;
+    }
+    .center-logo-ios {
+      height: 60%;
+      margin: auto auto 2px;
+    }
+  }
+  ion-spinner {
+    height: 100px;
+    width: 100px;
+    * {
+      height: 100px;
+      width: 100px;
+    }
+  }
+  .main-content {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    will-change: scroll-position, transform;
+    contain: size style layout;
+
+    transform: translateZ(0);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .devices-in-groups {
+    text-align: center;
+    padding: 24px 0 1rem;
+    font-weight: 600;
+    font-size: 2rem;
+  }
+  .init-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: color($colors, darkGrey);
+    z-index: 9998;
+  }
+  
+  ion-card {
+    background-color: color($colors, lightGrey);
+    .popit-title {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      .popit-sub-title {
+        font-size: 1.8rem;
+        margin-left: 10px;
+      }
+      ion-card-title {
+        flex: 1 0 0;
+        word-break: break-word;
+        margin: 0;
+        font-size: 2.6rem;
+        font-weight: 600;
+      }
+      ion-icon.popit-fab {
+        flex: 0 0 auto;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 2.5rem;
+        margin-top: 10px;
+        font-size: 2.5rem;
+        line-height: 1;
+      }
+    }
+    ion-card-content {
+      background-color: color($colors, lightGrey);
+      background-image: url('../assets/img/background.jpg');
+    }
+    .control-item-divider {
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid color($colors, grey);
+    }
+    .popit-other-items {
+      margin: 26px 0 13px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .other-item {
+        flex: 1 1 auto;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}

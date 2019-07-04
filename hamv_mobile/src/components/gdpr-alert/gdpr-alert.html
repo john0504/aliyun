@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'GDPR_ALERT.HEADER' | translate: { oauthProvider: oauthProvider } }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div ion-text align="center" class="gdpr-title">{{ 'GDPR_ALERT.TITLE' | translate: { appName: appName, oauthName: oauthName } }}</div>
+  <div class="divider"></div>
+  <div ion-text align="center" class="gdpr-message">{{ 'GDPR_ALERT.MESSAGE' | translate }}</div>
+  <terms-of-service margin-top></terms-of-service>
+  <div class="divider"></div>
+  <button ion-button color="primary" round full (click)="gdprConsent(true)">{{ 'GDPR_ALERT.CONTINUE' | translate }}</button>
+  <div class="divider"></div>
+  <button ion-button color="warmGrey" round full (click)="gdprConsent(false)">{{ 'GDPR_ALERT.CANCEL' | translate }}</button>
+  <extra-page-space></extra-page-space>
+</ion-content>

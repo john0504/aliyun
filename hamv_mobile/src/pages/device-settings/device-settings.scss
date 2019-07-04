@@ -1,0 +1,29 @@
+page-device-settings {
+  .item-md,
+  .item-ios {
+    padding-left: 0;
+  }
+  .container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    .control-item-text {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .safe-side {
+      flex-grow: 1;
+    }
+    .danger-side {
+      border-radius: 5px;
+      background: map-get($colors, lightGrey);
+    }
+  }
+
+  .chk-update-btn {
+    span {
+      font-weight: 900;
+    }
+  }
+}

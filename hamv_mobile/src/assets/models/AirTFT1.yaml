@@ -1,0 +1,149 @@
+---
+familyName: AirTFT1
+familyMembers:
+- AirTFT1.*
+controlLayout:
+  primary:
+  - AQI
+  secondary:
+  - TEMP
+  - HUMI
+  - PARTICLE_V
+  - CO2_V
+  - VOC_V
+  - EMWD_L
+chartLayout:
+  main:
+  - TEMP_BARCHART
+  - HUMI_BARCHART
+  - PARTICLE_V_BARCHART
+  - CO2_BARCHART
+  - VOC_BARCHART
+  - EMWD_BARCHART
+scheduleLayout:
+  primary:
+  - TEMP_BARCHART
+deviceId: 99
+components:
+  PARTICLE_V:
+    type: text
+    title: INFORMATION_MODEL.PM25_VALUE
+    models:
+    - key: H60
+      values:
+        func: airbox_pm25
+  TEMP:
+    type: text
+    title: INFORMATION_MODEL.TEMPERATURE
+    models:
+    - key: H63
+      values:
+        func: airbox_temp
+  HUMI:
+    type: text
+    title: INFORMATION_MODEL.HUMIDITY
+    models:
+    - key: H64
+      values:
+        func: airbox_humi
+  CO2_V:
+    type: text
+    title: INFORMATION_MODEL.CO2_VALUE
+    models:
+    - key: H65
+      values:
+        func: airbox_co2
+  VOC_V:
+    type: text
+    title: INFORMATION_MODEL.VOC_VALUE
+    models:
+    - key: H66
+      values:
+        func: airbox_voc
+  EMWD_L:
+    type: text
+    title: INFORMATION_MODEL.EMWD_LEVEL
+    models:
+    - key: H67
+      values:
+        func: airbox_level
+  AQI:
+    type: color-text
+    title: AQI
+    models:
+    - key: H69
+      values:
+        func: text
+      options:
+        fontColor: "#FFFFFF"
+        green: 0
+        yellow: 51
+        orange: 101
+        red: 151
+        purple: 201
+        brown: 301
+chartComponents:
+  TEMP_BARCHART:
+    type: line-chart
+    title: INFORMATION_MODEL.TEMPERATURE
+    models:
+    - key: H63
+      values:
+        min: -10
+        max: 50
+        step: 1
+        func: tempCelsius
+      options:
+        period: 100
+  HUMI_BARCHART:
+    type: line-chart
+    title: INFORMATION_MODEL.HUMIDITY
+    models:
+    - key: H64
+      values:
+        min: 0
+        max: 100
+        step: 1
+        func: humidity
+      options:
+        period: 100
+  CO2_BARCHART:
+    type: line-chart
+    title: INFORMATION_MODEL.CO2_VALUE
+    models:
+    - key: H65
+      values:
+        min: 0
+        max: 2500
+        step: 1
+        func: ppm
+  PARTICLE_V_BARCHART:
+    type: line-chart
+    title: INFORMATION_MODEL.PM25_VALUE
+    models:
+    - key: H60
+      values:
+        min: 0
+        max: 600
+        step: 1
+        func: ugm3
+  VOC_BARCHART:
+    type: line-chart
+    title: INFORMATION_MODEL.VOC_VALUE
+    models:
+    - key: H66
+      values:
+        min: 0
+        max: 1200
+        step: 1
+        func: ppb
+  EMWD_BARCHART:
+    type: line-chart
+    title: INFORMATION_MODEL.EMWD_LEVEL
+    models:
+    - key: H67
+      values:
+        min: 0
+        max: 5
+        step: 1
+        func: text

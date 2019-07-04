@@ -1,0 +1,41 @@
+<button *ngIf="deviceCore.isUpdating" (click)="showInfo()" class="full-button updating-button" color="dark" full ion-button>
+  {{ 'POPIT_CONTAINER.UPDATING' | translate }}
+  <ion-icon ios="ios-information-circle" md="ios-information-circle-outline"></ion-icon>
+</button>
+<div [ngClass]="{'is-owner': isOwner}" class="popit-container-content">
+  <div class="popit-title" margin-bottom>
+    <ion-card-title>
+      {{ deviceCore.deviceName }}
+    </ion-card-title>
+    <button (click)="openSchedule()" class="popit-fab" icon-only ion-button>
+      <ion-icon name="schedules"></ion-icon>
+    </button>
+  </div>
+  <div *ngFor="let m of deviceCore.primaryControllers; let i = index;">
+    <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [disabled]="!deviceCore.isAvailable"
+      [model]="m" color="primary"></ui-component>
+    <div *ngIf="i < deviceCore.primaryControllers.length - 1" class="control-item-divider"></div>
+  </div>
+  <div class="popit-content" *ngIf="viewState.showDetails">
+    <div class="control-item-divider"></div>
+    <div *ngFor="let m of deviceCore.secondaryControllers">
+      <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [disabled]="!deviceCore.isAvailable"
+        [model]="m" color="primary"></ui-component>
+      <div class="control-item-divider"></div>
+    </div>
+    <div class="popit-other-items">
+      <button [ngStyle]="{ 'width': buttonLength === 2 ? '48%' : '100%' }" ion-button class="other-item" color="warmGrey" round (click)="openSettings()">
+        {{ 'POPIT_CONTAINER.SETTINGS' | translate }}
+      </button>
+      <button [ngStyle]="{ 'width': buttonLength === 2 ? '48%' : '100%' }" *ngIf="isOwner" ion-button class="other-item" color="warmGrey" round (click)="openSharing()">
+        {{ 'POPIT_CONTAINER.SHARE' | translate }}
+      </button>
+      <button [ngStyle]="{ 'width': buttonLength === 2 ? '48%' : '100%' }" ion-button class="other-item" color="warmGrey" round *go-device-historical="deviceCore.deviceSn">
+        {{ 'POPIT_CONTAINER.HISTORY' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<button ion-button class="full-button" full class="popit-expand-button" color="primary" (click)="toggleDetails()">
+  {{ viewState.showDetails ? ('POPIT_CONTAINER.CLOSE' | translate) : ('POPIT_CONTAINER.MORE_CONTROLS' | translate) }}
+</button>

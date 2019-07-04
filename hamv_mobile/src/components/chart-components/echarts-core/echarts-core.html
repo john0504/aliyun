@@ -1,0 +1,7 @@
+<div class="container">
+  <div echarts [initOpts]="_initOptions" [options]="_options" [merge]="_mergeOptions" [loading]="_loading" [loadingOpts]="_loadingOptions" theme="echartsTheme"
+    (chartInit)="onChartInit($event)"></div>
+  <div *ngIf="_empty" class="empty-mask">
+    <div class="empty-text"></div>
+  </div>
+</div>

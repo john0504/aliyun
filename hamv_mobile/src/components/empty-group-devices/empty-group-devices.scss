@@ -1,0 +1,26 @@
+empty-group-devices {
+  div.empty {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .no-groups-image {
+      align-items: center;
+      display: flex;
+      height: 120px;
+      justify-content: center;
+      width: 120px;
+    }
+
+    .full-button {
+      margin-bottom: 15vh;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<button *ngIf="deviceCore.isUpdating" (click)="showInfo()" class="full-button updating-button" color="dark" full ion-button>
+  {{ 'SINGLE_ACCORDION_CONTAINER.UPDATING' | translate }}
+  <ion-icon ios="ios-information-circle" md="ios-information-circle-outline"></ion-icon>
+</button>
+<div [ngClass]="{'is-owner': isOwner}" class="single-accordion-content">
+  <div class="popit-title" margin-bottom>
+    <img class="thumb-image" jy-lazy-load [source]="deviceCore.thumbnail?.uri" placeholder="assets/img/model_image_thumbnail.png">
+    <h1>
+      {{ deviceCore.deviceName }}
+    </h1>
+  </div>
+  <div *ngFor="let m of deviceCore.primaryControllers; let i = index;">
+    <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [disabled]="!deviceCore.isAvailable"
+      [model]="m" color="primary"></ui-component>
+    <div *ngIf="i < deviceCore.primaryControllers.length - 1" class="control-item-divider"></div>
+  </div>
+  <div class="popit-content" *ngIf="viewState.showDetails">
+    <div class="control-item-divider"></div>
+    <div *ngFor="let m of deviceCore.secondaryControllers">
+      <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [disabled]="!deviceCore.isAvailable"
+        [model]="m" color="primary"></ui-component>
+      <div class="control-item-divider"></div>
+    </div>
+    <div class="popit-other-items">
+      <button ion-button full color="warmGrey" round (click)="openSchedule()">
+        {{ 'SINGLE_ACCORDION_CONTAINER.SCHEDULES' | translate }}
+      </button>
+      <button ion-button full color="warmGrey" round (click)="openSettings()">
+        {{ 'SINGLE_ACCORDION_CONTAINER.SETTINGS' | translate }}
+      </button>
+      <button *ngIf="isOwner" ion-button full color="warmGrey" round (click)="openSharing()">
+        {{ 'SINGLE_ACCORDION_CONTAINER.SHARE' | translate }}
+      </button>
+      <button ion-button full color="warmGrey" round *go-device-historical="deviceCore.deviceSn">
+        {{ 'POPIT_CONTAINER.HISTORY' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<button ion-button class="full-button" full class="popit-expand-button" color="primary" (click)="toggleDetails()">
+  {{ viewState.showDetails ? ('SINGLE_ACCORDION_CONTAINER.CLOSE' | translate) : ('SINGLE_ACCORDION_CONTAINER.MORE_CONTROLS' | translate) }}
+</button>

@@ -1,0 +1,25 @@
+page-bluetooth-setting {
+  .scroll-content {
+    padding: 0px 8px 8px 8px;
+  }
+  .container {
+    border-radius: 5px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    background: map-get($colors, lightGrey);
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-content: stretch;      
+      justify-content: flex-start;
+      padding: 12px;
+      .hint {
+        max-width: 80px;
+        margin: 8px;
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+page-app-start {
+  .header-image {
+    height: 165px;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 55px;
+    img {
+      max-height: 165px;
+    }
+  }
+  .header-image-1 {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    img {
+      max-height: 120px;
+    }
+  }
+  .header-t {
+    height: 38.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h1 {
+      text-align: center;
+      margin: 0px;
+      font-weight: 600;
+    }
+  }
+  .divider {
+    height: 20px;
+  }
+  .item-md,
+  .item-ios {
+    padding-left: 0;
+  }
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 30px 30px 30px;
+    .main {
+      flex-grow: 1;
+    }
+    p, p a {
+      font-size: 1.3rem;
+    }
+  }
+}

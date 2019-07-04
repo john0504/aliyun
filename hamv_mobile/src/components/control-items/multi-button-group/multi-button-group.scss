@@ -1,0 +1,70 @@
+multi-button-group {
+  $background-transparent: transparent;
+  $box-shadow-none: none;
+  $font-bold: 900;
+  $font-bold-light: $font-bold - 200;
+  $font-title: 1.3rem;
+
+  .button-group-title {
+    font-size: $font-title;
+    font-weight: $font-bold;
+  }
+
+  .text-off-status {
+    color: color($colors, darkGrey);
+  }
+
+  .popit-control-buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 8px;
+
+    .control-button {
+      background-color: $background-transparent;
+      border: 1px solid color($colors, lightGrey);
+      color: color($colors, dark);
+      flex: 1 0 auto;
+      font-size: $font-title;
+      font-weight: $font-bold-light;
+      margin: 0;
+      padding: 0 8px;
+
+      ion-icon {
+        font-size: $font-title + 0.9rem;
+        padding: 0 5px;
+      }
+
+      span {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      &[disabled] {
+        border: none;
+        box-shadow: $box-shadow-none;
+        color: color($colors, grey);
+        opacity: 1;
+      }
+
+      &.control-item-active {
+        border-color: color($colors, primary);
+        border-style: solid;
+        border-width: 1px;
+        box-shadow: $box-shadow-none;
+        font-weight: $font-bold-light;
+
+        &[disabled] {
+          border-color: color($colors, grey);
+        }
+      }
+    }
+  }
+}

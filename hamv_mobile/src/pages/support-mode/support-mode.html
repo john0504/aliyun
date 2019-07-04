@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'DEVICE_CREATE.SUPPORT_MODE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-card class="'is-owner">
+    <ion-card-content>
+      <div class="popit-title" margin-bottom>
+        <ion-card-title>
+          {{ deviceItem._device?.properties?.displayName || deviceItem._device?.profile?.esh?.model }}
+        </ion-card-title>
+      </div>
+      <div *ngFor="let m of deviceItem?.popitPopular; let i = index;">
+        <ui-component (exoChange)="sendCommands($event)" [(ngModel)]="deviceItem.viewState" [disabled]="!deviceItem.viewState.isConnected" [model]="m"
+          color="primary"></ui-component>
+        <div *ngIf="i < deviceItem?.popitPopular.length - 1" class="control-item-divider"></div>
+      </div>
+      <div class="popit-content" *ngIf="deviceItem.showDetails">
+        <div class="control-item-divider">
+        </div>
+        <div *ngFor="let m of deviceItem?.popitExpanded">
+          <ui-component (exoChange)="sendCommands($event)" [(ngModel)]="deviceItem.viewState" [disabled]="!deviceItem.viewState.isConnected" [model]="m"
+            color="primary"></ui-component>
+          <div class="control-item-divider"></div>
+        </div>
+      </div>
+    </ion-card-content>
+    <button ion-button class="full-button" full class="popit-expand-button" color="primary" (click)="toggleDetails()">
+      {{ !deviceItem.showDetails ? ('POPIT_CONTAINER.MORE_CONTROLS' | translate) : ('POPIT_CONTAINER.CLOSE' | translate) }}
+    </button>    
+    <div *ngIf="testMode">
+      <div class="col" *ngFor="let log of logs">{{log}}</div>
+    </div>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,81 @@
+single-accordion-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 5px 0;
+  width: 100%;
+
+  .single-accordion-content {
+    background-color: color($colors, lightGrey);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 12px;
+  }
+
+  .thumb-image {
+    height: 60px;
+    margin-right: 15px;
+    width: 60px;
+  }
+
+  .popit-title {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    h1 {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      align-self: center;
+      display: -webkit-box;
+      font-size: 2.6rem;
+      font-weight: 600;
+      margin-left: 8px;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: initial;
+      word-wrap: break-word;
+    }
+  }
+  .control-item-divider {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid color($colors, grey);
+  }
+  .popit-other-items {
+    margin: 26px 0 13px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    button {
+      margin-top: 16px;
+    }
+  }
+  .popit-expand-button {
+    font-weight: 700;
+    margin: 0 auto;
+    height: 5rem;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .updating-button {
+    border-radius: 5px 5px 0 0;
+    font-weight: 700;
+    margin: 0;
+
+    ion-icon {
+      font-size: 20px;
+      font-weight: 700;
+      padding: 5px;
+    }
+  }
+
+  &.is-owner {
+    .other-item {
+      flex: 0 0 45%;
+    }
+  }
+}

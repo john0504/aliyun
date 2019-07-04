@@ -1,0 +1,39 @@
+simple-text {
+  $font-bold: 900;
+  $font-title: 1.3rem;
+
+  .basic-text {
+    font-size: $font-title + 0.4rem;
+    font-weight: $font-bold;
+    margin-right: 8px;
+  }
+
+  .text-disabled {
+    color: color($colors, grey);
+  }
+
+  .main-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .title-text {
+      font-size: $font-title;
+      font-weight: $font-bold;
+    }
+
+    .value-block {
+      @extend .main-block;
+      justify-content: flex-end;
+
+      .item-text {
+        @extend .basic-text;
+      }
+
+      ion-icon {
+        font-size: $font-title + 0.9rem;
+      }
+    }
+  }
+}

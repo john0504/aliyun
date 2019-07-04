@@ -1,0 +1,171 @@
+---
+familyName: type1-1
+familyMembers:
+- type1.*
+images:
+  thumbnail:
+    uri: "https://hamv-tenx.apps.exosite.io/file_manager/type1-1-thumbnail-1534213907"
+  banner:
+    uri: "https://hamv-tenx.apps.exosite.io/file_manager/type1-1-banner-1534213907"
+controlLayout:
+  primary:
+  - AC_POWER_AND_TEMP
+  secondary:
+  - AC_MODE
+  - AC_FAN_SPEED
+  - AC_TIMER
+  - AC_ROOM_TEMP
+  - AC_SLEEP_MODE
+  - AC_AIR_CLEAR
+scheduleLayout:
+  primary:
+  - AC_TEMP
+  - AC_MODE
+  - AC_FAN_SPEED
+  - AC_TIMER
+  - AC_SLEEP_MODE
+  - AC_AIR_CLEAR
+deviceId: 1
+components:
+  AC_POWER_AND_TEMP:
+    type: large-toggle-with-range
+    title: ''
+    models:
+    - key: H03
+      values:
+        min: 10
+        max: 40
+        step: 1
+        default: 25
+        func: tempCelsius
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+    - key: H00
+      values:
+      - value: 0
+        text: 'INFORMATION_MODEL.OFF'
+      - value: 1
+        text: 'INFORMATION_MODEL.ON'
+  AC_MODE:
+    type: button-group
+    title: MODE
+    models:
+    - key: H01
+      values:
+      - value: 0
+        text: 0.COOL
+      - value: 1
+        text: 1.DEHUMIDIFIER
+      - value: 2
+        text: 2.FAN
+      - value: 3
+        text: 3.AUTO
+      - value: 4
+        text: 4.HEAT
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  AC_FAN_SPEED:
+    type: button-group
+    title: FAN SPEED
+    models:
+    - key: H02
+      values:
+      - value: 0
+        text: "0"
+      - value: 1
+        text: "1"
+      - value: 2
+        text: "2"
+      - value: 3
+        text: "3"
+      - value: 4
+        text: "4"
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  AC_TEMP:
+    type: range
+    title: TEMPERATURE
+    models:
+    - key: H03
+      values:
+        min: 10
+        max: 40
+        step: 1        
+        func: tempCelsius
+      default: 25
+  AC_ROOM_TEMP:
+    type: text
+    title: ROOM TEMPERATURE
+    models:
+    - key: H04
+      values:
+        func: tempCelsius
+  AC_SLEEP_MODE:
+    type: toggle
+    title: SLEEP MODE
+    models:
+    - key: H05
+      values:
+      - value: 0
+        text: 'INFORMATION_MODEL.OFF'
+      - value: 1
+        text: 'INFORMATION_MODEL.ON'
+        icon: ios-moon-outline
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  AC_AIR_CLEAR:
+    type: toggle
+    title: AIR CLEAR
+    models:
+    - key: H08
+      values:
+      - value: 0
+        text: 'INFORMATION_MODEL.OFF'
+      - value: 1
+        text: 'INFORMATION_MODEL.ON'
+        icon: ios-cloud-outline
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+  AC_TIMER:
+    type: range-with-toggle
+    title: TIMER
+    models:
+    - key: H0C
+      values:
+        min: 1
+        max: 8
+        step: 1
+        func: text
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0
+    - key: H0C
+      values:
+      - value: 0
+        text: 'INFORMATION_MODEL.OFF'
+        icon: timer
+      - value: "*"
+        text: ''
+      default: 1
+      disable:
+      - conditions:
+        - key: H00
+          op: eq
+          target: 0

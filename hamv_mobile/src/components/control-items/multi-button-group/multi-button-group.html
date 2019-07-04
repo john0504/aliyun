@@ -1,0 +1,11 @@
+<div *ngIf="title" class="button-group-title">
+  {{ title | translate }}
+</div>
+<div class="popit-control-buttons">
+  <button (click)="onButtonClicked(button.value)" [disabled]="disabled || state.disableState" [ngClass]="{'control-item-active': isClicked(button.value)}"
+    [ngStyle]="{ 'max-width': '100%' }" *ngFor="let button of state.buttons" class="control-button"
+    clear ion-button round>
+    <span [ngClass]="{'text-off-status': !disabled && state.disableState && isClicked(button.value)}">{{ button.text | translate }}</span>
+    <ion-icon *ngIf="button.icon" [name]="button.icon"></ion-icon>
+  </button>
+</div>

@@ -1,0 +1,37 @@
+<ion-header no-border>
+  <ion-toolbar color="white">
+    <ion-title>{{ 'PROVISION_FAILURE.ADD_PRODUCT' | translate: { productName: themeService.productName } }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closePage()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="main">
+      <h1 align="center">{{ 'PROVISION_FAILURE.CONNECTION_ERROR' | translate }}</h1>
+      <svg width="256" viewBox="0 0 500 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+        <title>Error Graphic</title>
+        <desc>Created with Sketch.</desc>
+        <defs></defs>
+        <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+          <g id="Graphic-/-Error" stroke-width="5">
+            <g id="Error-Graphic" transform="translate(156.000000, 46.000000)">
+              <path class="primary" d="M127.590982,16.1798083 L127.590982,16.1798083 C162.915983,29.6999749 188,63.9210504 188,104 C188,143.557529 163.564415,177.408613 128.964467,191.282028 M60.4477621,191.835011 C25.1023603,178.325044 0,144.093601 0,104 C0,63.6388024 25.4385598,29.2182753 61.1568438,15.8972542" id="Circle" stroke="#00BAFF"></path>
+              <path d="M109.447576,125.819616 C109.447576,134.11664 100.446354,137.592863 94.1020806,137.592863 C85.6322484,137.592863 78.4973707,134.11664 78.4973707,125.819616 C78.4973707,93.9695374 74.7906041,48.194888 74.7906041,16.3316918 C74.7906041,5.8899033 83.2604362,1.42108547e-14 94.1020806,1.42108547e-14 C104.418816,1.42108547e-14 113.147862,5.8899033 113.147862,16.3316918 C113.147862,48.194888 109.447576,93.9695374 109.447576,125.819616 Z M114.469856,187.48651 C114.469856,198.45957 105.20942,208.094612 94.3612951,208.094612 C82.7290466,208.094612 74,198.45957 74,187.48651 C74,176.244534 82.7290466,166.871848 94.3612951,166.871848 C105.20942,166.871848 114.469856,176.244534 114.469856,187.48651 Z" id="larger-!" stroke="#212635" stroke-linejoin="round"></path>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <p align="center" [innerHTML]="'PROVISION_FAILURE.ERROR_MSG' | translate: { productName: themeService.productName }"></p>
+      <p align="center">{{ 'PROVISION_FAILURE.CHECK_MSG' | translate }}</p>
+    </div>
+    <div>
+      <button ion-button color="primary" class="bottom-button full-button" (click)="onCheck()" full>{{ 'PROVISION_FAILURE.TRY_AGAIN' | translate }}</button>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

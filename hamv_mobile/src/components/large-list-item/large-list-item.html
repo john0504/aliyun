@@ -1,0 +1,10 @@
+<button *ngIf="isValidDevice" class="list-button" no-lines>
+  <div class="item-title" (click)="goDeviceDetailPage()">
+    <img class="thumb-image" jy-lazy-load [source]="deviceCore.thumbnail?.uri" placeholder="assets/img/model_image_thumbnail.png">
+    <h1 class="device-name">{{ deviceCore.deviceName }}</h1>
+  </div>
+  <div class="primary-items" *ngFor="let m of deviceCore.primaryControllers; let i = index;">
+    <ui-component (exoChange)="deviceCore.send($event)" [(ngModel)]="deviceCore.status" [disabled]="!deviceCore.isAvailable" [model]="m" color="primary"></ui-component>
+    <div *ngIf="i < deviceCore.primaryControllers.length - 1" class="control-item-divider"></div>
+  </div>
+</button>

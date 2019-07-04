@@ -1,0 +1,23 @@
+<div>
+  <div class="control-area">
+    <button class="range-button" ion-button clear round icon-only (click)="changeRange(-1)">
+      <ion-icon name="ios-arrow-back"></ion-icon>
+    </button>
+    <div class="range-text" [innerHtml]="dtSelector.rangeItem.rangeText"></div>
+    <button class="range-button" ion-button clear round icon-only (click)="changeRange(1)" [disabled]="!dtSelector.canForward()">
+      <ion-icon name="ios-arrow-forward"></ion-icon>
+    </button>
+  </div>
+  <echarts-core [options]="_options" [merge]="_mergeOptions" [empty]="_noData"></echarts-core>
+  <div class="control-area">
+    <button class="filter-button" ion-button clear round [ngClass]="{'filter-button-active': dtSelector.period === 'day'}" (click)="changePeriod('day')">
+      {{ 'HISTORICAL_CHART.PERIOD_DAY' | translate }}
+    </button>
+    <button class="filter-button" ion-button clear round [ngClass]="{'filter-button-active': dtSelector.period === 'week'}" (click)="changePeriod('week')">
+      {{ 'HISTORICAL_CHART.PERIOD_WEEK' | translate }}
+    </button>
+    <button class="filter-button" ion-button clear round [ngClass]="{'filter-button-active': dtSelector.period === 'month'}" (click)="changePeriod('month')">
+      {{ 'HISTORICAL_CHART.PERIOD_MONTH' | translate }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'APP.BLUETOOTH_SETTING' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="main">
+      <ion-list radio-group [(ngModel)]="scanTime">
+        <ion-list-header>
+          {{ 'BLUETOOTH.SCAN_TIME_SETTING' | translate }}
+        </ion-list-header>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.SCAN_TIME_3S' | translate }}</ion-label>
+          <ion-radio value="3000"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.SCAN_TIME_10S' | translate }}</ion-label>
+          <ion-radio value="10000"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.SCAN_TIME_0S' | translate }}</ion-label>
+          <ion-radio value="0"></ion-radio>
+        </ion-item>
+      </ion-list>
+      <div></div>
+      <ion-list radio-group [(ngModel)]="retryTime">
+        <ion-list-header>
+          {{ 'BLUETOOTH.RETRY_TIME_SETTING' | translate }}
+        </ion-list-header>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.RETRY_TIME_5S' | translate }}</ion-label>
+          <ion-radio value="5000"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.RETRY_TIME_10S' | translate }}</ion-label>
+          <ion-radio value="10000"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.RETRY_TIME_30S' | translate }}</ion-label>
+          <ion-radio value="30000"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.RETRY_TIME_3M' | translate }}</ion-label>
+          <ion-radio value="180000"></ion-radio>
+        </ion-item>
+      </ion-list>
+      <div></div>
+      <ion-list radio-group [(ngModel)]="isShowLog">
+        <ion-list-header>
+          {{ 'BLUETOOTH.LOG_SETTING' | translate }}
+        </ion-list-header>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.LOG_YES' | translate }}</ion-label>
+          <ion-radio value="1"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'BLUETOOTH.LOG_NO' | translate }}</ion-label>
+          <ion-radio value="0"></ion-radio>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

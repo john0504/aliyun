@@ -1,0 +1,7 @@
+<div class="main-block">
+  <span class="title-text">{{ title | translate }}</span>
+  <div class="value-block" [ngClass]="{'text-disabled': disabled}">
+    <span class="item-text">{{ (state?.currentValueItem?.text | translate) | replace: state.currentValueItem?.value }}</span>
+    <ion-icon [name]="state.currentValueItem?.icon"></ion-icon>
+  </div>
+</div>
