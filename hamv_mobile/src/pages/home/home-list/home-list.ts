@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 import {
   StateStore,
   AppTasks,
+  AppEngine
 } from 'app-engine';
 
 import { ThemeService } from '../../../providers/theme-service';
@@ -18,39 +19,12 @@ import { HomePageBase } from '../home-page-base';
 import { ListGroupItemComponent } from "../../../components/list-group-item/list-group-item";
 import { LargeListItemComponent } from '../../../components/large-list-item/large-list-item';
 
-import {
-  connect,
-  IClientOptions
-} from 'mqtt';
-
 @IonicPage()
 @Component({
   selector: 'page-home-list',
   templateUrl: 'home-list.html'
 })
-export class HomeListPage extends HomePageBase {
-  message;
-  _deviceList = [{
-    name: "test1",
-    serial: "CLAW_0111",
-    type: "AAA",
-    bank: 1,
-    money: 2,
-    gift: 3,
-    status: 1,
-    expiredate: this.getDate(1593077109000),
-    showDetails: false
-  }, {
-    name: "test2",
-    serial: "CLAW_0222",
-    type: "AAA",
-    bank: 4,
-    money: 5,
-    gift: 6,
-    status: 0,
-    expiredate: this.getDate(1594077109000),
-    showDetails: false
-  }];
+export class HomeListPage extends HomePageBase {  
 
   constructor(
     navCtrl: NavController,
@@ -59,20 +33,17 @@ export class HomeListPage extends HomePageBase {
     stateStore: StateStore,
     translate: TranslateService,
     public translate2: TranslateService,
+    appEngine: AppEngine,
     public appTasks: AppTasks,
     storage: Storage,
     themeService: ThemeService,
     public alertCtrl: AlertController,
+    public stateStore2: StateStore,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine);
 
     this.deviceComponent = LargeListItemComponent;
-    this.groupComponent = ListGroupItemComponent;
-  }
-
-  getDate(timestamp) {
-    var date = new Date(timestamp / 1);
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    this.groupComponent = ListGroupItemComponent;     
   }
 
   deleteDeviceConfirm(deviceItem) {
@@ -124,13 +95,18 @@ export class HomeListPage extends HomePageBase {
   }
 
   sendData(deviceItem) {
-    var serial = deviceItem.serial;
-    var data = {
-      bank: deviceItem.bank,
-      money: deviceItem.money,
-      gift: deviceItem.gift
+    // this.appTasks.updatedeviceTask(serial, data);
+    var message = {
+      account: this.accountName,
+      serial: deviceItem.serial,
+      data: {
+        bank: deviceItem.bank,
+        money: deviceItem.money,
+        gift: deviceItem.gift
+      }
     };
-    this.appTasks.updatedeviceTask(serial, data);
+    var topic = "CECT/updatedevice";
+    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
   }
 
   goPayment(deviceItem) {
@@ -146,31 +122,9 @@ export class HomeListPage extends HomePageBase {
     //   }
     // });
     var message = {
-      totalmoney: 23,
-      totalgift: 9,
-      money: 23,
-      gift: 9,
-      name: "機台2",
-      serial: "Capsule_998",
-      typename: "EFAN_Capsule_001",
-      lat: 25.0871996,
-      lng: 121.5253001,
-      cardreader: "0123456789ab"
+      account: this.accountName
     };
-    var opts: IClientOptions = {
-      port: 1883,
-      host: 'cectco.homeip.net',
-      protocol: 'mqtt'
-    };
-    const client = connect('', opts);
-    client.on('connect', () => {
-      client.subscribe('presence', (err) => {
-        if (!err) {
-          client.publish("TENX/EFAN_Capsule_001/Capsule_998/status_up", JSON.stringify(message), { qos: 1, retain: true });
-        } else {
-          console.log(err);
-        }
-      });
-    });
+    var topic = "CECT/alldevice";
+    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
   }
 }

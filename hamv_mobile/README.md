@@ -8,3 +8,5 @@
 5. Run `ionic cordova build/run <platform>`
 
 > **Note**: Make sure run `./script/apply_env_script.sh` with execution permission. Run `chmod +x ./script/apply_env_script.sh` to grant execution permission to script.
+
+google-chrome --disable-web-security --user-data-dir

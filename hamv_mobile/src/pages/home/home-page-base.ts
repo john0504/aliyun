@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import {
   Group,
   StateStore,
+  AppEngine,
 } from 'app-engine';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -23,6 +24,11 @@ import { debounceImmediate } from '../../app/app.extends';
 import { ThemeService } from '../../providers/theme-service';
 
 import { ScrollableTabsOptions } from '../../components/scrollable-tabs/scrollable-tabs-options';
+import {
+  connect,
+  IClientOptions,
+  MqttClient
+} from 'mqtt';
 
 const TAB_CONFIG = 'tabConfig';
 
@@ -45,6 +51,32 @@ export abstract class HomePageBase {
   tabs: Array<ScrollableTabsOptions> = [];
   currentTab: number = 0;
   myDevicesGroup: Group;
+  accountName;
+  public client: MqttClient;
+  public _deviceList = 
+  [];
+  /*
+  [{
+    name: "test1",
+    serial: "CLAW_0111",
+    type: "AAA",
+    bank: 1,
+    money: 2,
+    gift: 3,
+    status: 1,
+    expiredate: this.getDate(1593077109000),
+    showDetails: false
+  }, {
+    name: "test2",
+    serial: "CLAW_0222",
+    type: "AAA",
+    bank: 4,
+    money: 5,
+    gift: 6,
+    status: 0,
+    expiredate: this.getDate(1594077109000),
+    showDetails: false
+  }];*/
 
   constructor(
     private navCtrl: NavController,
@@ -53,6 +85,7 @@ export abstract class HomePageBase {
     private translate: TranslateService,
     private storage: Storage,
     public themeService: ThemeService,
+    private appEngine: AppEngine,
   ) {
     this.subs = [];
     this.account$ = this.stateStore.account$;
@@ -91,6 +124,38 @@ export abstract class HomePageBase {
         )
         .subscribe(latestValues => this.processValues(latestValues))
     );
+    this.subs.push(
+      this.account$
+        .pipe(debounceImmediate(500))
+        .subscribe(account => { 
+          this.accountName = (account && account.account) || '';
+          var opts: IClientOptions = {
+            port: 9001,
+            host: this.appEngine.getBaseUrl(),
+            protocol: 'mqtt'
+          };
+          this.client = connect('', opts);
+          this.client.on('connect', () => {
+            var topic = `CECT/${this.accountName}/alldevice`;
+            this.client.subscribe(topic, (err) => {
+              if (!err) {
+                this.client.on('message', (topic, message) => {
+                  console.log(message.toString());
+                  var obj = JSON.parse(message.toString());
+                  if (obj) {
+                    this._deviceList = obj.data;
+                  }
+                });
+              }
+            });
+            var message = {
+              account: this.accountName
+            };
+            topic = "CECT/alldevice";
+            this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
+          });
+        })
+    );   
   }
 
   ionViewWillLeave() {
@@ -196,5 +261,10 @@ export abstract class HomePageBase {
     } else {
       this.selectedGroup = null;
     }
+  }
+
+  public getDate(timestamp) {
+    var date = new Date(timestamp / 1);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 }
