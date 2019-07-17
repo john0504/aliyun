@@ -42,10 +42,6 @@ export interface AppConfig {
     googleHome: {
       ghName: string,
     },
-    ble: {
-      bleProductName: string,
-      bleName: string,
-    },
   };
 }
 
@@ -53,7 +49,7 @@ export const appConfig: AppConfig = {
   appEngine: {
     // solutionId: 'hamv-tenx',
     // productId: 'g30qvzkqcoki00000',
-    baseUrl: '127.0.0.1'
+    baseUrl: 'cectco.homeip.net'
   },
   // mixpanel: {
   //   token: 'YOUR_TOKEN',
@@ -82,7 +78,7 @@ export const appConfig: AppConfig = {
     theme: {
       primaryColor: '#00baff',
       productName: 'CECT智慧模組',
-      wifiName: 'WifiName-XXXX',
+      wifiName: 'CECT-XXXX',
     },
     amazonAlexa: {
       skillName: 'skill-name',
@@ -92,10 +88,6 @@ export const appConfig: AppConfig = {
     },
     googleHome: {
       ghName: 'gh_name',
-    },
-    ble: {      
-      bleProductName: 'AirBox',
-      bleName: 'BLE-XXXX',
     },
   }
 };

@@ -34,7 +34,6 @@
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/app-version": "4.12.0",
-    "@ionic-native/ble": "^4.15.0",
     "@ionic-native/core": "4.12.0",
     "@ionic-native/deeplinks": "4.12.0",
     "@ionic-native/device": "4.12.0",
@@ -66,8 +65,6 @@
     "cordova-plugin-add-swift-support": "^1.7.1",
     "cordova-plugin-advanced-http": "^1.11.1",
     "cordova-plugin-app-version": "^0.1.9",
-    "cordova-plugin-ble-central": "^1.2.2",
-    "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-email-composer": "^0.8.15",
     "cordova-plugin-facebook4": "^2.5.0",
@@ -165,7 +162,7 @@
       "cordova-plugin-email-composer": {},
       "cordova-plugin-facebook4": {
         "APP_ID": "194158767928038",
-        "APP_NAME": "HAMV-TENX",
+        "APP_NAME": "HAMV-CECT",
         "ANDROID_SDK_VERSION": "4.33.0",
         "FACEBOOK_ANDROID_SDK_VERSION": "4.+"
       },
@@ -201,7 +198,6 @@
         "DEEPLINK_5_SCHEME": " ",
         "DEEPLINK_5_HOST": " "
       },
-      "cordova-plugin-ble-central": {},
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
       },

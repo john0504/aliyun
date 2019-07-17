@@ -590,36 +590,19 @@ export class MuranoApiService {
             });
     }
 
-    public localMode(command: string): Promise<any> {
+    public localMode(user, command: string): Promise<any> {
         const scheme: string = this.useHttp ? 'http' : 'https';
+        const target = `${scheme}://192.168.1.1:32051/provision`;
+        var cmdObj = JSON.parse(command);
+        cmdObj.Account = user.account;
         return this.HTTP.acceptAllCerts(true)
             .then(() => {
-                this.HTTP.setRequestTimeout(5);
-                return this.HTTP.get(`${scheme}://192.168.1.1:32051/` + encodeURIComponent(command), {}, {});
-            })
-            .then((res) => {
-                this.HTTP.acceptAllCerts(false);
-                return JSON.parse(res.data);
-            })
-            .catch((error) => {
-                this.HTTP.acceptAllCerts(false);
-                return Promise.reject(error);
-            });
-    }
-
-    public postLocalMode(command: string): Promise<any> {
-        const scheme: string = this.useHttp ? 'http' : 'https';
-        const target = `${scheme}://192.168.1.1:32051/localmode`;
-        return this.HTTP.acceptAllCerts(true)
-            .then(() => {
-                this.HTTP.setRequestTimeout(5);
-                this.HTTP.setDataSerializer('json');
-                const body = command;
+                this.HTTP.setDataSerializer('urlencoded');
+                const body = cmdObj;
                 const header = {
-                    'Content-Type': 'application/json; charset=utf-8',
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 };
                 return this.HTTP.post(target, body, header);
-
             })
             .then((res) => {
                 this.HTTP.acceptAllCerts(false);

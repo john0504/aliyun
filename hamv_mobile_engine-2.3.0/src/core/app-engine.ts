@@ -195,10 +195,6 @@ export class AppEngine {
         return this.appEngineTasks.localModeTask(command);
     }
 
-    public postLocalMode(command: string): Promise<any> {
-        return this.appEngineTasks.postLocalModeTask(command);
-    }
-
     public getDeviceModelInfo(model: string): Promise<any> {
         return this.appEngineTasks.getDeviceModelInfo(model);
     }

@@ -15,7 +15,7 @@ import {
   AppTasks, 
   ErrorsService,
   StateStore, 
-  // AppEngine,
+  AppEngine,
 } from 'app-engine';
 
 import { ThemeService } from '../../providers/theme-service';
@@ -56,7 +56,6 @@ export class CapsuleDevicePage {
   serial: string = "";
   latitude: number = 0;
   longitude: number = 0;
-  testMode: boolean = false;
   log: string = "";
   accountName;
 
@@ -73,7 +72,7 @@ export class CapsuleDevicePage {
     private translate: TranslateService,
     private popupService: PopupService,
     private stateStore: StateStore,
-    // private appEngine: AppEngine,
+    private appEngine: AppEngine,
   ) {
     this.subs = [];
     this.deviceInfo$ = this.ngRedux.select(['ssidConfirm', 'deviceInfo']);
@@ -157,8 +156,6 @@ export class CapsuleDevicePage {
       return false;
     if (!this.devicename || this.devicename === '')
       return false;
-    if (this.testMode && (!this.serial || this.serial === ''))
-      return false;
 
     if (!this.isMoneyValid() || !this.isGiftValid() || !this.isDevicenameValid())
       return false;
@@ -187,27 +184,19 @@ export class CapsuleDevicePage {
   }
 
   private localModePromise() {
-    // var url = this.appEngine.getBaseUrl();
-    let command = this.testMode ? {
-      "ssid": this.wifiAp.ssid,
-      "password": this.wifiAp.password,
-      "sec": this.wifiAp.sec,
-      "money": this.money,
-      "gift": this.gift,
-      "name": this.devicename,
-      "serial": this.serial,
-      "latitude": round(this.latitude, 7),
-      "longitude": round(this.longitude, 7)
-    } : {
-        "ssid": this.wifiAp.ssid,
-        "password": this.wifiAp.password,
-        "sec": this.wifiAp.sec,
-        "money": this.money,
-        "gift": this.gift,
-        "name": this.devicename,
-        "latitude": round(this.latitude, 7),
-        "longitude": round(this.longitude, 7)
-      };
+    var url = this.appEngine.getBaseUrl();
+    let command = {
+      "DevSsid": this.wifiAp.ssid,
+      "DevPass": this.wifiAp.password,
+      "DevSec": this.wifiAp.sec,
+      "DevUrl": url,
+      "PrjName": "wawa",
+      "DevName": this.devicename,
+      "H00": this.money,
+      "H01": this.gift,
+      "S01": round(this.latitude, 7).toString(),
+      "S02": round(this.longitude, 7).toString()
+    };
     this.log = JSON.stringify(command);
     return this.appTasks.localModeTask(JSON.stringify(command));
   }
@@ -224,20 +213,8 @@ export class CapsuleDevicePage {
     }
   }
 
-  private setupTestMode() {
-    return this.storage.get('testMode')
-      .then((testMode) => {
-        if (testMode) {
-          this.testMode = testMode;
-        } else {
-          this.testMode = false;
-        }
-      });
-  }
-
   ionViewDidLoad() {
     this.checkNetworkService.pause();
-    this.setupTestMode();
   }
 
   ionViewDidEnter() {

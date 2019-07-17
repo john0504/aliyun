@@ -51,30 +51,28 @@ export abstract class HomePageBase {
   tabs: Array<ScrollableTabsOptions> = [];
   currentTab: number = 0;
   myDevicesGroup: Group;
-  accountName;
+  accountToken;
   public client: MqttClient;
-  public _deviceList = 
-  [];
+  public _deviceList =
+    [];
   /*
   [{
-    name: "test1",
-    serial: "CLAW_0111",
-    type: "AAA",
-    bank: 1,
-    money: 2,
-    gift: 3,
-    status: 1,
-    expiredate: this.getDate(1593077109000),
+    DevName: "test1",
+    DevNo: "CLAW_0111",
+    H60: 1,
+    H61: 2,
+    H62: 3,
+    Status: 1,
+    ExpireDate: this.getDate(1593077109),
     showDetails: false
   }, {
-    name: "test2",
-    serial: "CLAW_0222",
-    type: "AAA",
-    bank: 4,
-    money: 5,
-    gift: 6,
-    status: 0,
-    expiredate: this.getDate(1594077109000),
+    DevName: "test2",
+    DevNo: "CLAW_0222",
+    H60: 4,
+    H61: 5,
+    H62: 6,
+    Status: 0,
+    ExpireDate: this.getDate(1594077109),
     showDetails: false
   }];*/
 
@@ -127,8 +125,9 @@ export abstract class HomePageBase {
     this.subs.push(
       this.account$
         .pipe(debounceImmediate(500))
-        .subscribe(account => { 
-          this.accountName = (account && account.account) || '';
+        .subscribe(account => {
+          console.log(JSON.stringify(account));
+          this.accountToken = (account && account.account) || '';
           var opts: IClientOptions = {
             port: 9001,
             host: this.appEngine.getBaseUrl(),
@@ -136,26 +135,41 @@ export abstract class HomePageBase {
           };
           this.client = connect('', opts);
           this.client.on('connect', () => {
-            var topic = `CECT/${this.accountName}/alldevice`;
-            this.client.subscribe(topic, (err) => {
+            var topicG = `CECT/WAWA/${this.accountToken}/G`;
+            this.client.publish(topicG, "", { qos: 1, retain: true });
+
+            var topicR = `CECT/WAWA/${this.accountToken}/R`;
+            this.client.subscribe(topicR, (err) => {
               if (!err) {
                 this.client.on('message', (topic, message) => {
                   console.log(message.toString());
                   var obj = JSON.parse(message.toString());
-                  if (obj) {
-                    this._deviceList = obj.data;
+                  if (topic == topicR) {
+                    if (obj && obj.data) {
+                      for (var i = 0; i < obj.data.length; i++) {
+                        var topic = `CECT/WAWA/${obj.data[i].DevNo}/U`;
+                        obj.data[i].topic = topic;
+                        if (Date.now() / 1000 <= obj.data[i].ExpireDate) {
+                          this.client.subscribe(topic);
+                        } else {
+                          this.client.unsubscribe(topic);
+                        }
+                      }
+                      this._deviceList = obj.data;
+                    }
+                  } else {
+                    for (var i = 0; i < this._deviceList.length; i++) {
+                      if (topic == this._deviceList[i].topic) {
+                        Object.assign(this._deviceList[i], obj);
+                      }
+                    }
                   }
                 });
               }
             });
-            var message = {
-              account: this.accountName
-            };
-            topic = "CECT/alldevice";
-            this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
           });
         })
-    );   
+    );
   }
 
   ionViewWillLeave() {
@@ -264,7 +278,7 @@ export abstract class HomePageBase {
   }
 
   public getDate(timestamp) {
-    var date = new Date(timestamp / 1);
+    var date = new Date(timestamp * 1000);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 }

@@ -36,9 +36,9 @@ export class AppEngineTasks {
 
     public sessionTask(): Promise<any> {
         return this.accountService.getAccount()
-            .then((user) => {
-                return this.muranoApiService.session(user);
-            })
+            // .then((user) => {
+            //     return this.muranoApiService.session(user);
+            // })
             .then(sessionUser => this.accountService.checkSession(sessionUser));
     }
 
@@ -162,11 +162,10 @@ export class AppEngineTasks {
     }
 
     public localModeTask(command: string): Promise<any> {
-        return this.muranoApiService.localMode(command);
-    }
-
-    public postLocalModeTask(command: string): Promise<any> {
-        return this.muranoApiService.postLocalMode(command);
+        return this.accountService.getAccount()
+            .then((user) => {
+                return this.muranoApiService.localMode(user, command);
+            });
     }
 
     public getDeviceModelInfo(model: string): Promise<any> {

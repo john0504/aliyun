@@ -32,9 +32,9 @@
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">
           <h2>
-            保夾: {{ deviceItem?.bank }} 
-            投幣: {{ deviceItem?.money }} 
-            出獎: {{ deviceItem?.gift }}
+            保夾: {{ deviceItem?.H62 }} 
+            投幣: {{ deviceItem?.H60 }} 
+            出獎: {{ deviceItem?.H61 }}
           </h2>
         </ion-grid>
       </div>
@@ -42,33 +42,33 @@
         <ion-grid class="toggle-grid">
           <ion-row align-items-center>
             <ion-col col-8 class="none-padding">
-              <h2>保夾累積: {{ deviceItem?.bank }}</h2>
+              <h2>保夾累積: {{ deviceItem?.H62 }}</h2>
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left
-                color="primary" (click)="clearBank(deviceItem)" [disabled]="deviceItem.bank == 0">
+                color="primary" (click)="clearBank(deviceItem)" [disabled]="deviceItem.H62 == 0">
                 清零
               </button>
             </ion-col>
           </ion-row>
           <ion-row align-items-center>
             <ion-col col-8 class="none-padding">
-              <h2>投幣數: {{ deviceItem?.money }}</h2>
+              <h2>投幣數: {{ deviceItem?.H60 }}</h2>
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left
-                color="primary" (click)="clearMoney(deviceItem)" [disabled]="deviceItem.money == 0">
+                color="primary" (click)="clearMoney(deviceItem)" [disabled]="deviceItem.H60 == 0">
                 清零
               </button>
             </ion-col>
           </ion-row>
           <ion-row align-items-center>
             <ion-col col-8 class="none-padding">
-              <h2>出獎數: {{ deviceItem?.gift }}</h2>
+              <h2>出獎數: {{ deviceItem?.H61 }}</h2>
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left 
-                color="primary" (click)="clearGift(deviceItem)" [disabled]="deviceItem.gift == 0">
+                color="primary" (click)="clearGift(deviceItem)" [disabled]="deviceItem.H61 == 0">
                 清零
               </button>
             </ion-col>

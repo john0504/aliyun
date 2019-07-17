@@ -24,7 +24,7 @@ import { LargeListItemComponent } from '../../../components/large-list-item/larg
   selector: 'page-home-list',
   templateUrl: 'home-list.html'
 })
-export class HomeListPage extends HomePageBase {  
+export class HomeListPage extends HomePageBase {
 
   constructor(
     navCtrl: NavController,
@@ -43,7 +43,7 @@ export class HomeListPage extends HomePageBase {
     super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine);
 
     this.deviceComponent = LargeListItemComponent;
-    this.groupComponent = ListGroupItemComponent;     
+    this.groupComponent = ListGroupItemComponent;
   }
 
   deleteDeviceConfirm(deviceItem) {
@@ -81,50 +81,39 @@ export class HomeListPage extends HomePageBase {
 
   clearBank(deviceItem) {
     deviceItem.bank = 0;
-    this.sendData(deviceItem);
+    var message = {
+      H62: 0
+    };
+    this.sendData(deviceItem, message);
   }
 
   clearMoney(deviceItem) {
     deviceItem.money = 0;
-    this.sendData(deviceItem);
+    var message = {
+      H60: 0
+    };
+    this.sendData(deviceItem, message);
   }
 
   clearGift(deviceItem) {
     deviceItem.gift = 0;
-    this.sendData(deviceItem);
+    var message = {
+      H61: 0
+    };
+    this.sendData(deviceItem, message);
   }
 
-  sendData(deviceItem) {
-    // this.appTasks.updatedeviceTask(serial, data);
-    var message = {
-      account: this.accountName,
-      serial: deviceItem.serial,
-      data: {
-        bank: deviceItem.bank,
-        money: deviceItem.money,
-        gift: deviceItem.gift
-      }
-    };
-    var topic = "CECT/updatedevice";
+  sendData(deviceItem, message) {
+    var topic = `CECT/WAWA/${deviceItem.DevNo}/D`;
     this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
   }
 
   goPayment(deviceItem) {
-    this.navCtrl2.push('DevicePaymentPage', { serial: deviceItem.serial });
+    this.navCtrl2.push('DevicePaymentPage', { serial: deviceItem.DevNo });
   }
 
   refresh() {
-
-    // this.appTasks.alldeviceTask().then((list) => {
-    //   console.log(JSON.stringify(list));
-    //   if (list) {
-    //     this._deviceList = list;
-    //   }
-    // });
-    var message = {
-      account: this.accountName
-    };
-    var topic = "CECT/alldevice";
-    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
+    var topic = `CECT/WAWA/${this.accountToken}/G`;
+    this.client.publish(topic, "", { qos: 1, retain: true });
   }
 }

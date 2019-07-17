@@ -385,20 +385,6 @@ export class AppTasks {
             });
     }
 
-    public postLocalModeTask(command: string): Promise<any> {
-        this.dispatch(AppActions.action(AppActions.POST_LOCAL_MODE));
-
-        return this.appEngine.postLocalMode(command)
-            .then((result) => {
-                this.dispatch(AppActions.action(AppActions.POST_LOCAL_MODE_DONE, result));
-                return result;
-            })
-            .catch((error) => {
-                this.dispatch(AppActions.action(AppActions.POST_LOCAL_MODE_DONE, error, true));
-                throw error;
-            });
-    }
-
     public getDeviceModelInfo(model: string): Promise<any> {
         this.dispatch(AppActions.action(AppActions.GET_DEVICE_MODEL_INFO));
 

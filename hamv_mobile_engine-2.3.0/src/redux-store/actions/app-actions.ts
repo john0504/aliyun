@@ -84,9 +84,6 @@ export class AppActions {
     static LOCAL_MODE: string = 'local-mode';
     static LOCAL_MODE_DONE: string = 'local-mode-done';
 
-    static POST_LOCAL_MODE: string = 'post-local-mode';
-    static POST_LOCAL_MODE_DONE: string = 'post-local-mode-done';
-
     static GET_DEVICE_MODEL_INFO: string = 'get-device-model-info';
     static GET_DEVICE_MODEL_INFO_DONE: string = 'get-device-model-info-done';
 

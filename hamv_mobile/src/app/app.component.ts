@@ -54,8 +54,6 @@ import { PageRouteManager } from '../components/page-nav/page-route-manager';
 
 import { ssidConfirmReducer } from '../pages/ssid-confirm/ssid-confirm';
 import { deviceCreateReducer } from '../pages/device-create/device-create';
-import { localModeReducer } from '../pages/local-mode-device-item/local-mode-device-item';
-import { supportModeReducer } from '../pages/support-mode/support-mode';
 
 import { ComponentProvider, ModelManagerService } from '../modules/information-model';
 // import mixpanel from 'mixpanel-browser';
@@ -168,8 +166,6 @@ export class MyApp implements OnInit, OnDestroy {
     const pageReducers = {
       ssidConfirm: ssidConfirmReducer,
       deviceCreate: deviceCreateReducer,
-      localMode: localModeReducer,
-      supportMode: supportModeReducer,
     };
     this.reduxModule.configureStore(pageReducers);
     this.reduxModule.setLoginPage(MyModalWrapper);
