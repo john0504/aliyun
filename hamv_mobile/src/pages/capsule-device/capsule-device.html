@@ -87,17 +87,20 @@
         <ion-label color="danger">出獎目前記數值不合法</ion-label>
       </ion-item>
       <ion-item color="lightGrey">
+        <ion-label floating color="darkGrey">保夾目前記數值</ion-label>
+        <ion-input [(ngModel)]="bank" name="bank" type="number" max="65535" myTabIndex="4">
+        </ion-input>
+      </ion-item>
+      <ion-item color="lightGrey" *ngIf="!isBankValid()">
+        <ion-label color="danger">保夾目前記數值不合法</ion-label>
+      </ion-item>
+      <ion-item color="lightGrey">
         <ion-label floating color="darkGrey">裝置命名</ion-label>
         <ion-input [(ngModel)]="devicename" name="devicename" type="text" maxlength="39" myTabIndex="5">
         </ion-input>
       </ion-item>
       <ion-item color="lightGrey" *ngIf="!isDevicenameValid()">
         <ion-label color="danger">裝置命名長度過長</ion-label>
-      </ion-item>
-      <ion-item color="lightGrey" *ngIf="testMode">
-        <ion-label floating color="darkGrey">裝置序號(測試用)</ion-label>
-        <ion-input [(ngModel)]="serial" name="serial" type="text" myTabIndex="6">
-        </ion-input>
       </ion-item>
     </ion-list>
     <div>

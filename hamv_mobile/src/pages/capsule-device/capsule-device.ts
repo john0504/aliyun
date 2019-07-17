@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { defer } from 'rxjs/observable/defer';
 import { delay, repeatWhen, retry } from 'rxjs/operators';
 import { NgRedux } from '@angular-redux/store';
-import { Storage } from '@ionic/storage';
 import { debounceImmediate } from '../../app/app.extends';
 
 import { 
@@ -52,6 +51,7 @@ export class CapsuleDevicePage {
   semiVer: string = "";
   money: string = "";
   gift: string = "";
+  bank: string = "";
   devicename: string = "";
   serial: string = "";
   latitude: number = 0;
@@ -68,7 +68,6 @@ export class CapsuleDevicePage {
     public themeService: ThemeService,
     public viewCtrl: ViewController,
     private geolocation: Geolocation,
-    private storage: Storage,
     private translate: TranslateService,
     private popupService: PopupService,
     private stateStore: StateStore,
@@ -127,6 +126,14 @@ export class CapsuleDevicePage {
     }
   }
 
+  isBankValid(): boolean {
+    if (this.bank && this.bank !== '' && (parseInt(this.bank) > 65535 || parseInt(this.bank) < 0)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   isDevicenameValid(): boolean {
     if (this.devicename && this.devicename !== '') {
       var str = encodeURIComponent(this.devicename);
@@ -154,10 +161,12 @@ export class CapsuleDevicePage {
       return false;
     if (!this.gift || this.gift === '')
       return false;
+      if (!this.bank || this.bank === '')
+        return false;
     if (!this.devicename || this.devicename === '')
       return false;
 
-    if (!this.isMoneyValid() || !this.isGiftValid() || !this.isDevicenameValid())
+    if (!this.isMoneyValid() || !this.isGiftValid()  || !this.isBankValid() || !this.isDevicenameValid())
       return false;
       
     return true;
@@ -190,10 +199,11 @@ export class CapsuleDevicePage {
       "DevPass": this.wifiAp.password,
       "DevSec": this.wifiAp.sec,
       "DevUrl": url,
-      "PrjName": "wawa",
+      "PrjName": "WAWA",
       "DevName": this.devicename,
-      "H00": this.money,
-      "H01": this.gift,
+      "H60": this.money,
+      "H61": this.gift,
+      "H62": this.bank,
       "S01": round(this.latitude, 7).toString(),
       "S02": round(this.longitude, 7).toString()
     };

@@ -13,7 +13,7 @@ import { ViewStateService } from '../../providers/view-state-service';
 })
 export class PaymentPage {
 
-  serial: string = "CLAW_0123";
+  serial: string = "";
 
   constructor(
     public navCtrl: NavController,

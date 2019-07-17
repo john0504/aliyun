@@ -63,7 +63,7 @@ export abstract class HomePageBase {
     H61: 2,
     H62: 3,
     Status: 1,
-    ExpireDate: this.getDate(1593077109),
+    ExpireTime: this.getDate(1593077109),
     showDetails: false
   }, {
     DevName: "test2",
@@ -72,7 +72,7 @@ export abstract class HomePageBase {
     H61: 5,
     H62: 6,
     Status: 0,
-    ExpireDate: this.getDate(1594077109),
+    ExpireTime: this.getDate(1594077109),
     showDetails: false
   }];*/
 
@@ -152,6 +152,7 @@ export abstract class HomePageBase {
                       for (var i = 0; i < obj.data.length; i++) {
                         var topic = `CECT/WAWA/${obj.data[i].DevNo}/U`;
                         obj.data[i].topic = topic;
+                        obj.data[i].ExpireTime = this.getDate(obj.data[i].ExpireDate);
                         if (Date.now() / 1000 <= obj.data[i].ExpireDate) {
                           this.client.subscribe(topic);
                         } else {
