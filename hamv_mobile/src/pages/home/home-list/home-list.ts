@@ -114,6 +114,6 @@ export class HomeListPage extends HomePageBase {
 
   refresh() {
     var topic = `CECT/WAWA/${this.accountToken}/G`;
-    this.client.publish(topic, "", { qos: 1, retain: true });
+    this.client.publish(topic, "{}", { qos: 1, retain: true });
   }
 }

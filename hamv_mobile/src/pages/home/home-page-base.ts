@@ -136,7 +136,7 @@ export abstract class HomePageBase {
           this.client = connect('', opts);
           this.client.on('connect', () => {
             var topicG = `CECT/WAWA/${this.accountToken}/G`;
-            this.client.publish(topicG, "", { qos: 1, retain: true });
+            this.client.publish(topicG, "{}", { qos: 1, retain: true });
 
             var topicR = `CECT/WAWA/${this.accountToken}/R`;
             this.client.subscribe(topicR, (err) => {
