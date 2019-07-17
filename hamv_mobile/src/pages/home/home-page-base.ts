@@ -135,8 +135,11 @@ export abstract class HomePageBase {
           };
           this.client = connect('', opts);
           this.client.on('connect', () => {
-            var topicG = `CECT/WAWA/${this.accountToken}/G`;
-            this.client.publish(topicG, "{}", { qos: 1, retain: true });
+
+            if (this._deviceList.length == 0) {
+              var topicG = `CECT/WAWA/${this.accountToken}/G`;
+              this.client.publish(topicG, "{}", { qos: 1, retain: true });
+            }
 
             var topicR = `CECT/WAWA/${this.accountToken}/R`;
             this.client.subscribe(topicR, (err) => {
@@ -158,7 +161,7 @@ export abstract class HomePageBase {
                       this._deviceList = obj.data;
                     }
                   } else {
-                    for (var i = 0; i < this._deviceList.length; i++) {
+                    for (i = 0; i < this._deviceList.length; i++) {
                       if (topic == this._deviceList[i].topic) {
                         Object.assign(this._deviceList[i], obj);
                       }

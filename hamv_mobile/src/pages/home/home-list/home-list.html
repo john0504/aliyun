@@ -22,12 +22,12 @@
     <ion-card-content>
       <div class="popit-title" margin-bottom>
         <ion-card-title (click)="toggleDetails(deviceItem)">
-          {{ deviceItem?.name }}
+          {{ deviceItem?.DevName }}
           <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
           <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
         </ion-card-title>
-        <ion-icon class="popit-fab" color="primary" name="ios-link"*ngIf="deviceItem.status"></ion-icon>
-        <ion-icon class="popit-fab" color="grey" name="ios-link"*ngIf="!deviceItem.status"></ion-icon>
+        <ion-icon class="popit-fab" color="primary" name="ios-link"*ngIf="deviceItem.Status"></ion-icon>
+        <ion-icon class="popit-fab" color="grey" name="ios-link"*ngIf="!deviceItem.Status"></ion-icon>
       </div>
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">
@@ -74,7 +74,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <h2>到期時間: {{ deviceItem?.expiredate }}</h2>            
+        <h2>到期時間: {{ deviceItem?.ExpireDate }}</h2>            
         <div class="control-item-divider"></div> 
         <div class="popit-other-items">  
           <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" color="orange" round (click)="goPayment(deviceItem)">

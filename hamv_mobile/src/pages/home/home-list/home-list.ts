@@ -80,7 +80,7 @@ export class HomeListPage extends HomePageBase {
   }
 
   clearBank(deviceItem) {
-    deviceItem.bank = 0;
+    deviceItem.H62 = 0;
     var message = {
       H62: 0
     };
@@ -88,7 +88,7 @@ export class HomeListPage extends HomePageBase {
   }
 
   clearMoney(deviceItem) {
-    deviceItem.money = 0;
+    deviceItem.H60 = 0;
     var message = {
       H60: 0
     };
@@ -96,7 +96,7 @@ export class HomeListPage extends HomePageBase {
   }
 
   clearGift(deviceItem) {
-    deviceItem.gift = 0;
+    deviceItem.H61 = 0;
     var message = {
       H61: 0
     };
