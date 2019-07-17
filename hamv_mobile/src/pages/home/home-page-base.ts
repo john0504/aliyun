@@ -127,7 +127,7 @@ export abstract class HomePageBase {
         .pipe(debounceImmediate(500))
         .subscribe(account => {
           console.log(JSON.stringify(account));
-          this.accountToken = (account && account.account) || '';
+          this.accountToken = (account && account.token) || '';
           var opts: IClientOptions = {
             port: 9001,
             host: this.appEngine.getBaseUrl(),
