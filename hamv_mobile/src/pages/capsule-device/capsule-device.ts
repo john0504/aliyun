@@ -57,7 +57,7 @@ export class CapsuleDevicePage {
   latitude: number = 0;
   longitude: number = 0;
   log: string = "";
-  accountName;
+  accountToken;
 
   constructor(
     private ngRedux: NgRedux<any>,
@@ -81,7 +81,7 @@ export class CapsuleDevicePage {
     this.subs.push(
       account$
         .pipe(debounceImmediate(500))
-        .subscribe(account => this.accountName = (account && account.account) || '')
+        .subscribe(account => this.accountToken = (account && account.token) || '')
     );
   }
 
@@ -201,6 +201,7 @@ export class CapsuleDevicePage {
       "DevUrl": url,
       "PrjName": "WAWA",
       "DevName": this.devicename,
+      "Account": this.accountToken,
       "H60": this.money,
       "H61": this.gift,
       "H62": this.bank,

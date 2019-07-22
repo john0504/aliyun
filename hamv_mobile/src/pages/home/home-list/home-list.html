@@ -26,8 +26,8 @@
           <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
           <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
         </ion-card-title>
-        <ion-icon class="popit-fab" color="primary" name="ios-link"*ngIf="deviceItem.Status"></ion-icon>
-        <ion-icon class="popit-fab" color="grey" name="ios-link"*ngIf="!deviceItem.Status"></ion-icon>
+        <ion-icon class="popit-fab" color="primary" name="ios-link"*ngIf="getStatus(deviceItem.UpdateDate)"></ion-icon>
+        <ion-icon class="popit-fab" color="grey" name="ios-link"*ngIf="!getStatus(deviceItem.UpdateDate)"></ion-icon>
       </div>
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">

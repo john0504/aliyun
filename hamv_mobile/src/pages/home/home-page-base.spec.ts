@@ -35,8 +35,9 @@ export class TestingHomePage extends HomePageBase {
     storage: Storage,
     themeService: ThemeService,
     appEngine: AppEngine,
+    http: HttpClient,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http);
   }
 
 }

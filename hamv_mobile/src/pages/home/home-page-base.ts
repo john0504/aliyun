@@ -29,8 +29,10 @@ import {
   IClientOptions,
   MqttClient
 } from 'mqtt';
+import { HttpClient } from '@angular/common/http';
 
 const TAB_CONFIG = 'tabConfig';
+const USER_LIST = 'userList';
 
 export abstract class HomePageBase {
 
@@ -51,112 +53,24 @@ export abstract class HomePageBase {
   tabs: Array<ScrollableTabsOptions> = [];
   currentTab: number = 0;
   myDevicesGroup: Group;
-  accountToken;
+  accountToken = "";
   public client: MqttClient;
   topicR;
-  public _deviceList =
-    [];
-  /*
-  [{
-    DevName: "test1",
-    DevNo: "CLAW_0111",
-    H60: 1,
-    H61: 2,
-    H62: 3,
-    Status: 1,
-    ExpireTime: this.getDate(1593077109),
-    showDetails: false
-  }, {
-    DevName: "test2",
-    DevNo: "CLAW_0222",
-    H60: 4,
-    H61: 5,
-    H62: 6,
-    Status: 0,
-    ExpireTime: this.getDate(1594077109),
-    showDetails: false
-  }];*/
+  public _deviceList = [];
+  private _deviceListDate = 0;
+  private _userList = [];
 
   opts: IClientOptions = {
     port: 9001,
     host: this.appEngine.getBaseUrl(),
-    protocol: 'mqtt',
-    key: "-----BEGIN RSA PRIVATE KEY-----\
-    MIIEowIBAAKCAQEAlYpAETkvl0UkuAd8JTQknZ9hnnLY9xVVAGLFV7Q4vPIYYtFs\
-    hXoWLygMqYT3u0ie3eaTkxj3KmgtZ9sejYYO6wBTRfmaIa4yRZmymrQMZMjE4hUR\
-    68+XnR4/pyPvBNTYDDhsuHZiN6tuaZOYAv8Se/PQH5UD3UL6FYDlkV0dCIquDpZv\
-    bWdtIvL0XVtVGOAMPLxcV3dpn4GZb+0NJRnhZIjyRZIIDG610QV3eLLp10agJYT/\
-    +7Ld+Reh5OoB6lLhOYV+0HbUBfOzktLRetW32yM2qj/FLwPaiwgxIh8MId4BnZDZ\
-    +fbIcdCzrhptvUECQdKxV11IQ03Cg31R9fonsQIDAQABAoIBAEIh5Nl5F9HnMyjr\
-    rnxphfPrQ2mmUstatL+57potypXM3vn8seiJqHvsU0U417IMmK17xjHcbZpkfggb\
-    AHUIH1rQRwOAMijI99SN902xaHW90ExHkyhdIyjJ8s6A9riFRJKK9ZHSUPdbqjWo\
-    nyZcFZmZpqYA6beVYjHWUjAqJKfct7Etlm8ObA0PK3Rq3/Aaf9DPzxXuZuzk3dQU\
-    4WpIpm54dK7ev8xCLlwCygksmZUHi4y53zbbusohIHnISgsVPdnAjVs3mu+MaogA\
-    Y1aI1ssNWRebW+1/GedxtXdZ7nT6OD85mpyjnsrzWO9XxCtePK8Z4Ofx4kvjaYU0\
-    c4rePgECgYEAxfc/Hg+RMBLwQ78YIUJ4BbLGOaktK+1ybE5H6bgebhynAMCTr9RJ\
-    TVtXj/MsxvjtnZJ0NnSoPmjpg6wpPKGXe4Rzms+8j2rmdf3oxnA98FKotUBlU/CB\
-    pRrCLN5TtO6SfPoLxYItot5Dp5XTv/obnBOO+HW+VY3oZLKuW3d9JZECgYEAwWDK\
-    uKj4Od6iJu/NvcLmVbRIVYZF9VgAlAQTVyPdMRiH+Lcf3i1Mt5u/SW7fA30vqKVN\
-    L6nDen5LZvOTrlDNeoIuRzboessXC1HP+8UstK0WzxAOMFVeGMxFKSHa9Wnkplc0\
-    wZjGKFF9TurcU+fH4t6vaUOs3ctrKn3pyAfrUCECgYB9wCbJ052oaf9RKWwMhIp1\
-    JDCipAJbqwNKJRetMRWzYGP9KFcoE7NUfjdK62+AHNPjigpkJQpSSpY62/t91i/B\
-    eEtvBZKDj6ZBQT7B/r55kCg2qmczQM05sZuyoK+PeRR4auVbWuveT02ugI/3nMo5\
-    BHuG/FQhSHlcrdvvoiFO4QKBgEYug8RbBqOyCjWJaKkLGB9Yq7vmXHN7edI+XGqO\
-    yJMt7QM2KumulR4590WGaIfSoj5Zp9a5jQli1qjJk/p6tuhUYMlVwy/1jyp7ibk9\
-    SUlVXGbP0+Z0xQ7I6/zOnbHdua8pDSuJ77joQksm78m/4AqVeSIB/rYMQpuMURFY\
-    1m0hAoGBAJ8rFnYgC7YEGWK2il2zoiS2UHNa+anWIqrgDUhq7YYTSR4W4lq33Kks\
-    ORrrcgtMrDDNAMSMyRLjOUxtlFKfsMsMLG4ia+4NeyfkL9pD6a3KpQSfo1OJMvBU\
-    Nngghy4nd+j5a0FEzG+NTSGjieR3fMru7WJULyP9LRuAz8jp8oFa\
-    -----END RSA PRIVATE KEY-----\
-    ",
-    cert: "-----BEGIN CERTIFICATE-----\
-    MIIDsDCCApgCFB/TnYdbA2g/2PZqGTphTKssVEjmMA0GCSqGSIb3DQEBCwUAMIGT\
-    MQswCQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1\
-    MSgwJgYDVQQKDB9DbG91ZCBFZGdlIENvbXB1dGluZyBUZWNobm9sb2d5MRcwFQYD\
-    VQQLDA53d3cuY2VjdGNvLmNvbTEeMBwGA1UEAwwVQ0VDVENPIEdsb2JhbCBSb290\
-    IENBMB4XDTE5MDcxNzA3MTI1MFoXDTM4MDkxNTA3MTI1MFowgZQxCzAJBgNVBAYT\
-    AlRXMQ8wDQYDVQQIDAZUYWl3YW4xEDAOBgNVBAcMB0hzaW5jaHUxKTAnBgNVBAoM\
-    IENsb3VkIEVkZ2UgQ29tcHV0dGluZyBUZWNobm9sb2d5MRcwFQYDVQQLDA53d3cu\
-    Y2VjdGNvLmNvbTEeMBwGA1UEAwwVQ0VDVENPIFdBV0EgQ2xpZW50IENBMIIBIjAN\
-    BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlYpAETkvl0UkuAd8JTQknZ9hnnLY\
-    9xVVAGLFV7Q4vPIYYtFshXoWLygMqYT3u0ie3eaTkxj3KmgtZ9sejYYO6wBTRfma\
-    Ia4yRZmymrQMZMjE4hUR68+XnR4/pyPvBNTYDDhsuHZiN6tuaZOYAv8Se/PQH5UD\
-    3UL6FYDlkV0dCIquDpZvbWdtIvL0XVtVGOAMPLxcV3dpn4GZb+0NJRnhZIjyRZII\
-    DG610QV3eLLp10agJYT/+7Ld+Reh5OoB6lLhOYV+0HbUBfOzktLRetW32yM2qj/F\
-    LwPaiwgxIh8MId4BnZDZ+fbIcdCzrhptvUECQdKxV11IQ03Cg31R9fonsQIDAQAB\
-    MA0GCSqGSIb3DQEBCwUAA4IBAQDBpSMzl1nYBD272Wc0n8qrSG3psxo6PsQtL6I+\
-    li497DiirQ2dXtkvbgZFCccHqLH2M7M6+bZnJV3wuuQD5lcDKUBBFjkiHxOZa+Hg\
-    XIFbnoUu4KmHvEBj0FpGa2xtrEhlc8B7hEImlNp38sthFW6/95F9vJoYXRo47VWH\
-    vFK5kTZbjo2K+6I3V3j/JO68HM07bhi2cGC6UEIajEnMnba3Svb93B33b8/hP8yy\
-    tBUuwcFARdQRkPucgQ04ABjtnKQdhs9C3OAkeZBqcnNBsh4atU1HFbyyVISex4Tq\
-    VXxT5amv/KY9NFZadL9YyowKEBJRzlZI9tWF5RRHU63rLSIW\
-    -----END CERTIFICATE-----\
-    ",
-    ca: "-----BEGIN CERTIFICATE-----\
-    MIIECzCCAvOgAwIBAgIUQtu6MKO0TmvTU1dPv+xFFUQV1LQwDQYJKoZIhvcNAQEL\
-    BQAwgZMxCzAJBgNVBAYTAlRXMQ8wDQYDVQQIDAZUYWl3YW4xEDAOBgNVBAcMB0hz\
-    aW5jaHUxKDAmBgNVBAoMH0Nsb3VkIEVkZ2UgQ29tcHV0aW5nIFRlY2hub2xvZ3kx\
-    FzAVBgNVBAsMDnd3dy5jZWN0Y28uY29tMR4wHAYDVQQDDBVDRUNUQ08gR2xvYmFs\
-    IFJvb3QgQ0EwIBcNMTkwNzE3MDM0MTI4WhgPMjExOTA2MjMwMzQxMjhaMIGTMQsw\
-    CQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1MSgw\
-    JgYDVQQKDB9DbG91ZCBFZGdlIENvbXB1dGluZyBUZWNobm9sb2d5MRcwFQYDVQQL\
-    DA53d3cuY2VjdGNvLmNvbTEeMBwGA1UEAwwVQ0VDVENPIEdsb2JhbCBSb290IENB\
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3w433S7ceossD3VuF86t\
-    6kM5iX2Gly1pi6BU0oN9EUsyCI6V5Zr/lkXDa2KSRG8Ddawkx84sNHXAR0Or4TS2\
-    4T/fRjO7rcq6/yd4vvLua53SYorKOokrOcTaF3rNIMCAlMmC/I0mujTWmQONUqqA\
-    WsJwUaQiJ6Puiz2OKXacIOA+xuSBxMw5xkK7ItOjds+FRHKpIMGognPLAuucwh72\
-    ufeW2k5MjS1Y/6gqO3Y7Mn2eNeV3uwVaA6KhUeklVdweH0awE5dqAbTRAbitaKWd\
-    4WZWcVwz1tf6vHbBETy5AjQlHWUUz3JQrO58M0wpmOwn4/PKaIBDUIDw1H40ZJFS\
-    vwIDAQABo1MwUTAdBgNVHQ4EFgQUPp26Pgvly2TihTk/MuUhyJPlf6owHwYDVR0j\
-    BBgwFoAUPp26Pgvly2TihTk/MuUhyJPlf6owDwYDVR0TAQH/BAUwAwEB/zANBgkq\
-    hkiG9w0BAQsFAAOCAQEAHvs2iSp8QAxKXhgx0yXkSXD/AjOiSvpcBkW3f3UDTdjd\
-    EDb4vt6FiafFcAcoIsqchh5UivFAnlF1PXRYXQsVAPzQaMOV7KVg5qaLfoATWB5O\
-    2vYOxhEIElUyEEvs9YDfslL8eBKqHOcdwJiQdGhvgIOqWnpUtP4Nbv8U4n7nT5HA\
-    sHwwlhAqK+LGWb700d2YPS8dAvjbIGr9cnxOZEmdkbBCa3vmJr7ZgX9RCGYLBcLD\
-    faFHobq/rvp5x2pduVaxVXmH/A6O9gt+AaGkahrbKi0L1bGVNhPObX7IfBZVfAs/\
-    pe/dZkeXtHMzMZW64/bmfMhs7kXbkJnkiba6nQENtA==\
-    -----END CERTIFICATE-----\
-    ",
+    clientId: 'CECTCO-ionic',
+    protocol: 'mqtts',
+    username: 'ZWN0Y28uY29tMCAXDTE5MDcxODAzMzUyMVoYDzIxMTkwNjI0MDMzNTIxWjBlMQsw',
+    password: 'CQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1MQ8w',
+    key: "",
+    cert: "",
+    ca: "",
+    rejectUnauthorized: false,
   };
 
   constructor(
@@ -167,6 +81,7 @@ export abstract class HomePageBase {
     private storage: Storage,
     public themeService: ThemeService,
     private appEngine: AppEngine,
+    private http: HttpClient,
   ) {
     this.subs = [];
     this.account$ = this.stateStore.account$;
@@ -180,6 +95,12 @@ export abstract class HomePageBase {
         const isValid = value && value.lastSelectedIndex >= 0;
         this.currentTab = isValid ? value.lastSelectedIndex : 0;
       });
+    this.http.get('./assets/ca/ca.crt', { responseType: "text" })
+      .subscribe(cafile => this.opts.ca = cafile);
+    this.http.get('./assets/ca/client.crt', { responseType: "text" })
+      .subscribe(certfile => this.opts.cert = certfile);
+    this.http.get('./assets/ca/client.key', { responseType: "text" })
+      .subscribe(keyfile => this.opts.key = keyfile);
   }
 
   ionViewDidEnter() {
@@ -209,48 +130,8 @@ export abstract class HomePageBase {
       this.account$
         .pipe(debounceImmediate(500))
         .subscribe(account => {
-          console.log(JSON.stringify(account));
           this.accountToken = (account && account.token) || '';
-          
-          this.client = connect('', this.opts);
-          this.client.on('connect', () => {
-
-            if (this._deviceList.length == 0) {
-              var topicG = `CECT/WAWA/${this.accountToken}/G`;
-              this.client.publish(topicG, "{}", { qos: 1, retain: true });
-            }
-
-            this.topicR = `CECT/WAWA/${this.accountToken}/R`;
-            this.client.subscribe(this.topicR, (err) => {
-              if (!err) {
-                this.client.on('message', (topic, message) => {
-                  console.log(message.toString());
-                  var obj = JSON.parse(message.toString());
-                  if (topic == this.topicR) {
-                    if (obj && obj.data) {
-                      for (var i = 0; i < obj.data.length; i++) {
-                        var topic = `CECT/WAWA/${obj.data[i].DevNo}/U`;
-                        obj.data[i].topic = topic;
-                        obj.data[i].ExpireTime = this.getDate(obj.data[i].ExpireDate);
-                        if (Date.now() / 1000 <= obj.data[i].ExpireDate) {
-                          this.client.subscribe(topic);
-                        } else {
-                          this.client.unsubscribe(topic);
-                        }
-                      }
-                      this._deviceList = obj.data;
-                    }
-                  } else {
-                    for (i = 0; i < this._deviceList.length; i++) {
-                      if (topic == this._deviceList[i].topic) {
-                        Object.assign(this._deviceList[i], obj);
-                      }
-                    }
-                  }
-                });
-              }
-            });
-          });
+          this.loadUserList();
         })
     );
   }
@@ -260,9 +141,133 @@ export abstract class HomePageBase {
       s.unsubscribe();
     });
     this.subs.length = 0;
-    this.client.unsubscribe(this.topicR);
+    if (this.client && this.client.connected) {
+      this.client.unsubscribe(this.topicR);
+      this._deviceList.forEach(device => {
+        this.client.unsubscribe(device.topicU);
+        this.client.unsubscribe(device.topicS);
+      });
+    }
+    this.client.end();
+  }
+
+  loadUserList() {
+    this.storage.get(USER_LIST)
+      .then(userList => {
+        this._userList = userList ? userList : [];
+        console.log("LOG HERE - " + JSON.stringify(this._userList));
+        var tokenFound = false;
+        this._userList.forEach(user => {
+          if (user.token == this.accountToken) {
+            this._deviceListDate = user.date;
+            this._deviceList = user.list;
+            tokenFound = true;
+          }
+        });
+        if (tokenFound == false) {
+          this._deviceListDate = 0;
+          this._userList.push({
+            token: this.accountToken,
+            list: this._deviceList,
+            date: this._deviceListDate
+          });
+          this.storage.set(USER_LIST, this._userList);
+        }
+        this.connectMqtt();
+      });
+  }
+
+  connectMqtt() {
+    this.client = connect('', this.opts);
+
+    this.client.on('connect', () => {
+      this.subscribeTopic();
+    });
+
+    this.client.on('message', (topic, message) => {
+      this.getMessage(topic, message);
+    });
+
+    this.client.on('error', (err) => {
+      console.log("Log Here - " + JSON.stringify(err));
+    });
+  }
+
+  subscribeTopic() {
+    if (this._deviceListDate < Date.now() / 1000 - 60 * 60 * 24 && this.accountToken != "") {
+      var topicG = `WAWA/${this.accountToken}/G`;
+      this.client.publish(topicG, "{}", { qos: 1, retain: true });
+    }
+    this.topicR = `WAWA/${this.accountToken}/R`;
+    this.client.subscribe(this.topicR);
     for (var i = 0; i < this._deviceList.length; i++) {
-      this.client.unsubscribe(this._deviceList[i].topic);
+      this._deviceList[i].topicU = `WAWA/${this._deviceList[i].DevNo}/U`;
+      this._deviceList[i].topicS = `WAWA/${this._deviceList[i].DevNo}/S`;
+      this._deviceList[i].ExpireTime = this.getDate(this._deviceList[i].ExpireDate);
+      if (Date.now() / 1000 <= this._deviceList[i].ExpireDate) {
+        this.client.subscribe(this._deviceList[i].topicU);
+      } else {
+        this.client.unsubscribe(this._deviceList[i].topicU);
+      }
+      this.client.subscribe(this._deviceList[i].topicS);
+    }
+  }
+
+  getMessage(topic, message) {
+    if (topic == this.topicR) {
+      console.log("topic: " + topic + " & message: " + message.toString());
+      var obj = JSON.parse(message.toString());
+      if (obj && obj.data) {
+        for (var i = 0; i < obj.data.length; i++) {
+          obj.data[i].topicU = `WAWA/${obj.data[i].DevNo}/U`;
+          obj.data[i].topicS = `WAWA/${obj.data[i].DevNo}/S`;
+          obj.data[i].ExpireTime = this.getDate(obj.data[i].ExpireDate);
+          if (Date.now() / 1000 <= obj.data[i].ExpireDate) {
+            this.client.subscribe(obj.data[i].topicU);
+          } else {
+            this.client.unsubscribe(obj.data[i].topicU);
+          }
+          this.client.subscribe(obj.data[i].topicS);
+        }
+        this._deviceList = obj.data;
+        this._deviceListDate = Date.now() / 1000;
+        this._userList.forEach(user => {
+          if (user.token == this.accountToken) {
+            user.date = this._deviceListDate;
+            user.list = this._deviceList;
+          }
+        });
+        this.storage.set(USER_LIST, this._userList);
+      }
+    } else {
+      for (i = 0; i < this._deviceList.length; i++) {
+        if (topic == this._deviceList[i].topicU) {
+          var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
+          var view = new Uint8Array(arrayBuffer);
+          for (var j = 0; j < message.length; j++) {
+            view[j] = message[j];
+          }
+          var dataView = new DataView(arrayBuffer);
+          obj = {};
+          for ( j = 4; j < message.length; j += 3) {
+            var service = dataView.getUint8(j);
+            var value = dataView.getUint16(j + 1);
+            obj["H" + service.toString(16).toUpperCase()] = value;
+          }
+          console.log("topic: " + topic + " & message: " + JSON.stringify(obj));
+          Object.assign(this._deviceList[i], obj);
+        } else if (topic == this._deviceList[i].topicS) {
+          console.log("topic: " + topic);
+          this._deviceList[i].UpdateDate = Date.now() / 1000;
+        }
+      }
+      this._userList.forEach(user => {
+        if (user.token == this.accountToken) {
+          user.date = this._deviceListDate;
+          user.list = this._deviceList;
+        }
+      });
+      this.storage.set(USER_LIST, this._userList);
     }
   }
 

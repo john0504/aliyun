@@ -49,7 +49,8 @@ export const appConfig: AppConfig = {
   appEngine: {
     // solutionId: 'hamv-tenx',
     // productId: 'g30qvzkqcoki00000',
-    baseUrl: 'cectco.homeip.net'
+    // baseUrl: 'cectco.homeip.net'
+    baseUrl: '192.168.1.13'
   },
   // mixpanel: {
   //   token: 'YOUR_TOKEN',

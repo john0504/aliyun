@@ -18,6 +18,7 @@ import { ThemeService } from '../../../providers/theme-service';
 import { HomePageBase } from '../home-page-base';
 import { ListGroupItemComponent } from "../../../components/list-group-item/list-group-item";
 import { LargeListItemComponent } from '../../../components/large-list-item/large-list-item';
+import { HttpClient } from '@angular/common/http';
 
 @IonicPage()
 @Component({
@@ -39,8 +40,9 @@ export class HomeListPage extends HomePageBase {
     themeService: ThemeService,
     public alertCtrl: AlertController,
     public stateStore2: StateStore,
+    http: HttpClient,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http);
 
     this.deviceComponent = LargeListItemComponent;
     this.groupComponent = ListGroupItemComponent;
@@ -104,7 +106,7 @@ export class HomeListPage extends HomePageBase {
   }
 
   sendData(deviceItem, message) {
-    var topic = `CECT/WAWA/${deviceItem.DevNo}/D`;
+    var topic = `WAWA/${deviceItem.DevNo}/D`;
     this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
   }
 
@@ -113,7 +115,11 @@ export class HomeListPage extends HomePageBase {
   }
 
   refresh() {
-    var topic = `CECT/WAWA/${this.accountToken}/G`;
+    var topic = `WAWA/${this.accountToken}/G`;
     this.client.publish(topic, "{}", { qos: 1, retain: true });
+  }
+
+  getStatus(date) {
+    return date > Date.now() / 1000 - 60 * 5;
   }
 }
