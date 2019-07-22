@@ -64,6 +64,7 @@ export abstract class HomePageBase {
     port: 9001,
     host: this.appEngine.getBaseUrl(),
     clientId: 'CECTCO-ionic',
+    // protocol: 'mqtt',
     protocol: 'mqtts',
     username: 'ZWN0Y28uY29tMCAXDTE5MDcxODAzMzUyMVoYDzIxMTkwNjI0MDMzNTIxWjBlMQsw',
     password: 'CQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1MQ8w',
@@ -200,17 +201,6 @@ export abstract class HomePageBase {
     }
     this.topicR = `WAWA/${this.accountToken}/R`;
     this.client.subscribe(this.topicR);
-    for (var i = 0; i < this._deviceList.length; i++) {
-      this._deviceList[i].topicU = `WAWA/${this._deviceList[i].DevNo}/U`;
-      this._deviceList[i].topicS = `WAWA/${this._deviceList[i].DevNo}/S`;
-      this._deviceList[i].ExpireTime = this.getDate(this._deviceList[i].ExpireDate);
-      if (Date.now() / 1000 <= this._deviceList[i].ExpireDate) {
-        this.client.subscribe(this._deviceList[i].topicU);
-      } else {
-        this.client.unsubscribe(this._deviceList[i].topicU);
-      }
-      this.client.subscribe(this._deviceList[i].topicS);
-    }
   }
 
   getMessage(topic, message) {
@@ -218,18 +208,24 @@ export abstract class HomePageBase {
       console.log("topic: " + topic + " & message: " + message.toString());
       var obj = JSON.parse(message.toString());
       if (obj && obj.data) {
-        for (var i = 0; i < obj.data.length; i++) {
-          obj.data[i].topicU = `WAWA/${obj.data[i].DevNo}/U`;
-          obj.data[i].topicS = `WAWA/${obj.data[i].DevNo}/S`;
-          obj.data[i].ExpireTime = this.getDate(obj.data[i].ExpireDate);
-          if (Date.now() / 1000 <= obj.data[i].ExpireDate) {
-            this.client.subscribe(obj.data[i].topicU);
-          } else {
-            this.client.unsubscribe(obj.data[i].topicU);
-          }
-          this.client.subscribe(obj.data[i].topicS);
-        }
-        this._deviceList = obj.data;
+        var newDeviceList = this._deviceList;
+        this._deviceList = [];
+        newDeviceList.forEach(device => {
+          obj.data.forEach(data => {
+            if (device.DevNo == data.DevNo) {
+              data.topicU = `WAWA/${data.DevNo}/U`;
+              data.topicS = `WAWA/${data.DevNo}/S`;
+              data.ExpireTime = this.getDate(data.ExpireDate);
+              if (Date.now() / 1000 <= data.ExpireDate) {
+                this.client.subscribe(data.topicU);
+              }
+              this.client.subscribe(data.topicS);
+              
+              Object.assign(device, data);
+              this._deviceList.push(device);
+            }
+          });
+        });
         this._deviceListDate = Date.now() / 1000;
         this._userList.forEach(user => {
           if (user.token == this.accountToken) {
@@ -240,7 +236,7 @@ export abstract class HomePageBase {
         this.storage.set(USER_LIST, this._userList);
       }
     } else {
-      for (i = 0; i < this._deviceList.length; i++) {
+      for (var i = 0; i < this._deviceList.length; i++) {
         if (topic == this._deviceList[i].topicU) {
           var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
           var view = new Uint8Array(arrayBuffer);
@@ -249,7 +245,7 @@ export abstract class HomePageBase {
           }
           var dataView = new DataView(arrayBuffer);
           obj = {};
-          for ( j = 4; j < message.length; j += 3) {
+          for (j = 4; j < message.length; j += 3) {
             var service = dataView.getUint8(j);
             var value = dataView.getUint16(j + 1);
             obj["H" + service.toString(16).toUpperCase()] = value;
