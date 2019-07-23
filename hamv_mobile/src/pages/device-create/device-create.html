@@ -37,17 +37,9 @@
         {{ 'DEVICE_CREATE.GO_TO_SETTINGS' | translate }}
       </button>
       <p align="center" [innerHTML]="'DEVICE_CREATE.AFTER_SETTINGS' | translate: { productName: (appName | async) }"></p>
-      <button ion-button color="orange" class="full-button" full round *ngIf="canLocalMode && canContinue" (click)="onLocalMode()" full>{{ 'DEVICE_CREATE.LOCAL_MODE' | translate }}</button>
-      <button ion-button color="orange" class="full-button" full round *ngIf="canSupportMode && canContinue" (click)="onSupportMode()" full>{{ 'DEVICE_CREATE.SUPPORT_MODE' | translate }}</button>
-      <button ion-button color="darkBlue" class="full-button" full round *ngIf="canBroadcast && canContinue" (click)="onBroadcast()" full>{{ 'DEVICE_CREATE.BROADCAST' | translate }}</button>
-      <button ion-button color="secondary" class="full-button" full round *ngIf="canLocalBroadcast && canContinue" (click)="onLocalBroadcast()" full>{{ 'DEVICE_CREATE.LOCAL_BROADCAST' | translate }}</button>
-      <button ion-button color="orange" class="full-button" full round *ngIf="canGpsMode && canContinue" (click)="onGpsMode()" full>{{ 'DEVICE_CREATE.GPS_MODE' | translate }}</button>
-      <button ion-button color="orange" class="full-button" full round *ngIf="canCapsuleMode && canContinue" (click)="onCapsuleMode()" full>{{ 'DEVICE_CREATE.CAPSULE_MODE' | translate }}</button>
-      <!-- <button ion-button color="orange" class="full-button" full round *ngIf="canOtaMode && canContinue" (click)="onOtaMode()" full>{{ 'DEVICE_CREATE.OTA_MODE' | translate }}</button> -->
-      <!-- <button ion-button color="orange" class="full-button" full round *ngIf="canContinue" (click)="onOta()" full>OTA</button> -->
     </div>
     <div>
-      <button ion-button color="primary" class="bottom-button full-button" [disabled]="!canContinue || !canCloudMode"  (click)="onNext()" full>{{ 'DEVICE_CREATE.CLOUD_MODE' | translate }}</button>
+      <button ion-button color="primary" class="bottom-button full-button" [disabled]="!canContinue"  (click)="onCapsuleMode()" full>{{ 'DEVICE_CREATE.CLOUD_MODE' | translate }}</button>
     </div>
   </div>
   <extra-page-space></extra-page-space>

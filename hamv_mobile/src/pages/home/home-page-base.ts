@@ -210,21 +210,20 @@ export abstract class HomePageBase {
       if (obj && obj.data) {
         var newDeviceList = this._deviceList;
         this._deviceList = [];
-        newDeviceList.forEach(device => {
-          obj.data.forEach(data => {
+        obj.data.forEach(data => {
+          data.topicU = `WAWA/${data.DevNo}/U`;
+          data.topicS = `WAWA/${data.DevNo}/S`;
+          data.ExpireTime = this.getDate(data.ExpireDate);
+          if (Date.now() / 1000 <= data.ExpireDate) {
+            this.client.subscribe(data.topicU);
+          }
+          this.client.subscribe(data.topicS);
+          newDeviceList.forEach(device => {
             if (device.DevNo == data.DevNo) {
-              data.topicU = `WAWA/${data.DevNo}/U`;
-              data.topicS = `WAWA/${data.DevNo}/S`;
-              data.ExpireTime = this.getDate(data.ExpireDate);
-              if (Date.now() / 1000 <= data.ExpireDate) {
-                this.client.subscribe(data.topicU);
-              }
-              this.client.subscribe(data.topicS);
-              
-              Object.assign(device, data);
-              this._deviceList.push(device);
+              data = Object.assign(device, data);
             }
           });
+          this._deviceList.push(data);
         });
         this._deviceListDate = Date.now() / 1000;
         this._userList.forEach(user => {

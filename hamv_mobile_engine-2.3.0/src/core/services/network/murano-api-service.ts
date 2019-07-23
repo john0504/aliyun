@@ -125,7 +125,7 @@ export class MuranoApiService {
     public register(account: string, password: string, token: string): Promise<any> {
         const body = JSON.stringify({ account: account, password: password, token: token });
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/user`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/user`;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.PUT, url, body, { headers });
         return this.executeHttpRequest(request)
             .then((res) => {
@@ -143,7 +143,7 @@ export class MuranoApiService {
 
     public session(user): Promise<any> {
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/session`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/session`;
         const body = JSON.stringify({ account: user.account, token: user.token });
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.PUT, url, body, { headers });
         return this.executeHttpRequest(request)
@@ -191,14 +191,14 @@ export class MuranoApiService {
     public sendmail(account: string): Promise<any> {
         const body = JSON.stringify({ email: account });
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/sendmail`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/sendmail`;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request);
     }
 
     public alldevice(user): Promise<any> {
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/alldevice`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/alldevice`;
         const body = JSON.stringify({ account: user.account, token: user.token });
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request)
@@ -222,7 +222,7 @@ export class MuranoApiService {
 
     public updatedevice(user, serial: string, data): Promise<any> {
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/updatedevice`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/updatedevice`;
         const body = JSON.stringify({ account: user.account, token: user.token, serial: serial, data: data});
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request)            
@@ -242,7 +242,7 @@ export class MuranoApiService {
 
     public deletedevice(user, serial: string): Promise<any> {
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/deletedevice`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/deletedevice`;
         const body = JSON.stringify({ account: user.account, token: user.token, serial: serial });
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request)            
@@ -262,7 +262,7 @@ export class MuranoApiService {
 
     public payment(user, serial: string, code: string): Promise<any> {
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/payment`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/payment`;
         const body = JSON.stringify({ account: user.account, token: user.token, serial: serial, code: code });
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request)            
@@ -283,7 +283,7 @@ export class MuranoApiService {
     public login(account: string, password: string): Promise<any> {
         const body = JSON.stringify({ email: account, password: password });
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/session`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/session`;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request)
             .then((res) => {
@@ -316,7 +316,7 @@ export class MuranoApiService {
 
     public deleteAccount(user): Promise<any> {
         const headers = this.getAuthHeaders(user);
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/users/me`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/users/me`;
         const request: HttpRequest<any> = new HttpRequest(REQUEST_METHOD.DELETE, url, '', { headers });
         return this.executeHttpRequest(request)
             .catch((e) => {
@@ -333,7 +333,7 @@ export class MuranoApiService {
 
     public requestUserData(user): Promise<any> {
         const headers = this.getAuthHeaders(user);
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/request/userdata`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/request/userdata`;
         const request: HttpRequest<any> = new HttpRequest(REQUEST_METHOD.GET, url, '', { headers });
         return this.executeHttpRequest(request);
     }
@@ -341,7 +341,7 @@ export class MuranoApiService {
     public requestResetPassword(email: string): Promise<any> {
         const body = JSON.stringify({ email: email });
         const headers = this.getHeaders();
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/reset`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/reset`;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
         return this.executeHttpRequest(request);
     }
@@ -594,11 +594,11 @@ export class MuranoApiService {
         const scheme: string = this.useHttp ? 'http' : 'https';
         const target = `${scheme}://192.168.1.1:32051/provision`;
         var cmdObj = JSON.parse(command);
-        cmdObj.Account = user.account;
+        cmdObj.Account = user.token;
         return this.HTTP.acceptAllCerts(true)
             .then(() => {
                 this.HTTP.setDataSerializer('urlencoded');
-                const body = cmdObj;
+                const body = encodeURIComponent(JSON.stringify(cmdObj));
                 const header = {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 };
@@ -623,7 +623,7 @@ export class MuranoApiService {
             'Content-Type': 'application/json; charset=utf-8',
             Authorization: 'Bearer ' + token
         });
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/device_model_info/${encodeURIComponent(model)}`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/device_model_info/${encodeURIComponent(model)}`;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.GET, url, '', { headers });
         return this.executeHttpRequest(request)
             .then((res) => {
@@ -637,7 +637,7 @@ export class MuranoApiService {
 
     public getFirmwareList(model?: string | Array<string>): Promise<any> {
         const headers = this.getHeaders();
-        const base = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/fw/list`;
+        const base = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/fw/list`;
         const stringifyModel = Array.isArray(model) ? JSON.stringify(model) : model;
         const url = model ? `${base}/${stringifyModel}` : base;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.GET, url, '', { headers });
@@ -654,7 +654,7 @@ export class MuranoApiService {
     public getHistoricalData(user, deviceSn: string, field: string, queryObj: { [key: string]: any } = {}): Promise<any> {
         const headers = this.getAuthHeaders(user);
         const query = !isEmpty(queryObj) ? '?' + Object.keys(queryObj).map(key => key + '=' + queryObj[key]).join('&') : ''
-        const url = `http://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/data/${deviceSn}/${field}${query}`;
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/data/${deviceSn}/${field}${query}`;
         const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.GET, url, '', { headers });
         return this.executeHttpRequest(request)
             .then((res) => {
