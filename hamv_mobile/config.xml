@@ -89,8 +89,6 @@
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false" />
-    <engine name="android" spec="7.1.1" />
-    <engine name="ios" spec="4.5.5" />
     <plugin name="cordova-open-native-settings" spec="^1.5.2" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
@@ -138,4 +136,6 @@
         <variable name="DEEPLINK_5_SCHEME" value=" " />
         <variable name="DEEPLINK_5_HOST" value=" " />
     </plugin>
+    <engine name="android" spec="7.1.1" />
+    <engine name="ios" spec="4.5.5" />
 </widget>
