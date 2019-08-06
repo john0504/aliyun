@@ -509,7 +509,8 @@
     "SENDMAIL_TITLE": "已經寄出驗證碼",
     "SENDMAIL_MSG": "請立即前往您的信箱查看",
     "SENDMAIL": "取得驗證碼",
-    "TOKEN": "驗證碼",
+    "TOKEN": "驗證碼",    
+    "TOKEN_NOT_VALID": "驗證碼不正確",
     "USER_ALREADY_EXISTS": "使用者已存在"
   },
   "SINGLE_ACCORDION_CONTAINER": {

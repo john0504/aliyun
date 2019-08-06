@@ -510,6 +510,7 @@
     "SENDMAIL_MSG": "Please go to your mailbox to view immediately",
     "SENDMAIL": "GET TOKEN",
     "TOKEN": "TOKEN",
+    "TOKEN_NOT_VALID": "Token Not Valid",
     "USER_ALREADY_EXISTS": "User Already Exists"
   },
   "SINGLE_ACCORDION_CONTAINER": {

@@ -52,6 +52,13 @@ $colors: (
   transparent: rgba(255, 255, 255, 0)
 );
 
+ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
+  background: transparent none !important; 
+  .tabbar.show-tabbar{
+    opacity: 0;
+  }
+}
+
 button[ion-button][disabled] {
   opacity: .7;
   background-color: color($colors, grey);

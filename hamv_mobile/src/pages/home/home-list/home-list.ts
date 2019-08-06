@@ -19,6 +19,7 @@ import { HomePageBase } from '../home-page-base';
 import { ListGroupItemComponent } from "../../../components/list-group-item/list-group-item";
 import { LargeListItemComponent } from '../../../components/large-list-item/large-list-item';
 import { HttpClient } from '@angular/common/http';
+import { PopupService } from '../../../providers/popup-service';
 
 @IonicPage()
 @Component({
@@ -41,15 +42,16 @@ export class HomeListPage extends HomePageBase {
     public alertCtrl: AlertController,
     public stateStore2: StateStore,
     http: HttpClient,
+    popupService: PopupService,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http, appTasks, alertCtrl, popupService);
 
     this.deviceComponent = LargeListItemComponent;
     this.groupComponent = ListGroupItemComponent;
   }
 
   deleteDeviceConfirm(deviceItem) {
-    const alertTitle = this.translate2.instant('DEVICE_SETTINGS.DELETE_ALERT_TITLE', { deviceName: deviceItem.name });
+    const alertTitle = this.translate2.instant('DEVICE_SETTINGS.DELETE_ALERT_TITLE', { deviceName: deviceItem.DevName });
     const alertCancel = this.translate2.instant('DEVICE_SETTINGS.CANCEL');
     const alertDelete = this.translate2.instant('DEVICE_SETTINGS.DELETE');
 
@@ -63,7 +65,9 @@ export class HomeListPage extends HomePageBase {
         {
           text: alertDelete,
           handler: () => {
-            this.appTasks.deletedeviceTask(deviceItem.serial);
+            var topic = `WAWA/${this.accountToken}/U`;
+            var paylod = JSON.stringify({ action: "delete", DevNo: deviceItem.DevNo });
+            this.client.publish(topic, paylod, { qos: 1, retain: true });
           },
         }
       ],
@@ -82,9 +86,9 @@ export class HomeListPage extends HomePageBase {
   }
 
   clearBank(deviceItem) {
-    deviceItem.H62 = 0;
+    deviceItem.H61 = 0;
     var message = {
-      H62: 0
+      H61: 0
     };
     this.sendData(deviceItem, message);
   }
@@ -98,28 +102,27 @@ export class HomeListPage extends HomePageBase {
   }
 
   clearGift(deviceItem) {
-    deviceItem.H61 = 0;
+    deviceItem.H62 = 0;
     var message = {
-      H61: 0
+      H62: 0
     };
     this.sendData(deviceItem, message);
   }
 
   sendData(deviceItem, message) {
     var topic = `WAWA/${deviceItem.DevNo}/D`;
-    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
+    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: false });
   }
 
   goPayment(deviceItem) {
     this.navCtrl2.push('DevicePaymentPage', { serial: deviceItem.DevNo });
   }
 
-  refresh() {
-    var topic = `WAWA/${this.accountToken}/G`;
-    this.client.publish(topic, "{}", { qos: 1, retain: true });
-  }
-
   getStatus(date) {
     return date > Date.now() / 1000 - 60 * 5;
+  }
+
+  getExpire(date) {
+    return date - Date.now() / 1000;
   }
 }

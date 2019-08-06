@@ -93,11 +93,15 @@ export class SignupPage {
         .catch(e => {
           let alertOptions: AlertOptions;
           if (e instanceof HttpError) {
+            console.log(JSON.stringify(e));
             alertOptions = {
               title: this.translate.instant('SIGNUP.USER_ALREADY_EXISTS'),
               message: this.translate.instant('SIGNUP.CHECK_SETTINGS'),
               buttons: [this.translate.instant('SIGNUP.OK')],
             };
+            if (e.code == 401) {
+              alertOptions.title = this.translate.instant('SIGNUP.TOKEN_NOT_VALID');
+            }
           } else if (e instanceof NetworkError || e instanceof TimeoutError) {
             alertOptions = {
               title: this.translate.instant('SIGNUP.ISSUE_HAPPENED_TITLE'),

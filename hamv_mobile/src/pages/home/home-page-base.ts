@@ -1,12 +1,15 @@
 import {
   NavController,
   Platform,
+  AlertOptions,
+  AlertController,
 } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import {
   Group,
   StateStore,
   AppEngine,
+  AppTasks
 } from 'app-engine';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -30,6 +33,7 @@ import {
   MqttClient
 } from 'mqtt';
 import { HttpClient } from '@angular/common/http';
+import { PopupService } from '../../providers/popup-service';
 
 const TAB_CONFIG = 'tabConfig';
 const USER_LIST = 'userList';
@@ -55,10 +59,13 @@ export abstract class HomePageBase {
   myDevicesGroup: Group;
   accountToken = "";
   public client: MqttClient;
-  topicR;
+  topicC;
+  topicD;
   public _deviceList = [];
   private _deviceListDate = 0;
   private _userList = [];
+  private _timestamp = 0;
+  noNetworkToast;
 
   opts: IClientOptions = {
     port: 9001,
@@ -83,6 +90,9 @@ export abstract class HomePageBase {
     public themeService: ThemeService,
     private appEngine: AppEngine,
     private http: HttpClient,
+    public appTasks: AppTasks,
+    public alertCtrl: AlertController,
+    private popupService: PopupService,
   ) {
     this.subs = [];
     this.account$ = this.stateStore.account$;
@@ -132,7 +142,11 @@ export abstract class HomePageBase {
         .pipe(debounceImmediate(500))
         .subscribe(account => {
           this.accountToken = (account && account.token) || '';
-          this.loadUserList();
+          if (this.accountToken.length != 0 && this.accountToken.length != 4) {
+            this.logout();
+          } else if (this.accountToken.length != 0) {
+            this.loadUserList();
+          }
         })
     );
   }
@@ -142,21 +156,23 @@ export abstract class HomePageBase {
       s.unsubscribe();
     });
     this.subs.length = 0;
-    if (this.client && this.client.connected) {
-      this.client.unsubscribe(this.topicR);
+    this._timestamp = 0;
+    if (this.client) {
+      this.client.unsubscribe(this.topicC);
+      this.client.unsubscribe(this.topicD);
       this._deviceList.forEach(device => {
         this.client.unsubscribe(device.topicU);
         this.client.unsubscribe(device.topicS);
       });
+      this.client.end();
     }
-    this.client.end();
   }
 
   loadUserList() {
     this.storage.get(USER_LIST)
       .then(userList => {
         this._userList = userList ? userList : [];
-        console.log("LOG HERE - " + JSON.stringify(this._userList));
+        // console.log("LOG HERE - " + JSON.stringify(this._userList));
         var tokenFound = false;
         this._userList.forEach(user => {
           if (user.token == this.accountToken) {
@@ -179,34 +195,64 @@ export abstract class HomePageBase {
   }
 
   connectMqtt() {
-    this.client = connect('', this.opts);
+    if (!this.client || !this.client.connected) {
+      this.client = connect('', this.opts);
+      this.toggleToast(true);
 
-    this.client.on('connect', () => {
-      this.subscribeTopic();
-    });
+      this.client.on('connect', () => {
+        this.toggleToast(false);
+        this.subscribeTopic();
+      });
 
-    this.client.on('message', (topic, message) => {
-      this.getMessage(topic, message);
-    });
+      this.client.on('message', (topic, message) => {
+        this.getMessage(topic, message);
+      });
 
-    this.client.on('error', (err) => {
-      console.log("Log Here - " + JSON.stringify(err));
-    });
+      this.client.on('error', (err) => {
+        console.log("Log Here - " + JSON.stringify(err));
+      });
+    }
   }
 
   subscribeTopic() {
-    if (this._deviceListDate < Date.now() / 1000 - 60 * 60 * 24 && this.accountToken != "") {
-      var topicG = `WAWA/${this.accountToken}/G`;
-      this.client.publish(topicG, "{}", { qos: 1, retain: true });
+    if (this._timestamp == 0) {
+      this.topicC = `WAWA/${this.accountToken}/C`;
+      this.client.subscribe(this.topicC);
+      this.topicD = `WAWA/${this.accountToken}/D`;
+      this.client.subscribe(this.topicD);
+      this._timestamp = Date.now();
+      var paylodC = { time: this._timestamp };
+      this.client.publish(this.topicC, JSON.stringify(paylodC), { qos: 1, retain: true });
     }
-    this.topicR = `WAWA/${this.accountToken}/R`;
-    this.client.subscribe(this.topicR);
   }
 
   getMessage(topic, message) {
-    if (topic == this.topicR) {
+    if (topic == this.topicC) {
       console.log("topic: " + topic + " & message: " + message.toString());
       var obj = JSON.parse(message.toString());
+      if (obj && obj.time) {
+        if (obj.time > this._timestamp && this.accountToken != "0005") {
+          this.client.end();
+          const alertTitle = "已與伺服器斷開，請重新登入";
+          let options: AlertOptions = {
+            title: alertTitle,
+            buttons: [
+              {
+                text: "確定",
+                handler: () => {
+                  this.logout();
+                },
+              }
+            ],
+          };
+
+          const alert = this.alertCtrl.create(options);
+          alert.present();
+        }
+      }
+    } else if (topic == this.topicD) {
+      console.log("topic: " + topic + " & message: " + message.toString());
+      obj = JSON.parse(message.toString());
       if (obj && obj.data) {
         var newDeviceList = this._deviceList;
         this._deviceList = [];
@@ -244,6 +290,7 @@ export abstract class HomePageBase {
           }
           var dataView = new DataView(arrayBuffer);
           obj = {};
+          var timestamp = dataView.getUint32(0);
           for (j = 4; j < message.length; j += 3) {
             var service = dataView.getUint8(j);
             var value = dataView.getUint16(j + 1);
@@ -251,6 +298,7 @@ export abstract class HomePageBase {
           }
           console.log("topic: " + topic + " & message: " + JSON.stringify(obj));
           Object.assign(this._deviceList[i], obj);
+          this._deviceList[i].UpdateDate = timestamp;
         } else if (topic == this._deviceList[i].topicS) {
           console.log("topic: " + topic);
           this._deviceList[i].UpdateDate = Date.now() / 1000;
@@ -367,5 +415,29 @@ export abstract class HomePageBase {
   public getDate(timestamp) {
     var date = new Date(timestamp * 1000);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
+
+  logout() {
+    this.appTasks.logoutTask()
+      .then(() => {
+        this.goHomePage();
+      });
+  }
+
+  private goHomePage() {
+    this.navCtrl.setRoot('HomePage');
+  }
+
+  public toggleToast(show: boolean) {
+    if (show && !this.noNetworkToast) {
+      const notFoundMsg = this.translate.instant('CHECK_NETWORKS.NOT_FOUND');
+      this.noNetworkToast = this.popupService.makeToast({
+        message: notFoundMsg,
+        position: 'top',
+      });
+    } else if (!show && this.noNetworkToast) {
+      this.noNetworkToast.dismiss();
+      this.noNetworkToast = null;
+    }
   }
 }

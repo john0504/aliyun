@@ -26,7 +26,7 @@ export class ScanPage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    // private qrScanner: QRScanner,
+    private qrScanner: QRScanner,
     // private viewCtrl: ViewController
   ) {
     //默认为false
@@ -36,21 +36,21 @@ export class ScanPage {
   }
 
   ionViewDidLoad() {
-    QRScanner.prepare()
+    this.qrScanner.prepare()
       .then((status: QRScannerStatus) => {
         if (status.authorized) {
           // camera permission was granted
           // start scanning
-          let scanSub = QRScanner.scan().subscribe((machineType: string) => {
+          let scanSub = this.qrScanner.scan().subscribe((machineType: string) => {
             // alert(machineType);
-            QRScanner.hide(); // hide camera preview
+            this.qrScanner.hide(); // hide camera preview
             scanSub.unsubscribe(); // stop scanning
-            this.callback(machineType);            
+            this.callback(machineType);
             this.navCtrl.pop();
           });
 
           // show camera preview
-          QRScanner.show();
+          this.qrScanner.show();
 
           // wait for user to scan something, then the observable callback will be called
         } else if (status.denied) {
@@ -66,20 +66,22 @@ export class ScanPage {
 
   ionViewDidEnter() {
     //页面可见时才执行
-    this.showCamera();
     this.isShow = true;//显示背景
+    this.showCamera();
   }
 
-
+  ionViewWillLeave() {
+    this.hideCamera();
+  }
 
   /**
    * 闪光灯控制，默认关闭
    */
   toggleLight() {
     if (this.light) {
-      QRScanner.disableLight();
+      this.qrScanner.disableLight();
     } else {
-      QRScanner.enableLight();
+      this.qrScanner.enableLight();
     }
     this.light = !this.light;
   }
@@ -89,9 +91,9 @@ export class ScanPage {
    */
   toggleCamera() {
     if (this.frontCamera) {
-      QRScanner.useBackCamera();
+      this.qrScanner.useBackCamera();
     } else {
-      QRScanner.useFrontCamera();
+      this.qrScanner.useFrontCamera();
     }
     this.frontCamera = !this.frontCamera;
   }
@@ -99,14 +101,10 @@ export class ScanPage {
   showCamera() {
     (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
   }
+
   hideCamera() {
-
     (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
-    QRScanner.hide();//需要关闭扫描，否则相机一直开着
-    QRScanner.destroy();//关闭
-  }
-
-  ionViewWillLeave() {
-    this.hideCamera();
+    this.qrScanner.hide();//需要关闭扫描，否则相机一直开着
+    this.qrScanner.destroy();//关闭
   }
 }

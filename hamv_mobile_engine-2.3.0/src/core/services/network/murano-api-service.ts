@@ -593,12 +593,12 @@ export class MuranoApiService {
     public localMode(user, command: string): Promise<any> {
         const scheme: string = this.useHttp ? 'http' : 'https';
         const target = `${scheme}://192.168.1.1:32051/provision`;
-        var cmdObj = JSON.parse(command);
+        var cmdObj = JSON.parse(command);        
         cmdObj.Account = user.token;
         return this.HTTP.acceptAllCerts(true)
             .then(() => {
-                this.HTTP.setDataSerializer('urlencoded');
-                const body = encodeURIComponent(JSON.stringify(cmdObj));
+                this.HTTP.setDataSerializer('json');
+                const body = cmdObj;
                 const header = {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 };

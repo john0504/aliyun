@@ -39,7 +39,7 @@
       <p align="center" [innerHTML]="'DEVICE_CREATE.AFTER_SETTINGS' | translate: { productName: (appName | async) }"></p>
     </div>
     <div>
-      <button ion-button color="primary" class="bottom-button full-button" [disabled]="!canContinue"  (click)="onCapsuleMode()" full>{{ 'DEVICE_CREATE.CLOUD_MODE' | translate }}</button>
+      <button ion-button color="primary" class="bottom-button full-button" [disabled]="!canContinue"  (click)="onCapsuleMode()" full>{{ 'DEVICE_CREATE.CONTINUE' | translate }}</button>
     </div>
   </div>
   <extra-page-space></extra-page-space>

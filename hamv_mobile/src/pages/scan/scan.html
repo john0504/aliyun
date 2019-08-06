@@ -1,10 +1,10 @@
-<ion-header >
-  <ion-navbar >
-      <ion-title>掃描中……</ion-title>
+<ion-header>
+  <ion-navbar>
+    <ion-title>掃描中……</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content class="my-page" no-scroll [ngClass]="{'qrscanner':isShow}" >
-  <div [ngClass]="{'qrscanner-area':isShow}">    
-  </div> 
-   <div  [ngClass]="{'through-line':isShow}"></div>
+<ion-content no-scroll [ngClass]="{'qrscanner':isShow}">
+  <div [ngClass]="{'qrscanner-area':isShow}">
+  </div>
+  <div [ngClass]="{'through-line':isShow}"></div>
 </ion-content>

@@ -7,9 +7,6 @@
     </ion-buttons>
     <img class="center-logo" [src]="themeService.navbarLogoUrl" [ngClass]="{'center-logo-ios': isIOS() }">
     <ion-buttons right>
-      <button ion-button icon-only (click)="refresh()">
-        <ion-icon name="refresh"></ion-icon>
-      </button>
       <button ion-button icon-only go-adding-device>
         <ion-icon name="add"></ion-icon>
       </button>
@@ -17,24 +14,32 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <empty-devices *ngIf= "_deviceList.length == 0" empty-status></empty-devices>
+  <empty-devices *ngIf="_deviceList.length == 0" empty-status></empty-devices>
   <ion-card [ngClass]="{'is-owner': isOwner}" *ngFor="let deviceItem of _deviceList">
     <ion-card-content>
       <div class="popit-title" margin-bottom>
         <ion-card-title (click)="toggleDetails(deviceItem)">
+          <ion-icon class="popit-fab" color="orange" name="ios-alarm"
+            *ngIf="getExpire(deviceItem.ExpireDate) < 14*60*60*24">
+          </ion-icon>
+          <ion-icon class="popit-fab" color="warningRed" name="ios-alarm" *ngIf="getExpire(deviceItem.ExpireDate) < 0">
+          </ion-icon>
           {{ deviceItem?.DevName }}
           <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
           <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
         </ion-card-title>
-        <ion-icon class="popit-fab" color="primary" name="ios-link"*ngIf="getStatus(deviceItem.UpdateDate)"></ion-icon>
-        <ion-icon class="popit-fab" color="grey" name="ios-link"*ngIf="!getStatus(deviceItem.UpdateDate)"></ion-icon>
+        <ion-icon class="popit-fab" color="primary" name="ios-link" *ngIf="getStatus(deviceItem.UpdateDate)"></ion-icon>
+        <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!getStatus(deviceItem.UpdateDate)"></ion-icon>
       </div>
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">
           <h2>
-            保夾: {{ deviceItem?.H62 }} 
-            投幣: {{ deviceItem?.H60 }} 
-            出獎: {{ deviceItem?.H61 }}
+            保夾: {{ deviceItem?.H61 }}
+            投幣: {{ deviceItem?.H60 }}
+            出獎: {{ deviceItem?.H62 }}
+          </h2>
+          <h2 *ngIf="deviceItem?.H63 != 0">
+            錯誤代碼: {{ deviceItem?.H63 }}
           </h2>
         </ion-grid>
       </div>
@@ -42,11 +47,11 @@
         <ion-grid class="toggle-grid">
           <ion-row align-items-center>
             <ion-col col-8 class="none-padding">
-              <h2>保夾累積: {{ deviceItem?.H62 }}</h2>
+              <h2>保夾累積: {{ deviceItem?.H61 }}</h2>
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
-              <button ion-button class="full-button" round icon-left
-                color="primary" (click)="clearBank(deviceItem)" [disabled]="deviceItem.H62 == 0">
+              <button ion-button class="full-button" round icon-left color="primary" (click)="clearBank(deviceItem)"
+                [disabled]="deviceItem.H61 == 0">
                 清零
               </button>
             </ion-col>
@@ -56,37 +61,42 @@
               <h2>投幣數: {{ deviceItem?.H60 }}</h2>
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
-              <button ion-button class="full-button" round icon-left
-                color="primary" (click)="clearMoney(deviceItem)" [disabled]="deviceItem.H60 == 0">
+              <button ion-button class="full-button" round icon-left color="primary" (click)="clearMoney(deviceItem)"
+                [disabled]="deviceItem.H60 == 0">
                 清零
               </button>
             </ion-col>
           </ion-row>
           <ion-row align-items-center>
             <ion-col col-8 class="none-padding">
-              <h2>出獎數: {{ deviceItem?.H61 }}</h2>
+              <h2>出獎數: {{ deviceItem?.H62 }}</h2>
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
-              <button ion-button class="full-button" round icon-left 
-                color="primary" (click)="clearGift(deviceItem)" [disabled]="deviceItem.H61 == 0">
+              <button ion-button class="full-button" round icon-left color="primary" (click)="clearGift(deviceItem)"
+                [disabled]="deviceItem.H62 == 0">
                 清零
               </button>
             </ion-col>
           </ion-row>
+          <ion-row align-items-center>
+            <ion-col col-8 class="none-padding">
+              <h2>錯誤代碼: {{ deviceItem?.H63 }}</h2>
+            </ion-col>
+          </ion-row>
         </ion-grid>
-        <h2>到期時間: {{ deviceItem?.ExpireTime }}</h2>            
-        <div class="control-item-divider"></div> 
-        <div class="popit-other-items">  
-          <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" color="orange" round (click)="goPayment(deviceItem)">
-              加值
+        <h2>到期時間: {{ deviceItem?.ExpireTime }}</h2>
+        <div class="control-item-divider"></div>
+        <div class="popit-other-items">
+          <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" color="orange" round
+            (click)="goPayment(deviceItem)">
+            加值
           </button>
-          <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" round icon-left color="warningRed" 
-            (click)="deleteDeviceConfirm(deviceItem)"
-            margin-vertical>
+          <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" round icon-left color="warningRed"
+            (click)="deleteDeviceConfirm(deviceItem)" margin-vertical>
             <ion-icon name="close"></ion-icon>
             {{ 'DEVICE_SETTINGS.DELETE_DEVICE' | translate }}
           </button>
-        </div>  
+        </div>
       </div>
     </ion-card-content>
   </ion-card>

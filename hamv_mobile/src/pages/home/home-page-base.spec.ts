@@ -3,7 +3,7 @@ import { AppEngine, AppTasks, StateStore } from 'app-engine';
 import { File } from '@ionic-native/file';
 import { FileMock } from '@ionic-native-mocks/file';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { IonicModule, ViewController, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicModule, ViewController, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { MockNgRedux, NgReduxTestingModule } from '@angular-redux/store/testing';
 import { Storage } from '@ionic/storage';
 import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
@@ -20,6 +20,7 @@ import { ThemeService } from '../../providers/theme-service';
 
 import { baseAccount, baseGroup } from '../../mocks/testing-items.mocks';
 import { HomePageBase } from './home-page-base';
+import { PopupService } from '../../providers/popup-service';
 
 @Component({
   selector: 'testing-home-page',
@@ -36,8 +37,11 @@ export class TestingHomePage extends HomePageBase {
     themeService: ThemeService,
     appEngine: AppEngine,
     http: HttpClient,
+    public appTasks: AppTasks,
+    public alertCtrl: AlertController,
+    popupService: PopupService,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http, appTasks, alertCtrl, popupService);
   }
 
 }

@@ -177,11 +177,11 @@ export class CapsuleDevicePage {
       .pipe(delay(10000))
       .subscribe(() => {
         this.loading.dismiss();
-        this.viewCtrl.dismiss();
       }, (error) => {
         this.loading.dismiss();
         this.log += ("\r\n" + JSON.stringify(error));
-      });
+      });      
+      this.closePage();
   }
 
   private localMode() {
@@ -202,9 +202,11 @@ export class CapsuleDevicePage {
       "PrjName": "WAWA",
       "DevName": this.devicename,
       "Account": this.accountToken,
+      "MqttUser": "ZWN0Y28uY29tMCAXDTE5MDcxODAzMzUyMVoYDzIxMTkwNjI0MDMzNTIxWjBlMQsw",
+      "MqttPass": "CQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1MQ8w",
       "H60": this.money,
-      "H61": this.gift,
-      "H62": this.bank,
+      "H61": this.bank,
+      "H62": this.gift,
       "S01": round(this.latitude, 7).toString(),
       "S02": round(this.longitude, 7).toString()
     };
