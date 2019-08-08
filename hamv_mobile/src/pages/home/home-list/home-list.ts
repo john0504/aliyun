@@ -112,6 +112,7 @@ export class HomeListPage extends HomePageBase {
   sendData(deviceItem, message) {
     var topic = `WAWA/${deviceItem.DevNo}/D`;
     this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: false });
+    console.log(`${topic}:${JSON.stringify(message)}`)
   }
 
   goPayment(deviceItem) {
@@ -119,7 +120,7 @@ export class HomeListPage extends HomePageBase {
   }
 
   getStatus(date) {
-    return date > Date.now() / 1000 - 60 * 5;
+    return date > Date.now() / 1000 - 60 * 1.5;
   }
 
   getExpire(date) {

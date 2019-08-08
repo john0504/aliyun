@@ -51,7 +51,7 @@
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left color="primary" (click)="clearBank(deviceItem)"
-                [disabled]="deviceItem.H61 == 0">
+                [disabled]="deviceItem.H61 == 0 || !getStatus(deviceItem.UpdateDate)">
                 清零
               </button>
             </ion-col>
@@ -62,7 +62,7 @@
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left color="primary" (click)="clearMoney(deviceItem)"
-                [disabled]="deviceItem.H60 == 0">
+                [disabled]="deviceItem.H60 == 0 || !getStatus(deviceItem.UpdateDate)">
                 清零
               </button>
             </ion-col>
@@ -73,7 +73,7 @@
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left color="primary" (click)="clearGift(deviceItem)"
-                [disabled]="deviceItem.H62 == 0">
+                [disabled]="deviceItem.H62 == 0 || !getStatus(deviceItem.UpdateDate)">
                 清零
               </button>
             </ion-col>
