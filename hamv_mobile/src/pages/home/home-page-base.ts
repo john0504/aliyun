@@ -289,7 +289,7 @@ export abstract class HomePageBase {
           var dataView = new DataView(arrayBuffer);
           obj = {};
           var timestamp = dataView.getUint32(0);
-          if (this._deviceList[i].UpdateDate >= timestamp) {
+          if (this._deviceList[i].H60 != null && this._deviceList[i].UpdateDate >= timestamp) {
             return;
           }
           for (j = 4; j < message.length; j += 3) {
