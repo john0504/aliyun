@@ -112,7 +112,6 @@ export class HomeListPage extends HomePageBase {
   sendData(deviceItem, message) {
     var topic = `WAWA/${deviceItem.DevNo}/D`;
     this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: false });
-    console.log(`${topic}:${JSON.stringify(message)}`)
   }
 
   goPayment(deviceItem) {
