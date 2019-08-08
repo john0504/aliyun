@@ -8,14 +8,8 @@
     <button ion-item menuClose *ngFor="let p of appPages" (click)="goPage(p)" [ngClass]="{'menu-item-highlight': isCurrentPage(p) }">
       <h2>{{ p.title | translate }}</h2>
     </button>
-    <button *ngIf="testMode" ion-item menuClose (click)="goPage(bleSettingPage)" [ngClass]="{'menu-item-highlight': isCurrentPage(bleSettingPage) }">
-      <h2>{{ bleSettingPage.title | translate }}</h2>
-    </button>
   </ion-content>
   <ion-footer no-border>
-    <button ion-item (click)="turnOnTestMode()">
-      <h2 *ngIf="testMode">{{ 'APP.TEST_MODE_CLOSE' | translate }}</h2>
-    </button>
     <ion-item>
       <ion-label>
         <h2>{{ accountName }}</h2>

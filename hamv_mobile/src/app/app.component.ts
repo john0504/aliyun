@@ -43,10 +43,7 @@ import { NgRedux } from '@angular-redux/store';
 import { debounceImmediate } from '../app/app.extends';
 import { CheckNetworkService } from '../providers/check-network';
 import { GoAddingDeviceService } from '../providers/go-adding-device-service';
-// import { HockeyApp } from '../providers/hockey-app';
-// import { OtaUpdatePopup } from '../providers/ota-update-popup';
 import { OtaUpdateResult } from '../providers/ota-update-result';
-import { PopupService } from '../providers/popup-service';
 import { ImageCacheService } from '../modules/image-cache';
 import { ThemeService } from '../providers/theme-service';
 import { EchartsService } from '../components/chart-components/echarts-core/echarts-service';
@@ -90,10 +87,6 @@ export class MyApp implements OnInit, OnDestroy {
   accountName;
   appVer = '';
   supportLangs: Array<any> = [];
-  testMode: boolean = false;
-  testModeCount = 0;
-  testModeToast;
-  testModeDatetime: number;
 
   appPages: Array<any> = [
     { title: 'APP.HOME', component: 'HomeListPage' },
@@ -112,16 +105,13 @@ export class MyApp implements OnInit, OnDestroy {
     private deeplinks: Deeplinks,
     private esService: EchartsService,
     private goService: GoAddingDeviceService,
-    // private hockeyApp: HockeyApp,
     private log: LogService,
     private imageCache: ImageCacheService,
     private mms: ModelManagerService,
     private ngRedux: NgRedux<any>,
-    // private otaUpdatePopup: OtaUpdatePopup,
     private otaUpdateResult: OtaUpdateResult,
     private prManager: PageRouteManager,
     private platform: Platform,
-    private popupService: PopupService,
     private reduxModule: ReduxModule,
     private renderer: Renderer2,
     private storage: Storage,
@@ -140,9 +130,7 @@ export class MyApp implements OnInit, OnDestroy {
       .then(() => this.themeService.setup(this.renderer))
       .then(() => this.imageCache.initImageCache())
       .then(() => this.setupLanguage())
-      .then(() => this.setupTestMode())
       .then(() => this.loadModels())
-      // .then(() => this.setupHockeyApp())
       // .then(() => mixpanel.init(appConfig.mixpanel.token))
       .then(() => this.setupDeeplinks())
       .then(() => this.startAppEngine())
@@ -364,14 +352,6 @@ export class MyApp implements OnInit, OnDestroy {
       });
   }
 
-  // private setupHockeyApp() {
-  //   if (this.platform.is('android') && appConfig.hockeyApp.ids.android) {
-  //     this.hockeyApp.start(appConfig.hockeyApp.ids.android);
-  //   } else if (this.platform.is('ios') && appConfig.hockeyApp.ids.ios) {
-  //     this.hockeyApp.start(appConfig.hockeyApp.ids.ios);
-  //   }
-  // }
-
   private setupLogService() {
     if (!appConfig.app.disableLog) Logger.setup(this.log, appConfig.app.logConfig);
   }
@@ -396,53 +376,6 @@ export class MyApp implements OnInit, OnDestroy {
       this.appTasks.getUserDataTask(),
       this.appTasks.getUserMeTask(),
     ]);
-  }
-
-  private setupTestMode() {
-    return this.storage.get('testMode')
-      .then((testMode) => {
-        if (testMode) {
-          this.testMode = testMode;
-        } else {
-          this.testMode = false;
-        }
-      });
-  }
-
-  turnOnTestMode() {
-    const currentDatetime = new Date().getTime();
-    if (currentDatetime - this.testModeDatetime > 2000) {
-      this.testModeCount = 0;
-    }
-    this.testModeDatetime = currentDatetime;
-    this.testModeCount++;
-    if (!this.testMode && this.testModeCount >= 10) {
-      this.testMode = true;
-      this.storage.set('testMode', this.testMode);
-      const testModeMsg = this.translate.instant('APP.TEST_MODE_OPEN');
-      this.popupService.makeToast({
-        duration: 1000,
-        message: testModeMsg,
-        position: 'bottom',
-      });
-    } else if (!this.testMode && this.testModeCount >= 7) {
-      const testModeMsg = this.translate.instant('APP.TEST_MODE_COUNT', { value: 10 - this.testModeCount });
-      this.testModeToast = this.popupService.makeToast({
-        duration: 1000,
-        message: testModeMsg,
-        position: 'bottom',
-      });
-    } else if (this.testMode) {
-      this.testModeCount = 0;
-      this.testMode = false;
-      this.storage.set('testMode', this.testMode);
-      const testModeMsg = this.translate.instant('APP.TEST_MODE_CLOSE');
-      this.popupService.makeToast({
-        duration: 1000,
-        message: testModeMsg,
-        position: 'bottom',
-      });
-    }
   }
 }
 

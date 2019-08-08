@@ -66,6 +66,7 @@ export abstract class HomePageBase {
   private _userList = [];
   private _timestamp = 0;
   noNetworkToast;
+  messageD = "";
 
   opts: IClientOptions = {
     port: 9001,
@@ -172,7 +173,6 @@ export abstract class HomePageBase {
     this.storage.get(USER_LIST)
       .then(userList => {
         this._userList = userList ? userList : [];
-        // console.log("LOG HERE - " + JSON.stringify(this._userList));
         var tokenFound = false;
         this._userList.forEach(user => {
           if (user.token == this.accountToken) {
@@ -228,10 +228,10 @@ export abstract class HomePageBase {
 
   getMessage(topic, message) {
     if (topic == this.topicC) {
-      console.log("topic: " + topic + " & message: " + message.toString());
       var obj = JSON.parse(message.toString());
-      if (obj && obj.time) {
-        if (obj.time > this._timestamp && this.accountToken != "0005") {
+      if (obj && obj.time && this.accountToken != "0005") {
+        if (obj.time > this._timestamp) {
+          console.log("topic: " + topic + " & message: " + message.toString());
           this.client.end();
           const alertTitle = "已與伺服器斷開，請重新登入";
           let options: AlertOptions = {
@@ -251,8 +251,13 @@ export abstract class HomePageBase {
         }
       }
     } else if (topic == this.topicD) {
-      console.log("topic: " + topic + " & message: " + message.toString());
       obj = JSON.parse(message.toString());
+      if (this.messageD == message.toString()) {
+        return;
+      } else {
+        this.messageD = message.toString();
+      }
+      console.log("topic: " + topic + " & message: " + message.toString());
       if (obj && obj.data) {
         var newDeviceList = this._deviceList;
         this._deviceList = [];
@@ -271,14 +276,7 @@ export abstract class HomePageBase {
           });
           this._deviceList.push(data);
         });
-        this._deviceListDate = Date.now() / 1000;
-        this._userList.forEach(user => {
-          if (user.token == this.accountToken) {
-            user.date = this._deviceListDate;
-            user.list = this._deviceList;
-          }
-        });
-        this.storage.set(USER_LIST, this._userList);
+        this.saveUserList();
       }
     } else {
       for (var i = 0; i < this._deviceList.length; i++) {
@@ -291,27 +289,38 @@ export abstract class HomePageBase {
           var dataView = new DataView(arrayBuffer);
           obj = {};
           var timestamp = dataView.getUint32(0);
+          if (this._deviceList[i].UpdateDate >= timestamp) {
+            return;
+          }
           for (j = 4; j < message.length; j += 3) {
             var service = dataView.getUint8(j);
             var value = dataView.getUint16(j + 1);
             obj["H" + service.toString(16).toUpperCase()] = value;
           }
-          console.log("topic: " + topic + " & message: " + JSON.stringify(obj));
+          console.log("topic: " + topic + " & message: " + JSON.stringify(obj) + " & timestamp:" + timestamp);
           Object.assign(this._deviceList[i], obj);
           this._deviceList[i].UpdateDate = timestamp;
+          this.saveUserList();
         } else if (topic == this._deviceList[i].topicS) {
-          console.log("topic: " + topic);
-          this._deviceList[i].UpdateDate = Date.now() / 1000;
+          timestamp = parseInt((Date.now() / 1000).toString(), 10);
+          this._deviceList[i].UpdateDate = timestamp;
+          console.log("topic: " + topic + " & timestamp:" + timestamp);
+          this.saveUserList();
         }
       }
-      this._userList.forEach(user => {
-        if (user.token == this.accountToken) {
-          user.date = this._deviceListDate;
-          user.list = this._deviceList;
-        }
-      });
-      this.storage.set(USER_LIST, this._userList);
     }
+  }
+
+  private saveUserList() {
+    var timestamp = Date.now() / 1000;
+    this._deviceListDate = parseInt(timestamp.toString(), 10);
+    this._userList.forEach(user => {
+      if (user.token == this.accountToken) {
+        user.date = this._deviceListDate;
+        user.list = this._deviceList;
+      }
+    });
+    this.storage.set(USER_LIST, this._userList);
   }
 
   private createTabsFromGroups(groups) {
