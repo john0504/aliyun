@@ -118,8 +118,9 @@ export class HomeListPage extends HomePageBase {
     this.navCtrl2.push('DevicePaymentPage', { serial: deviceItem.DevNo });
   }
 
-  getStatus(date) {
-    return date > Date.now() / 1000 - 60 * 1.5;
+  getStatus(deviceItem) {
+    var offlineTime = Date.now() / 1000 - 60 * 1.5;
+    return deviceItem.UpdateDateU > offlineTime || deviceItem.UpdateDateS > offlineTime;
   }
 
   getExpire(date) {

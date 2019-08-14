@@ -107,12 +107,14 @@ export abstract class HomePageBase {
         const isValid = value && value.lastSelectedIndex >= 0;
         this.currentTab = isValid ? value.lastSelectedIndex : 0;
       });
-    this.http.get('./assets/ca/ca.crt', { responseType: "text" })
+    this.http.get('./assets/ca/ca_bundle.crt', { responseType: "text" })
       .subscribe(cafile => this.opts.ca = cafile);
-    this.http.get('./assets/ca/client.crt', { responseType: "text" })
-      .subscribe(certfile => this.opts.cert = certfile);
-    this.http.get('./assets/ca/client.key', { responseType: "text" })
-      .subscribe(keyfile => this.opts.key = keyfile);
+    // this.http.get('./assets/ca/ca.crt', { responseType: "text" })
+    //   .subscribe(cafile => this.opts.ca = cafile);
+    // this.http.get('./assets/ca/client.crt', { responseType: "text" })
+    //   .subscribe(certfile => this.opts.cert = certfile);
+    // this.http.get('./assets/ca/client.key', { responseType: "text" })
+    //   .subscribe(keyfile => this.opts.key = keyfile);
   }
 
   ionViewDidEnter() {
@@ -195,7 +197,9 @@ export abstract class HomePageBase {
   }
 
   connectMqtt() {
-    if (!this.client || !this.client.connected) {
+    if (!this.client) {
+      var timestamp = Date.now();
+      this.opts.clientId = `CECTCO-ionic-${Math.random().toString(16).substr(2, 8)}-${timestamp}`;
       this.client = connect('', this.opts);
       this.toggleToast(true);
 
@@ -216,10 +220,12 @@ export abstract class HomePageBase {
 
   subscribeTopic() {
     if (this._timestamp == 0) {
-      this.topicC = `WAWA/${this.accountToken}/C`;
-      this.client.subscribe(this.topicC);
       this.topicD = `WAWA/${this.accountToken}/D`;
-      this.client.subscribe(this.topicD);
+      this.client.subscribe(this.topicD, { qos: 1 });
+
+      // 將重複登入者剔除機制
+      this.topicC = `WAWA/${this.accountToken}/C`;
+      this.client.subscribe(this.topicC, { qos: 1 });
       this._timestamp = Date.now();
       var paylodC = { time: this._timestamp };
       this.client.publish(this.topicC, JSON.stringify(paylodC), { qos: 1, retain: true });
@@ -262,13 +268,15 @@ export abstract class HomePageBase {
         var newDeviceList = this._deviceList;
         this._deviceList = [];
         obj.data.forEach(data => {
+          data.topicC = `WAWA/${data.DevNo}/C`;
           data.topicU = `WAWA/${data.DevNo}/U`;
           data.topicS = `WAWA/${data.DevNo}/S`;
           data.ExpireTime = this.getDate(data.ExpireDate);
           if (Date.now() / 1000 <= data.ExpireDate) {
-            this.client.subscribe(data.topicU);
+            this.client.subscribe(data.topicU, { qos: 1 });
           }
-          this.client.subscribe(data.topicS);
+          this.client.subscribe(data.topicC, { qos: 1 });
+          this.client.subscribe(data.topicS, { qos: 1 });
           newDeviceList.forEach(device => {
             if (device.DevNo == data.DevNo) {
               data = Object.assign(device, data);
@@ -280,7 +288,11 @@ export abstract class HomePageBase {
       }
     } else {
       for (var i = 0; i < this._deviceList.length; i++) {
-        if (topic == this._deviceList[i].topicU) {
+        if (topic == this._deviceList[i].topicC) {
+          obj = JSON.parse(message.toString());
+          Object.assign(this._deviceList[i], obj);
+          this.saveUserList();
+        } else if (topic == this._deviceList[i].topicU) {
           var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
           var view = new Uint8Array(arrayBuffer);
           for (var j = 0; j < message.length; j++) {
@@ -289,7 +301,7 @@ export abstract class HomePageBase {
           var dataView = new DataView(arrayBuffer);
           obj = {};
           var timestamp = dataView.getUint32(0);
-          if (this._deviceList[i].H60 != null && this._deviceList[i].UpdateDate >= timestamp) {
+          if (this._deviceList[i].H60 != null && this._deviceList[i].UpdateDateU >= timestamp) {
             return;
           }
           for (j = 4; j < message.length; j += 3) {
@@ -299,11 +311,29 @@ export abstract class HomePageBase {
           }
           console.log("topic: " + topic + " & message: " + JSON.stringify(obj) + " & timestamp:" + timestamp);
           Object.assign(this._deviceList[i], obj);
-          this._deviceList[i].UpdateDate = timestamp;
+          this._deviceList[i].UpdateDateU = timestamp;
+          this._deviceList[i].UpdateTime = this.getTime(timestamp);
           this.saveUserList();
         } else if (topic == this._deviceList[i].topicS) {
-          timestamp = parseInt((Date.now() / 1000).toString(), 10);
-          this._deviceList[i].UpdateDate = timestamp;
+          timestamp = 0;
+          // if (message.length != 0) {
+          //   arrayBuffer = new ArrayBuffer(message.length);
+          //   view = new Uint8Array(arrayBuffer);
+          //   for (j = 0; j < message.length; j++) {
+          //     view[j] = message[j];
+          //   }
+          //   dataView = new DataView(arrayBuffer);
+          //   obj = {};
+          //   timestamp = dataView.getUint32(0);
+          //   if (timestamp && this._deviceList[i].UpdateDateS >= timestamp) {
+          //     console.log(`======= ${topic} =======`);
+          //     return;
+          //   }
+          // }
+          if (!timestamp) {
+            timestamp = parseInt((Date.now() / 1000).toString(), 10);
+          }
+          this._deviceList[i].UpdateDateS = timestamp;
           console.log("topic: " + topic + " & timestamp:" + timestamp);
           this.saveUserList();
         }
@@ -424,6 +454,11 @@ export abstract class HomePageBase {
   public getDate(timestamp) {
     var date = new Date(timestamp * 1000);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
+
+  public getTime(timestamp) {
+    var date = new Date(timestamp * 1000);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   }
 
   logout() {
