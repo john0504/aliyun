@@ -37,6 +37,7 @@ import { PopupService } from '../../providers/popup-service';
 
 const TAB_CONFIG = 'tabConfig';
 const USER_LIST = 'userList';
+const CLIENT_ID = 'clientId';
 
 export abstract class HomePageBase {
 
@@ -199,22 +200,31 @@ export abstract class HomePageBase {
   connectMqtt() {
     if (!this.client) {
       var timestamp = Date.now();
-      this.opts.clientId = `CECTCO-ionic-${Math.random().toString(16).substr(2, 8)}-${timestamp}`;
-      this.client = connect('', this.opts);
-      this.toggleToast(true);
+      this.storage.get(CLIENT_ID)
+        .then(clientId => {
+          if (clientId) {
+            this.opts.clientId = clientId;
+          } else {
+            this.opts.clientId = `CECTCO-ionic-${Math.random().toString(16).substr(2, 8)}-${timestamp}`;
+            this.storage.set(CLIENT_ID, this.opts.clientId);
+          }
+          this.client = connect('', this.opts);
+          this.toggleToast(true);
 
-      this.client.on('connect', () => {
-        this.toggleToast(false);
-        this.subscribeTopic();
-      });
+          this.client.on('connect', () => {
+            this.toggleToast(false);
+            console.log(`clientId:${this.opts.clientId}`);
+            this.subscribeTopic();
+          });
 
-      this.client.on('message', (topic, message) => {
-        this.getMessage(topic, message);
-      });
+          this.client.on('message', (topic, message) => {
+            this.getMessage(topic, message);
+          });
 
-      this.client.on('error', (err) => {
-        console.log("Log Here - " + JSON.stringify(err));
-      });
+          this.client.on('error', (err) => {
+            console.log("Log Here - " + JSON.stringify(err));
+          });
+        });
     }
   }
 
