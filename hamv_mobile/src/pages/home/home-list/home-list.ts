@@ -85,28 +85,61 @@ export class HomeListPage extends HomePageBase {
     }
   }
 
-  clearBank(deviceItem) {
-    deviceItem.H61 = 0;
-    var message = {
-      H61: 0
+  clearConfirm(name, deviceItem, callback) {
+    const alertTitle = this.translate2.instant(name);
+    const alertSubTitle = this.translate2.instant('確定要清除嗎?');
+    const alertCancel = this.translate2.instant('DEVICE_SETTINGS.CANCEL');
+    const alertDelete = this.translate2.instant('DEVICE_SETTINGS.OK');
+
+    let options: AlertOptions = {
+      title: alertTitle,
+      subTitle: alertSubTitle,
+      buttons: [
+        {
+          text: alertCancel,
+          role: 'cancel',
+        },
+        {
+          text: alertDelete,
+          handler: () => {
+            callback(deviceItem);
+          },
+        }
+      ],
     };
-    this.sendData(deviceItem, message);
+
+    const alert = this.alertCtrl.create(options);
+    alert.present();
+  }
+
+  clearBank(deviceItem) {
+    this.clearConfirm("中獎率銀行", deviceItem, () => {
+      deviceItem.H61 = 0;
+      var message = {
+        H61: 0
+      };
+      this.sendData(deviceItem, message);
+    });
   }
 
   clearMoney(deviceItem) {
-    deviceItem.H60 = 0;
-    var message = {
-      H60: 0
-    };
-    this.sendData(deviceItem, message);
+    this.clearConfirm("投幣遊戲次數", deviceItem, () => {
+      deviceItem.H60 = 0;
+      var message = {
+        H60: 0
+      };
+      this.sendData(deviceItem, message);
+    });
   }
 
   clearGift(deviceItem) {
-    deviceItem.H62 = 0;
-    var message = {
-      H62: 0
-    };
-    this.sendData(deviceItem, message);
+    this.clearConfirm("禮品出獎次數", deviceItem, () => {
+      deviceItem.H62 = 0;
+      var message = {
+        H62: 0
+      };
+      this.sendData(deviceItem, message);
+    });
   }
 
   sendData(deviceItem, message) {

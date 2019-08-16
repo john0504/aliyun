@@ -226,8 +226,11 @@ export abstract class HomePageBase {
           this.toggleToast(true);
 
           this.client.on('connect', () => {
-            this.toggleToast(false);
             this.subscribeTopic();
+          });
+
+          this.client.on('offline', () => {
+            this.toggleToast(true);
           });
 
           this.client.on('message', (topic, message) => {
@@ -282,6 +285,7 @@ export abstract class HomePageBase {
         }
       }
     } else if (topic == this.topicD) {
+      this.toggleToast(false);
       obj = JSON.parse(message.toString());
       console.log("topic: " + topic + " & message: " + message.toString());
       if (obj && obj.data) {
