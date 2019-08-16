@@ -68,6 +68,7 @@ export abstract class HomePageBase {
   private _timestamp = 0;
   noNetworkToast;
   messageD = "";
+  updateOnline;
 
   opts: IClientOptions = {
     port: 9001,
@@ -165,11 +166,14 @@ export abstract class HomePageBase {
       this.client.unsubscribe(this.topicC);
       this.client.unsubscribe(this.topicD);
       this._deviceList.forEach(device => {
+        this.client.unsubscribe(device.topicC);
         this.client.unsubscribe(device.topicU);
         this.client.unsubscribe(device.topicS);
       });
       this.client.end();
     }
+    this.client = null;
+    clearInterval(this.updateOnline);
   }
 
   loadUserList() {
@@ -209,11 +213,20 @@ export abstract class HomePageBase {
             this.storage.set(CLIENT_ID, this.opts.clientId);
           }
           this.client = connect('', this.opts);
+          // 檢查裝置是否上線
+          this.updateOnline = setInterval(() => {
+            var offlineTime = Date.now() / 1000 - 60 * 2;
+            this._deviceList.forEach(device => {
+              var online = device.UpdateDate > offlineTime;
+              if (device.Online != online) {
+                device.Online = online;
+              }
+            });
+          }, 3000);
           this.toggleToast(true);
 
           this.client.on('connect', () => {
             this.toggleToast(false);
-            console.log(`clientId:${this.opts.clientId}`);
             this.subscribeTopic();
           });
 
@@ -229,17 +242,19 @@ export abstract class HomePageBase {
   }
 
   subscribeTopic() {
-    if (this._timestamp == 0) {
-      this.topicD = `WAWA/${this.accountToken}/D`;
-      this.client.subscribe(this.topicD, { qos: 1 });
+    this.topicD = `WAWA/${this.accountToken}/D`;
+    this.client.subscribe(this.topicD, { qos: 1 });
+    // 更新裝置列表
+    var topic = `WAWA/${this.accountToken}/U`;
+    var paylod = JSON.stringify({ action: "list" });
+    this.client.publish(topic, paylod, { qos: 1, retain: false });
 
-      // 將重複登入者剔除機制
-      this.topicC = `WAWA/${this.accountToken}/C`;
-      this.client.subscribe(this.topicC, { qos: 1 });
-      this._timestamp = Date.now();
-      var paylodC = { time: this._timestamp };
-      this.client.publish(this.topicC, JSON.stringify(paylodC), { qos: 1, retain: true });
-    }
+    // 將重複登入者剔除機制
+    this.topicC = `WAWA/${this.accountToken}/C`;
+    this.client.subscribe(this.topicC, { qos: 1 });
+    this._timestamp = Date.now();
+    var paylodC = { time: this._timestamp };
+    this.client.publish(this.topicC, JSON.stringify(paylodC), { qos: 1, retain: false });
   }
 
   getMessage(topic, message) {
@@ -268,27 +283,25 @@ export abstract class HomePageBase {
       }
     } else if (topic == this.topicD) {
       obj = JSON.parse(message.toString());
-      if (this.messageD == message.toString()) {
-        return;
-      } else {
-        this.messageD = message.toString();
-      }
       console.log("topic: " + topic + " & message: " + message.toString());
       if (obj && obj.data) {
         var newDeviceList = this._deviceList;
         this._deviceList = [];
         obj.data.forEach(data => {
-          data.topicC = `WAWA/${data.DevNo}/C`;
-          data.topicU = `WAWA/${data.DevNo}/U`;
-          data.topicS = `WAWA/${data.DevNo}/S`;
-          data.ExpireTime = this.getDate(data.ExpireDate);
-          if (Date.now() / 1000 <= data.ExpireDate) {
+          data.topicC = `WAWA/${data.D}/C`;
+          data.topicU = `WAWA/${data.D}/U`;
+          data.topicS = `WAWA/${data.D}/S`;
+          data.DevNo = data.D;
+          data.ExpireDate = data.E;
+          data.UpdateDate = data.U;
+          data.ExpireTime = this.getDate(data.E);
+          if (Date.now() / 1000 <= data.E) {
             this.client.subscribe(data.topicU, { qos: 1 });
           }
           this.client.subscribe(data.topicC, { qos: 1 });
           this.client.subscribe(data.topicS, { qos: 1 });
           newDeviceList.forEach(device => {
-            if (device.DevNo == data.DevNo) {
+            if (device.DevNo == data.D) {
               data = Object.assign(device, data);
             }
           });
@@ -301,6 +314,7 @@ export abstract class HomePageBase {
         if (topic == this._deviceList[i].topicC) {
           obj = JSON.parse(message.toString());
           Object.assign(this._deviceList[i], obj);
+          console.log("topic: " + topic + " & message:" + message.toString());
           this.saveUserList();
         } else if (topic == this._deviceList[i].topicU) {
           var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
@@ -311,39 +325,24 @@ export abstract class HomePageBase {
           var dataView = new DataView(arrayBuffer);
           obj = {};
           var timestamp = dataView.getUint32(0);
-          if (this._deviceList[i].H60 != null && this._deviceList[i].UpdateDateU >= timestamp) {
-            return;
-          }
           for (j = 4; j < message.length; j += 3) {
             var service = dataView.getUint8(j);
             var value = dataView.getUint16(j + 1);
             obj["H" + service.toString(16).toUpperCase()] = value;
           }
-          console.log("topic: " + topic + " & message: " + JSON.stringify(obj) + " & timestamp:" + timestamp);
           Object.assign(this._deviceList[i], obj);
-          this._deviceList[i].UpdateDateU = timestamp;
+          if (this._deviceList[i].UpdateDate < timestamp) {
+            this._deviceList[i].UpdateDate = timestamp;
+          }
           this._deviceList[i].UpdateTime = this.getTime(timestamp);
+          console.log("topic: " + topic + " & timestamp:" + timestamp);
           this.saveUserList();
         } else if (topic == this._deviceList[i].topicS) {
           timestamp = 0;
-          // if (message.length != 0) {
-          //   arrayBuffer = new ArrayBuffer(message.length);
-          //   view = new Uint8Array(arrayBuffer);
-          //   for (j = 0; j < message.length; j++) {
-          //     view[j] = message[j];
-          //   }
-          //   dataView = new DataView(arrayBuffer);
-          //   obj = {};
-          //   timestamp = dataView.getUint32(0);
-          //   if (timestamp && this._deviceList[i].UpdateDateS >= timestamp) {
-          //     console.log(`======= ${topic} =======`);
-          //     return;
-          //   }
-          // }
           if (!timestamp) {
             timestamp = parseInt((Date.now() / 1000).toString(), 10);
           }
-          this._deviceList[i].UpdateDateS = timestamp;
+          this._deviceList[i].UpdateDate = timestamp;
           console.log("topic: " + topic + " & timestamp:" + timestamp);
           this.saveUserList();
         }

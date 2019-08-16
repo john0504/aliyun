@@ -28,8 +28,8 @@
           <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
           <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
         </ion-card-title>
-        <ion-icon class="popit-fab" color="primary" name="ios-link" *ngIf="getStatus(deviceItem)"></ion-icon>
-        <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!getStatus(deviceItem)"></ion-icon>
+        <ion-icon class="popit-fab" color="primary" name="ios-link" *ngIf="deviceItem.Online"></ion-icon>
+        <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!deviceItem.Online"></ion-icon>
       </div>
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">
@@ -51,7 +51,7 @@
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left color="primary" (click)="clearBank(deviceItem)"
-                [disabled]="deviceItem.H61 == 0 || !getStatus(deviceItem)">
+                [disabled]="deviceItem.H61 == 0 || !deviceItem.Online">
                 清零
               </button>
             </ion-col>
@@ -62,7 +62,7 @@
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left color="primary" (click)="clearMoney(deviceItem)"
-                [disabled]="deviceItem.H60 == 0 || !getStatus(deviceItem)">
+                [disabled]="deviceItem.H60 == 0 || !deviceItem.Online">
                 清零
               </button>
             </ion-col>
@@ -73,7 +73,7 @@
             </ion-col>
             <ion-col col-4 class="toggle-items none-padding">
               <button ion-button class="full-button" round icon-left color="primary" (click)="clearGift(deviceItem)"
-                [disabled]="deviceItem.H62 == 0 || !getStatus(deviceItem)">
+                [disabled]="deviceItem.H62 == 0 || !deviceItem.Online">
                 清零
               </button>
             </ion-col>

@@ -71,28 +71,28 @@
         <ion-toggle color="primary" item-right [(ngModel)]="useText" name="inputToggle" #inputToggle="ngModel" (ngModelChange)="clearSSID()"></ion-toggle>
       </ion-item>
       <ion-item color="lightGrey">
-        <ion-label floating color="darkGrey">錢箱目前記數值</ion-label>
+        <ion-label floating color="darkGrey">投幣遊戲次數</ion-label>
         <ion-input [(ngModel)]="money" name="money" type="number" max="65535" myTabIndex="3">
         </ion-input>
       </ion-item>
       <ion-item color="lightGrey" *ngIf="!isMoneyValid()">
-        <ion-label color="danger">錢箱目前記數值不合法</ion-label>
+        <ion-label color="danger">投幣遊戲次數不合法</ion-label>
       </ion-item>
       <ion-item color="lightGrey">
-        <ion-label floating color="darkGrey">出獎目前記數值</ion-label>
+        <ion-label floating color="darkGrey">禮品出獎次數</ion-label>
         <ion-input [(ngModel)]="gift" name="gift" type="number" max="65535" myTabIndex="4">
         </ion-input>
       </ion-item>
       <ion-item color="lightGrey" *ngIf="!isGiftValid()">
-        <ion-label color="danger">出獎目前記數值不合法</ion-label>
+        <ion-label color="danger">禮品出獎次數不合法</ion-label>
       </ion-item>
       <ion-item color="lightGrey">
-        <ion-label floating color="darkGrey">保夾目前記數值</ion-label>
+        <ion-label floating color="darkGrey">中獎率銀行數值</ion-label>
         <ion-input [(ngModel)]="bank" name="bank" type="number" max="65535" myTabIndex="4">
         </ion-input>
       </ion-item>
       <ion-item color="lightGrey" *ngIf="!isBankValid()">
-        <ion-label color="danger">保夾目前記數值不合法</ion-label>
+        <ion-label color="danger">中獎率銀行數值不合法</ion-label>
       </ion-item>
       <ion-item color="lightGrey">
         <ion-label floating color="darkGrey">裝置命名</ion-label>

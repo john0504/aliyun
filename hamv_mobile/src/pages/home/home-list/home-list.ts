@@ -67,7 +67,7 @@ export class HomeListPage extends HomePageBase {
           handler: () => {
             var topic = `WAWA/${this.accountToken}/U`;
             var paylod = JSON.stringify({ action: "delete", DevNo: deviceItem.DevNo });
-            this.client.publish(topic, paylod, { qos: 1, retain: true });
+            this.client.publish(topic, paylod, { qos: 1, retain: false });
           },
         }
       ],
@@ -116,11 +116,6 @@ export class HomeListPage extends HomePageBase {
 
   goPayment(deviceItem) {
     this.navCtrl2.push('DevicePaymentPage', { serial: deviceItem.DevNo });
-  }
-
-  getStatus(deviceItem) {
-    var offlineTime = Date.now() / 1000 - 60 * 1.5;
-    return deviceItem.UpdateDateU > offlineTime || deviceItem.UpdateDateS > offlineTime;
   }
 
   getExpire(date) {
