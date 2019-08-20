@@ -52,23 +52,23 @@ import { PageRouteManager } from '../components/page-nav/page-route-manager';
 import { ssidConfirmReducer } from '../pages/ssid-confirm/ssid-confirm';
 import { deviceCreateReducer } from '../pages/device-create/device-create';
 
-import { ComponentProvider, ModelManagerService } from '../modules/information-model';
+// import { ComponentProvider, ModelManagerService } from '../modules/information-model';
 // import mixpanel from 'mixpanel-browser';
 import './app.extends';
 
-import {
-  ButtonGroupWithToggle,
-  RangeWithToggle,
-  LargeToggleWithRange,
-  LargeToggle,
-  SimpleButtonGroup,
-  MultiButtonGroup,
-  SimpleRange,
-  SimpleText,
-  ColorText,
-  SimpleToggle,
-  LineChart,
-} from '../components/control-items';
+// import {
+//   ButtonGroupWithToggle,
+//   RangeWithToggle,
+//   LargeToggleWithRange,
+//   LargeToggle,
+//   SimpleButtonGroup,
+//   MultiButtonGroup,
+//   SimpleRange,
+//   SimpleText,
+//   ColorText,
+//   SimpleToggle,
+//   LineChart,
+// } from '../components/control-items';
 import { PageNav } from '../components/page-nav/page-nav';
 
 import { appConfig } from './app.config';
@@ -94,20 +94,18 @@ export class MyApp implements OnInit, OnDestroy {
     { title: 'APP.SETTINGS', component: 'SettingsPage' },
   ];
 
-  bleSettingPage = { title: 'APP.BLUETOOTH_SETTING', component: 'BluetoothSettingPage' };
-
   constructor(
     private app: App,
     private appEngine: AppEngine,
     private appTasks: AppTasks,
     private config: Config,
-    private cp: ComponentProvider,
+    // private cp: ComponentProvider,
     private deeplinks: Deeplinks,
     private esService: EchartsService,
     private goService: GoAddingDeviceService,
     private log: LogService,
     private imageCache: ImageCacheService,
-    private mms: ModelManagerService,
+    // private mms: ModelManagerService,
     private ngRedux: NgRedux<any>,
     private otaUpdateResult: OtaUpdateResult,
     private prManager: PageRouteManager,
@@ -130,7 +128,7 @@ export class MyApp implements OnInit, OnDestroy {
       .then(() => this.themeService.setup(this.renderer))
       .then(() => this.imageCache.initImageCache())
       .then(() => this.setupLanguage())
-      .then(() => this.loadModels())
+      // .then(() => this.loadModels())
       // .then(() => mixpanel.init(appConfig.mixpanel.token))
       .then(() => this.setupDeeplinks())
       .then(() => this.startAppEngine())
@@ -221,19 +219,19 @@ export class MyApp implements OnInit, OnDestroy {
       });
   }
 
-  private registerComponents() {
-    this.cp.registerComponent('button-group-with-toggle', ButtonGroupWithToggle);
-    this.cp.registerComponent('range-with-toggle', RangeWithToggle);
-    this.cp.registerComponent('large-toggle-with-range', LargeToggleWithRange);
-    this.cp.registerComponent('large-toggle', LargeToggle);
-    this.cp.registerComponent('button-group', SimpleButtonGroup);
-    this.cp.registerComponent('multi-button-group', MultiButtonGroup);
-    this.cp.registerComponent('range', SimpleRange);
-    this.cp.registerComponent('text', SimpleText);
-    this.cp.registerComponent('color-text', ColorText);
-    this.cp.registerComponent('toggle', SimpleToggle);
-    this.cp.registerComponent('line-chart', LineChart);
-  }
+  // private registerComponents() {
+  //   this.cp.registerComponent('button-group-with-toggle', ButtonGroupWithToggle);
+  //   this.cp.registerComponent('range-with-toggle', RangeWithToggle);
+  //   this.cp.registerComponent('large-toggle-with-range', LargeToggleWithRange);
+  //   this.cp.registerComponent('large-toggle', LargeToggle);
+  //   this.cp.registerComponent('button-group', SimpleButtonGroup);
+  //   this.cp.registerComponent('multi-button-group', MultiButtonGroup);
+  //   this.cp.registerComponent('range', SimpleRange);
+  //   this.cp.registerComponent('text', SimpleText);
+  //   this.cp.registerComponent('color-text', ColorText);
+  //   this.cp.registerComponent('toggle', SimpleToggle);
+  //   this.cp.registerComponent('line-chart', LineChart);
+  // }
 
   goPage(p) {
     if (!this.isCurrentPage(p)) {
@@ -287,11 +285,11 @@ export class MyApp implements OnInit, OnDestroy {
       });
   }
 
-  private loadModels() {
-    Logger.log('platform.ready');
-    this.registerComponents();
-    return this.mms.load(`https://${this.appEngine.getBaseUrl()}`);
-  }
+  // private loadModels() {
+  //   Logger.log('platform.ready');
+  //   this.registerComponents();
+  //   return this.mms.load(`https://${this.appEngine.getBaseUrl()}`);
+  // }
 
   private registerBackButtonAction() {
     this.platform.registerBackButtonAction(() => {

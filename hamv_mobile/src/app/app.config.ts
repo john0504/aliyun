@@ -49,8 +49,9 @@ export const appConfig: AppConfig = {
   appEngine: {
     // solutionId: 'hamv-tenx',
     // productId: 'g30qvzkqcoki00000',
-    baseUrl: 'cectco.homeip.net' // com.cect.wawa
-    // baseUrl: '192.168.1.13' // com.smarthome.aliyun
+    baseUrl: 'cectco.homeip.net' // com.cect.wawa // CECE-WAWA
+    // baseUrl: 'cectwawa.homeip.net' // com.cect.cectwawa // WAWA-HONGKONG
+    // baseUrl: '192.168.1.13' // com.smarthome.aliyun // WAWA-LOCAL
   },
   // mixpanel: {
   //   token: 'YOUR_TOKEN',
@@ -79,7 +80,7 @@ export const appConfig: AppConfig = {
     theme: {
       primaryColor: '#00baff',
       productName: 'CECT智慧模組',
-      wifiName: 'CECT-XXXX',
+      wifiName: 'CECTCO-XXXX',
     },
     amazonAlexa: {
       skillName: 'skill-name',

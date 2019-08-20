@@ -142,6 +142,14 @@ export class HomeListPage extends HomePageBase {
     });
   }
 
+  
+
+  getGiftTimeList(deviceItem) {
+    var topic = `WAWA/${this.accountToken}/U`;
+    var paylod = JSON.stringify({ action: "gifttime", DevNo: deviceItem.DevNo });
+    this.client.publish(topic, paylod, { qos: 1, retain: false });
+  }
+
   sendData(deviceItem, message) {
     var topic = `WAWA/${deviceItem.DevNo}/D`;
     this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: false });

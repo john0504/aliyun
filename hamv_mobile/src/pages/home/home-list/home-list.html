@@ -28,19 +28,24 @@
           <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
           <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
         </ion-card-title>
-        <ion-icon class="popit-fab" color="primary" name="ios-link" *ngIf="deviceItem.Online"></ion-icon>
+        <ion-icon class="popit-fab" color="danger" name="logo-usd" *ngIf="deviceItem.isExpire"></ion-icon>
+        <ion-icon class="popit-fab" color="danger" name="build" *ngIf="deviceItem?.H63 != 0"></ion-icon>
+        <ion-icon class="popit-fab" color="secondary" name="ios-link" *ngIf="deviceItem.Online"></ion-icon>
         <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!deviceItem.Online"></ion-icon>
       </div>
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">
-          <h2>
-            中獎: {{ deviceItem?.H61 }}
-            投幣: {{ deviceItem?.H60 }}
-            禮品: {{ deviceItem?.H62 }}
-          </h2>
-          <h2 *ngIf="deviceItem?.H63 != 0">
-            錯誤代碼: {{ deviceItem?.H63 }}
-          </h2>
+          <ion-row class="none-padding">
+            <ion-col col-4 class="none-padding">
+              <h2>中獎: {{ deviceItem?.H61 }}</h2>
+            </ion-col>
+            <ion-col col-4 class="none-padding">
+              <h2>投幣: {{ deviceItem?.H60 }}</h2>
+            </ion-col>
+            <ion-col col-4 class="none-padding">
+              <h2>禮品: {{ deviceItem?.H62 }}</h2>
+            </ion-col>
+          </ion-row>
         </ion-grid>
       </div>
       <div class="popit-content" *ngIf="deviceItem.showDetails">
@@ -80,16 +85,22 @@
           </ion-row>
           <ion-row align-items-center>
             <ion-col class="none-padding">
-              <h2>錯誤代碼: {{ deviceItem?.H63 }}</h2>
-              <h2>資料更新時間: {{ deviceItem?.UpdateTime }}</h2>
-            </ion-col>
+              <h2>最新更新: {{ deviceItem?.UpdateTime }}</h2>
+            </ion-col>     
           </ion-row>
+          <!-- <ion-row align-items-center>
+            <ion-col col-4 class="toggle-items none-padding">
+              <button ion-button class="full-button" round icon-left color="primary" (click)="getGiftTimeList(deviceItem)">
+                查詢禮品出獎紀錄
+              </button>
+            </ion-col>
+          </ion-row> -->
         </ion-grid>
         <div class="control-item-divider"></div>
         <h2>裝置序號: {{ deviceItem?.DevNo }}</h2>
-        <h2>Wifi模組版本: {{ deviceItem?.VerNum }}</h2>
-        <h2>SAA模組版本: {{ deviceItem?.SaaModel }}</h2>
-        <h2>到期時間: {{ deviceItem?.ExpireTime }}</h2>
+        <h2>通訊模組版本: {{ deviceItem?.VerNum }}</h2>
+        <h2>控制模組版本: {{ deviceItem?.SaaModel }}</h2>
+        <h2>有效時間: {{ deviceItem?.ExpireTime }}</h2>
         <div class="popit-other-items">
           <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" color="orange" round
             (click)="goPayment(deviceItem)">

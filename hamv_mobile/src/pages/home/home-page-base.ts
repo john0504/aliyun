@@ -62,6 +62,7 @@ export abstract class HomePageBase {
   public client: MqttClient;
   topicC;
   topicD;
+  topicG;
   public _deviceList = [];
   private _deviceListDate = 0;
   private _userList = [];
@@ -258,6 +259,10 @@ export abstract class HomePageBase {
     this._timestamp = Date.now();
     var paylodC = { time: this._timestamp };
     this.client.publish(this.topicC, JSON.stringify(paylodC), { qos: 1, retain: false });
+
+    // 收取最後3筆禮品出獎時間記錄
+    this.topicG = `WAWA/${this.accountToken}/G`;
+    this.client.subscribe(this.topicG, { qos: 1 });
   }
 
   getMessage(topic, message) {
@@ -299,6 +304,8 @@ export abstract class HomePageBase {
           data.ExpireDate = data.E;
           data.UpdateDate = data.U;
           data.ExpireTime = this.getDate(data.E);
+          var timestamp = Date.now() / 1000;
+          data.isExpire = (data.ExpireDate - timestamp < 60 * 60 * 24 * 14);
           if (Date.now() / 1000 <= data.E) {
             this.client.subscribe(data.topicU, { qos: 1 });
           }
@@ -313,6 +320,27 @@ export abstract class HomePageBase {
         });
         this.saveUserList();
       }
+    } else if (topic == this.topicG) {
+      obj = JSON.parse(message.toString());
+      var timeList = obj.T;
+      var alertMessage = "查無紀錄";
+      var count = 0;
+      timeList.forEach(time => {
+        count++;
+        if (count == 1) {
+          alertMessage = `第${count}筆紀錄:${this.getTime(time)}`;
+        } else {
+          alertMessage += `第${count}筆紀錄:${this.getTime(time)}`;
+        }
+      });
+      let options: AlertOptions = {
+        title: "禮品近期出獎記錄查詢",
+        subTitle: alertMessage,
+        buttons: ["確定"],
+      };
+
+      const alert = this.alertCtrl.create(options);
+      alert.present();
     } else {
       for (var i = 0; i < this._deviceList.length; i++) {
         if (topic == this._deviceList[i].topicC) {
