@@ -18,28 +18,33 @@
   <ion-card [ngClass]="{'is-owner': isOwner}" *ngFor="let deviceItem of _deviceList">
     <ion-card-content>
       <div class="popit-title" margin-bottom>
-        <ion-card-title (click)="toggleDetails(deviceItem)">
-          <ion-icon class="popit-fab" color="orange" name="ios-alarm"
-            *ngIf="getExpire(deviceItem.ExpireDate) < 14*60*60*24">
-          </ion-icon>
-          <ion-icon class="popit-fab" color="warningRed" name="ios-alarm" *ngIf="getExpire(deviceItem.ExpireDate) < 0">
-          </ion-icon>
-          {{ deviceItem?.DevName }}
-          <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
-          <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
-        </ion-card-title>
-        <ion-icon class="popit-fab" color="danger" name="logo-usd" *ngIf="deviceItem.isExpire"></ion-icon>
-        <ion-icon class="popit-fab" color="danger" name="build" *ngIf="deviceItem?.H63 != 0"></ion-icon>
-        <ion-icon class="popit-fab" color="secondary" name="ios-link" *ngIf="deviceItem.Online"></ion-icon>
-        <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!deviceItem.Online"></ion-icon>
+        <ion-grid class="toggle-grid">
+          <ion-row class="none-padding">
+            <ion-card-title (click)="toggleDetails(deviceItem)">
+              {{ deviceItem?.DevName }}
+              <font class="popit-sub-title" color="grey" *ngIf="!deviceItem.showDetails">▼</font>
+              <font class="popit-sub-title" color="primary" *ngIf="deviceItem.showDetails">▲</font>
+            </ion-card-title>
+            <ion-icon class="popit-fab" color="secondary" name="ios-link" *ngIf="deviceItem.Online"></ion-icon>
+            <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!deviceItem.Online"></ion-icon>
+          </ion-row>
+          <ion-row class="none-padding" *ngIf="getExpire(deviceItem.ExpireDate) < 14*60*60*24 || deviceItem?.H63 != 0">
+            <ion-card-title> </ion-card-title>
+            <ion-icon class="popit-fab" color="orange" name="ios-alarm"
+              *ngIf="getExpire(deviceItem.ExpireDate) < 14*60*60*24" (click)="goPayment(deviceItem)"> </ion-icon>
+            <ion-icon class="popit-fab" color="danger" name="logo-usd" *ngIf="deviceItem.isExpire"
+              (click)="goPayment(deviceItem)"></ion-icon>
+            <ion-icon class="popit-fab" color="danger" name="build" *ngIf="deviceItem?.H63 != 0"></ion-icon>
+          </ion-row>
+        </ion-grid>
       </div>
       <div class="popit-content" *ngIf="!deviceItem.showDetails">
         <ion-grid class="toggle-grid">
           <ion-row class="none-padding">
-            <ion-col col-4 class="none-padding">
+            <ion-col col-3 class="none-padding">
               <h2>中獎: {{ deviceItem?.H61 }}</h2>
             </ion-col>
-            <ion-col col-4 class="none-padding">
+            <ion-col col-5 class="none-padding">
               <h2>投幣: {{ deviceItem?.H60 }}</h2>
             </ion-col>
             <ion-col col-4 class="none-padding">
@@ -85,8 +90,18 @@
           </ion-row>
           <ion-row align-items-center>
             <ion-col class="none-padding">
+              <h2>投幣遊戲累進值: {{ deviceItem?.money }}</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col class="none-padding">
+              <h2>禮品出獎累進值: {{ deviceItem?.gift }}</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col class="none-padding">
               <h2>最新更新: {{ deviceItem?.UpdateTime }}</h2>
-            </ion-col>     
+            </ion-col>
           </ion-row>
           <!-- <ion-row align-items-center>
             <ion-col col-4 class="toggle-items none-padding">

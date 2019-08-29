@@ -27,6 +27,7 @@ import { GroupCoreInjector } from "../item-models/group/group-core-injector";
 
 import { CalendarService } from '../providers/calendar-service';
 import { CheckNetworkService } from '../providers/check-network';
+import { MqttService } from '../providers/mqtt-service';
 import { DeviceConfigService } from '../providers/device-config-service';
 import { DeviceControlService } from '../providers/device-control-service';
 import { GoAddingDeviceService } from '../providers/go-adding-device-service';
@@ -91,6 +92,7 @@ export function createTranslateLoader(http: HttpClient) {
     SocialSharing,
     File,
     CheckNetworkService,
+    MqttService,
     DeviceConfigService,
     DeviceControlService,
     GoAddingDeviceService,

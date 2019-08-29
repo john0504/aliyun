@@ -13,6 +13,7 @@ import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 
 import { ThemeService } from '../../providers/theme-service';
 import { CheckNetworkService } from '../../providers/check-network';
+import { MqttService } from '../../providers/mqtt-service';
 
 @IonicPage()
 @Component({
@@ -43,6 +44,7 @@ export class DeviceCreatePage {
     public navCtrl: NavController,
     public themeService: ThemeService,
     public viewCtrl: ViewController,
+    public mqttService: MqttService,
   ) {
     this.subs = [];
     this.appName = this.appVersion.getAppName();
@@ -51,6 +53,7 @@ export class DeviceCreatePage {
 
   ionViewDidLoad() {
     this.checkNetworkService.pause();
+    this.mqttService.pause();
   }
 
   ionViewWillEnter() {
@@ -95,6 +98,7 @@ export class DeviceCreatePage {
 
   ionViewWillUnload() {
     this.checkNetworkService.resume();
+    this.mqttService.resume();
   }
 
   onNext() {

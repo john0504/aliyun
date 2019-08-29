@@ -11,27 +11,8 @@
 <ion-content>
   <div class="container">
     <div class="main">
-      <h1 align="center">{{ 'DEVICE_CREATE.CONNECT_TO_DEVICE' | translate }}</h1>
-      <svg width="300" viewBox="0 0 500 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
-        <title>Connect_Phone_Graphic</title>
-        <desc>Created with Sketch.</desc>
-        <defs></defs>
-        <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-          <g id="Graphic-/-Connect-Phone-">
-            <g id="Connect-Phone-Graphic" transform="translate(187.000000, 38.000000)">
-              <path d="M62.9433361,211.911675 C59.0763137,211.911675 56,208.791052 56,204.951025 C56,201.118217 59.0763137,198 62.9433361,198 C66.7815181,198 69.8962857,201.118217 69.8962857,204.951025 C69.8962857,208.791052 66.7815181,211.911675 62.9433361,211.911675 Z M12,189 L114.37951,189 L114.37951,28 L12,28 L12,189 Z M126.720662,207.738928 L126.720662,16.3029874 C126.720662,7.30215485 119.412205,0 110.421329,0 L16.2993328,0 C7.2509383,0 0,7.30215485 0,16.3029874 L0,207.738928 C0,216.682178 7.2509383,223.998729 16.2993328,223.998729 L110.421329,223.998729 C119.412205,223.998729 126.720662,216.682178 126.720662,207.738928 Z" id="Stroke-1" stroke="#212635" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M99.9423603,13.6745844 C100.485192,13.6745844 100.912987,14.0992538 100.912987,14.6318901 C100.912987,15.1645263 100.485192,15.5891957 99.9423603,15.5891957 C99.4139082,15.5891957 98.9861136,15.1645263 98.9861136,14.6318901 C98.9861136,14.0992538 99.4139082,13.6745844 99.9423603,13.6745844 Z" id="Stroke-3" stroke="#212635" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M41.7605006,13.6753247 L85.4207117,13.6753247" id="Stroke-5" stroke="#212635" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M51.7605006,143.675325 L95.4207117,143.675325" id="Stroke-5" stroke="#212635" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M51.7605006,123.675325 L73,123.675325 L95.4207117,123.675325" id="Stroke-5" stroke="#212635" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path class="primary" d="M51.7605006,103.675325 L95.4207117,103.675325" id="Stroke-5" stroke="#00BAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-              <polygon class="primary" id="check" stroke="#00BAFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="41.707 95.5004 31.873 106.4724 27.55 102.1494 25 104.6994 29.323 109.0224 31.87 111.5694 44.254 98.0474"></polygon>
-              <path d="M53.68,54.9 L57.16,54.9 L52.12,69 L49.2,69 L46.22,60.54 L43.2,69 L40.26,69 L35.24,54.9 L38.98,54.9 L41.9,63.84 L45.06,54.9 L47.6,54.9 L50.62,64 L53.68,54.9 Z M58.7,69 L58.7,54.9 L62.38,54.9 L62.38,69 L58.7,69 Z M64.92,65.02 L64.92,62.24 L71.32,62.24 L71.32,65.02 L64.92,65.02 Z M73.86,69 L73.86,54.9 L83.68,54.9 L83.68,57.78 L77.48,57.78 L77.48,60.38 L83.28,60.38 L83.28,63.26 L77.48,63.26 L77.48,69 L73.86,69 Z M85.42,69 L85.42,54.9 L89.1,54.9 L89.1,69 L85.42,69 Z" id="WI-FI" fill="#2C2C2C"></path>
-            </g>
-          </g>
-        </g>
-      </svg>
+      <h1 align="center">{{ 'DEVICE_CREATE.CONNECT_TO_DEVICE' | translate }}</h1>      
+      <img src="assets/img/wifi_pic.jpg">
       <p align="center" [innerHTML]="'DEVICE_CREATE.HOW_TO_BEGIN' | translate: { productName: themeService.productName, wifiName: themeService.wifiName }"></p>
       <button ion-button color="primary" class="full-button" full round (click)="nativeSettings.open('wifi')" margin-vertical>
         {{ 'DEVICE_CREATE.GO_TO_SETTINGS' | translate }}

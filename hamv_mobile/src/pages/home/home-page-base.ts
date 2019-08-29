@@ -8,7 +8,6 @@ import { Storage } from '@ionic/storage';
 import {
   Group,
   StateStore,
-  AppEngine,
   AppTasks
 } from 'app-engine';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,17 +26,9 @@ import { debounceImmediate } from '../../app/app.extends';
 import { ThemeService } from '../../providers/theme-service';
 
 import { ScrollableTabsOptions } from '../../components/scrollable-tabs/scrollable-tabs-options';
-import {
-  connect,
-  IClientOptions,
-  MqttClient
-} from 'mqtt';
-import { HttpClient } from '@angular/common/http';
-import { PopupService } from '../../providers/popup-service';
+import { MqttService } from '../../providers/mqtt-service';
 
 const TAB_CONFIG = 'tabConfig';
-const USER_LIST = 'userList';
-const CLIENT_ID = 'clientId';
 
 export abstract class HomePageBase {
 
@@ -58,32 +49,8 @@ export abstract class HomePageBase {
   tabs: Array<ScrollableTabsOptions> = [];
   currentTab: number = 0;
   myDevicesGroup: Group;
-  accountToken = "";
-  public client: MqttClient;
-  topicC;
-  topicD;
-  topicG;
   public _deviceList = [];
-  private _deviceListDate = 0;
-  private _userList = [];
-  private _timestamp = 0;
-  noNetworkToast;
-  messageD = "";
   updateOnline;
-
-  opts: IClientOptions = {
-    port: 9001,
-    host: this.appEngine.getBaseUrl(),
-    clientId: 'CECTCO-ionic',
-    // protocol: 'mqtt',
-    protocol: 'mqtts',
-    username: 'ZWN0Y28uY29tMCAXDTE5MDcxODAzMzUyMVoYDzIxMTkwNjI0MDMzNTIxWjBlMQsw',
-    password: 'CQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1MQ8w',
-    key: "",
-    cert: "",
-    ca: "",
-    rejectUnauthorized: false,
-  };
 
   constructor(
     private navCtrl: NavController,
@@ -92,11 +59,9 @@ export abstract class HomePageBase {
     private translate: TranslateService,
     private storage: Storage,
     public themeService: ThemeService,
-    private appEngine: AppEngine,
-    private http: HttpClient,
     public appTasks: AppTasks,
     public alertCtrl: AlertController,
-    private popupService: PopupService,
+    public mqttService: MqttService,
   ) {
     this.subs = [];
     this.account$ = this.stateStore.account$;
@@ -110,14 +75,6 @@ export abstract class HomePageBase {
         const isValid = value && value.lastSelectedIndex >= 0;
         this.currentTab = isValid ? value.lastSelectedIndex : 0;
       });
-    this.http.get('./assets/ca/ca_bundle.crt', { responseType: "text" })
-      .subscribe(cafile => this.opts.ca = cafile);
-    // this.http.get('./assets/ca/ca.crt', { responseType: "text" })
-    //   .subscribe(cafile => this.opts.ca = cafile);
-    // this.http.get('./assets/ca/client.crt', { responseType: "text" })
-    //   .subscribe(certfile => this.opts.cert = certfile);
-    // this.http.get('./assets/ca/client.key', { responseType: "text" })
-    //   .subscribe(keyfile => this.opts.key = keyfile);
   }
 
   ionViewDidEnter() {
@@ -143,18 +100,9 @@ export abstract class HomePageBase {
         )
         .subscribe(latestValues => this.processValues(latestValues))
     );
-    this.subs.push(
-      this.account$
-        .pipe(debounceImmediate(500))
-        .subscribe(account => {
-          this.accountToken = (account && account.token) || '';
-          if (this.accountToken.length != 0 && this.accountToken.length != 4) {
-            this.logout();
-          } else if (this.accountToken.length != 0) {
-            this.loadUserList();
-          }
-        })
-    );
+    this.updateOnline = setInterval(() => {
+      this.loadDeviceList();
+    }, 1000);
   }
 
   ionViewWillLeave() {
@@ -162,236 +110,59 @@ export abstract class HomePageBase {
       s.unsubscribe();
     });
     this.subs.length = 0;
-    this._timestamp = 0;
-    if (this.client) {
-      this.client.unsubscribe(this.topicC);
-      this.client.unsubscribe(this.topicD);
-      this._deviceList.forEach(device => {
-        this.client.unsubscribe(device.topicC);
-        this.client.unsubscribe(device.topicU);
-        this.client.unsubscribe(device.topicS);
-      });
-      this.client.end();
-    }
-    this.client = null;
     clearInterval(this.updateOnline);
+    this._deviceList = [];
   }
 
-  loadUserList() {
-    this.storage.get(USER_LIST)
-      .then(userList => {
-        this._userList = userList ? userList : [];
-        var tokenFound = false;
-        this._userList.forEach(user => {
-          if (user.token == this.accountToken) {
-            this._deviceListDate = user.date;
-            this._deviceList = user.list;
-            tokenFound = true;
-          }
-        });
-        if (tokenFound == false) {
-          this._deviceListDate = 0;
-          this._userList.push({
-            token: this.accountToken,
-            list: this._deviceList,
-            date: this._deviceListDate
-          });
-          this.storage.set(USER_LIST, this._userList);
-        }
-        this.connectMqtt();
-      });
-  }
-
-  connectMqtt() {
-    if (!this.client) {
-      var timestamp = Date.now();
-      this.storage.get(CLIENT_ID)
-        .then(clientId => {
-          if (clientId) {
-            this.opts.clientId = clientId;
-          } else {
-            this.opts.clientId = `CECTCO-ionic-${Math.random().toString(16).substr(2, 8)}-${timestamp}`;
-            this.storage.set(CLIENT_ID, this.opts.clientId);
-          }
-          this.client = connect('', this.opts);
-          // 檢查裝置是否上線
-          this.updateOnline = setInterval(() => {
-            var offlineTime = Date.now() / 1000 - 60 * 2;
-            this._deviceList.forEach(device => {
-              var online = device.UpdateDate > offlineTime;
-              if (device.Online != online) {
-                device.Online = online;
-              }
-            });
-          }, 3000);
-          this.toggleToast(true);
-
-          this.client.on('connect', () => {
-            this.subscribeTopic();
-          });
-
-          this.client.on('offline', () => {
-            this.toggleToast(true);
-          });
-
-          this.client.on('message', (topic, message) => {
-            this.getMessage(topic, message);
-          });
-
-          this.client.on('error', (err) => {
-            console.log("Log Here - " + JSON.stringify(err));
-          });
-        });
+  loadDeviceList() {    
+    clearInterval(this.updateOnline);
+    this.updateOnline = setInterval(() => {
+      this.loadDeviceList();
+    }, 3000);
+    if (this.mqttService.canLogout()) {
+      this.logoutAlert();
+      return;
     }
-  }
+    this._deviceList = this.mqttService.getDeviceList();
+    var offlineTime = Date.now() / 1000 - 60 * 2;
 
-  subscribeTopic() {
-    this.topicD = `WAWA/${this.accountToken}/D`;
-    this.client.subscribe(this.topicD, { qos: 1 });
-    // 更新裝置列表
-    var topic = `WAWA/${this.accountToken}/U`;
-    var paylod = JSON.stringify({ action: "list" });
-    this.client.publish(topic, paylod, { qos: 1, retain: false });
-
-    // 將重複登入者剔除機制
-    this.topicC = `WAWA/${this.accountToken}/C`;
-    this.client.subscribe(this.topicC, { qos: 1 });
-    this._timestamp = Date.now();
-    var paylodC = { time: this._timestamp };
-    this.client.publish(this.topicC, JSON.stringify(paylodC), { qos: 1, retain: false });
-
-    // 收取最後3筆禮品出獎時間記錄
-    this.topicG = `WAWA/${this.accountToken}/G`;
-    this.client.subscribe(this.topicG, { qos: 1 });
-  }
-
-  getMessage(topic, message) {
-    if (topic == this.topicC) {
-      var obj = JSON.parse(message.toString());
-      if (obj && obj.time && this.accountToken != "0005") {
-        if (obj.time > this._timestamp) {
-          console.log("topic: " + topic + " & message: " + message.toString());
-          this.client.end();
-          const alertTitle = "已與伺服器斷開，請重新登入";
-          let options: AlertOptions = {
-            title: alertTitle,
-            buttons: [
-              {
-                text: "確定",
-                handler: () => {
-                  this.logout();
-                },
-              }
-            ],
-          };
-
-          const alert = this.alertCtrl.create(options);
-          alert.present();
-        }
+    var onlineList = [];
+    var offlineList = [];
+    this._deviceList.forEach(device => {
+      var online = device.UpdateDate > offlineTime;
+      if (device.Online != online) {
+        device.Online = online;
       }
-    } else if (topic == this.topicD) {
-      this.toggleToast(false);
-      obj = JSON.parse(message.toString());
-      console.log("topic: " + topic + " & message: " + message.toString());
-      if (obj && obj.data) {
-        var newDeviceList = this._deviceList;
-        this._deviceList = [];
-        obj.data.forEach(data => {
-          data.topicC = `WAWA/${data.D}/C`;
-          data.topicU = `WAWA/${data.D}/U`;
-          data.topicS = `WAWA/${data.D}/S`;
-          data.DevNo = data.D;
-          data.ExpireDate = data.E;
-          data.UpdateDate = data.U;
-          data.ExpireTime = this.getDate(data.E);
-          var timestamp = Date.now() / 1000;
-          data.isExpire = (data.ExpireDate - timestamp < 60 * 60 * 24 * 14);
-          if (Date.now() / 1000 <= data.E) {
-            this.client.subscribe(data.topicU, { qos: 1 });
-          }
-          this.client.subscribe(data.topicC, { qos: 1 });
-          this.client.subscribe(data.topicS, { qos: 1 });
-          newDeviceList.forEach(device => {
-            if (device.DevNo == data.D) {
-              data = Object.assign(device, data);
-            }
-          });
-          this._deviceList.push(data);
-        });
-        this.saveUserList();
+      if (device.Online) {
+        onlineList.push(device);
+      } else {
+        offlineList.push(device);
       }
-    } else if (topic == this.topicG) {
-      obj = JSON.parse(message.toString());
-      var timeList = obj.T;
-      var alertMessage = "查無紀錄";
-      var count = 0;
-      timeList.forEach(time => {
-        count++;
-        if (count == 1) {
-          alertMessage = `第${count}筆紀錄:${this.getTime(time)}`;
-        } else {
-          alertMessage += `第${count}筆紀錄:${this.getTime(time)}`;
-        }
-      });
-      let options: AlertOptions = {
-        title: "禮品近期出獎記錄查詢",
-        subTitle: alertMessage,
-        buttons: ["確定"],
-      };
-
-      const alert = this.alertCtrl.create(options);
-      alert.present();
-    } else {
-      for (var i = 0; i < this._deviceList.length; i++) {
-        if (topic == this._deviceList[i].topicC) {
-          obj = JSON.parse(message.toString());
-          Object.assign(this._deviceList[i], obj);
-          console.log("topic: " + topic + " & message:" + message.toString());
-          this.saveUserList();
-        } else if (topic == this._deviceList[i].topicU) {
-          var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
-          var view = new Uint8Array(arrayBuffer);
-          for (var j = 0; j < message.length; j++) {
-            view[j] = message[j];
-          }
-          var dataView = new DataView(arrayBuffer);
-          obj = {};
-          var timestamp = dataView.getUint32(0);
-          for (j = 4; j < message.length; j += 3) {
-            var service = dataView.getUint8(j);
-            var value = dataView.getUint16(j + 1);
-            obj["H" + service.toString(16).toUpperCase()] = value;
-          }
-          Object.assign(this._deviceList[i], obj);
-          if (this._deviceList[i].UpdateDate < timestamp) {
-            this._deviceList[i].UpdateDate = timestamp;
-          }
-          this._deviceList[i].UpdateTime = this.getTime(timestamp);
-          console.log("topic: " + topic + " & timestamp:" + timestamp);
-          this.saveUserList();
-        } else if (topic == this._deviceList[i].topicS) {
-          timestamp = 0;
-          if (!timestamp) {
-            timestamp = parseInt((Date.now() / 1000).toString(), 10);
-          }
-          this._deviceList[i].UpdateDate = timestamp;
-          console.log("topic: " + topic + " & timestamp:" + timestamp);
-          this.saveUserList();
-        }
-      }
-    }
-  }
-
-  private saveUserList() {
-    var timestamp = Date.now() / 1000;
-    this._deviceListDate = parseInt(timestamp.toString(), 10);
-    this._userList.forEach(user => {
-      if (user.token == this.accountToken) {
-        user.date = this._deviceListDate;
-        user.list = this._deviceList;
-      }
+      device.money = (device.H68 << 16) + device.H69;
+      device.gift = (device.H6A << 16) + device.H6B;
     });
-    this.storage.set(USER_LIST, this._userList);
+    offlineList.forEach(device => {
+      onlineList.push(device);
+    });
+    this._deviceList = onlineList;
+  }
+
+  logoutAlert() {
+    const alertTitle = "已與伺服器斷開，請重新登入";
+    let options: AlertOptions = {
+      title: alertTitle,
+      buttons: [
+        {
+          text: "確定",
+          handler: () => {
+            this.logout();
+          },
+        }
+      ],
+    };
+
+    const alert = this.alertCtrl.create(options);
+    alert.present();
   }
 
   private createTabsFromGroups(groups) {
@@ -492,16 +263,6 @@ export abstract class HomePageBase {
     }
   }
 
-  public getDate(timestamp) {
-    var date = new Date(timestamp * 1000);
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  }
-
-  public getTime(timestamp) {
-    var date = new Date(timestamp * 1000);
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-  }
-
   logout() {
     this.appTasks.logoutTask()
       .then(() => {
@@ -511,20 +272,5 @@ export abstract class HomePageBase {
 
   private goHomePage() {
     this.navCtrl.setRoot('HomePage');
-  }
-
-  public toggleToast(show: boolean) {
-    if (show && !this.noNetworkToast) {
-      const notFoundMsg = this.translate.instant('CHECK_NETWORKS.NOT_FOUND');
-      this.noNetworkToast = this.popupService.makeToast({
-        message: notFoundMsg,
-        position: 'top',
-        showCloseButton: true,
-        closeButtonText: 'X',
-      });
-    } else if (!show && this.noNetworkToast) {
-      this.noNetworkToast.dismiss();
-      this.noNetworkToast = null;
-    }
   }
 }

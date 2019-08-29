@@ -87,19 +87,19 @@ page-home-list {
         margin: 0;
         font-size: 2.6rem;
         font-weight: 600;
-      }
-      ion-icon.popit-fab {
-        flex: 0 0 auto;
-        width: 2.2rem;
-        height: 2.2rem;
-        border-radius: 2.5rem;
-        margin-top: 10px;
-        font-size: 2.5rem;
-        line-height: 1;
-      }
+      }      
     }
     ion-card-content {
       background-color: color($colors, lightGrey);
+    }
+    .popit-fab {
+      flex: 0 0 auto;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 2.5rem;
+      margin-top: 10px;
+      font-size: 2.5rem;
+      line-height: 1;
     }
     .control-item-divider {
       padding-bottom: 15px;

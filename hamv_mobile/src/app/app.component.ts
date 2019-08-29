@@ -52,27 +52,12 @@ import { PageRouteManager } from '../components/page-nav/page-route-manager';
 import { ssidConfirmReducer } from '../pages/ssid-confirm/ssid-confirm';
 import { deviceCreateReducer } from '../pages/device-create/device-create';
 
-// import { ComponentProvider, ModelManagerService } from '../modules/information-model';
-// import mixpanel from 'mixpanel-browser';
 import './app.extends';
-
-// import {
-//   ButtonGroupWithToggle,
-//   RangeWithToggle,
-//   LargeToggleWithRange,
-//   LargeToggle,
-//   SimpleButtonGroup,
-//   MultiButtonGroup,
-//   SimpleRange,
-//   SimpleText,
-//   ColorText,
-//   SimpleToggle,
-//   LineChart,
-// } from '../components/control-items';
 import { PageNav } from '../components/page-nav/page-nav';
 
 import { appConfig } from './app.config';
 import { appLanguages } from './app.languages';
+import { MqttService } from '../providers/mqtt-service';
 
 const USER_LANGUAGE = 'userLang';
 
@@ -99,13 +84,11 @@ export class MyApp implements OnInit, OnDestroy {
     private appEngine: AppEngine,
     private appTasks: AppTasks,
     private config: Config,
-    // private cp: ComponentProvider,
     private deeplinks: Deeplinks,
     private esService: EchartsService,
     private goService: GoAddingDeviceService,
     private log: LogService,
     private imageCache: ImageCacheService,
-    // private mms: ModelManagerService,
     private ngRedux: NgRedux<any>,
     private otaUpdateResult: OtaUpdateResult,
     private prManager: PageRouteManager,
@@ -120,6 +103,7 @@ export class MyApp implements OnInit, OnDestroy {
     public menuCtrl: MenuController,
     public themeService: ThemeService,
     public checkNetworkService: CheckNetworkService,
+    public mqttService: MqttService,
   ) {
     this.subs = [];
     this.esService.init();
@@ -128,8 +112,6 @@ export class MyApp implements OnInit, OnDestroy {
       .then(() => this.themeService.setup(this.renderer))
       .then(() => this.imageCache.initImageCache())
       .then(() => this.setupLanguage())
-      // .then(() => this.loadModels())
-      // .then(() => mixpanel.init(appConfig.mixpanel.token))
       .then(() => this.setupDeeplinks())
       .then(() => this.startAppEngine())
       .then(() => this.startReduxModule())
@@ -180,18 +162,13 @@ export class MyApp implements OnInit, OnDestroy {
     this.subs.push(
       account$
         .pipe(debounceImmediate(500))
-        .subscribe(account => this.accountName = (account && account.account) || '')
+        .subscribe(account => {
+          this.accountName = (account && account.account) || '';
+          var accountToken = (account && account.token) || '';
+          this.mqttService.setUserToken(accountToken);
+          this.mqttService.create();
+        })
     );
-
-    // const isAuthenticated$ = this.stateStore.isAuthenticated$;
-    // this.subs.push(
-    //   isAuthenticated$
-    //     .pipe(
-    //       filter(isAuthenticated => isAuthenticated),
-    //       delay(5000)
-    //     )
-    //     .subscribe(() => this.otaUpdatePopup.showOTAPopup())
-    // );
 
     this.subs.push(
       account$
@@ -208,6 +185,7 @@ export class MyApp implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.checkNetworkService.destroy();
+    this.mqttService.destroy();
     this.subs && this.subs.forEach(sub => sub.unsubscribe());
     this.subs.length = 0;
     this.reduxModule.stop();
@@ -218,20 +196,6 @@ export class MyApp implements OnInit, OnDestroy {
         Logger.log('Failed to destroy AppEngine', error);
       });
   }
-
-  // private registerComponents() {
-  //   this.cp.registerComponent('button-group-with-toggle', ButtonGroupWithToggle);
-  //   this.cp.registerComponent('range-with-toggle', RangeWithToggle);
-  //   this.cp.registerComponent('large-toggle-with-range', LargeToggleWithRange);
-  //   this.cp.registerComponent('large-toggle', LargeToggle);
-  //   this.cp.registerComponent('button-group', SimpleButtonGroup);
-  //   this.cp.registerComponent('multi-button-group', MultiButtonGroup);
-  //   this.cp.registerComponent('range', SimpleRange);
-  //   this.cp.registerComponent('text', SimpleText);
-  //   this.cp.registerComponent('color-text', ColorText);
-  //   this.cp.registerComponent('toggle', SimpleToggle);
-  //   this.cp.registerComponent('line-chart', LineChart);
-  // }
 
   goPage(p) {
     if (!this.isCurrentPage(p)) {
@@ -285,12 +249,6 @@ export class MyApp implements OnInit, OnDestroy {
       });
   }
 
-  // private loadModels() {
-  //   Logger.log('platform.ready');
-  //   this.registerComponents();
-  //   return this.mms.load(`https://${this.appEngine.getBaseUrl()}`);
-  // }
-
   private registerBackButtonAction() {
     this.platform.registerBackButtonAction(() => {
       const defaultPortal = this.app._appRoot._getPortal(1);
@@ -327,22 +285,7 @@ export class MyApp implements OnInit, OnDestroy {
             first()
           )
           .subscribe(() => {
-            // const loadingContent = this.translate.instant('APP.ADDING_SHARED');
-            // const popupAddedMsg = this.translate.instant('APP.SHARED_ADDED');
-            // const popupFailedAddedMsg = this.translate.instant('APP.SHARED_ADDED_FAILED');
 
-            // let p = this.appTasks.wsRequestAddSharingDeviceTask(match.$args.share);
-            // p = this.popupService.loadingPopup(p, {
-            //   content: loadingContent
-            // });
-
-            // p = this.popupService.toastPopup(p, {
-            //   message: popupAddedMsg,
-            //   duration: 3000
-            // }, {
-            //     message: popupFailedAddedMsg,
-            //     duration: 3000
-            //   });
           });
       }, (nomatch) => {
         Logger.error('nomatch - deeplinks:', nomatch);

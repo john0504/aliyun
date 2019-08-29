@@ -20,7 +20,7 @@ import { ThemeService } from '../../providers/theme-service';
 
 import { baseAccount, baseGroup } from '../../mocks/testing-items.mocks';
 import { HomePageBase } from './home-page-base';
-import { PopupService } from '../../providers/popup-service';
+import { MqttService } from '../../providers/mqtt-service';
 
 @Component({
   selector: 'testing-home-page',
@@ -35,13 +35,11 @@ export class TestingHomePage extends HomePageBase {
     translate: TranslateService,
     storage: Storage,
     themeService: ThemeService,
-    appEngine: AppEngine,
-    http: HttpClient,
     public appTasks: AppTasks,
     public alertCtrl: AlertController,
-    popupService: PopupService,
+    public mqttService: MqttService,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http, appTasks, alertCtrl, popupService);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appTasks, alertCtrl, mqttService);
   }
 
 }

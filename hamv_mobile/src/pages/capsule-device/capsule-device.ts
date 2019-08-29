@@ -9,11 +9,11 @@ import { delay, repeatWhen, retry } from 'rxjs/operators';
 import { NgRedux } from '@angular-redux/store';
 import { debounceImmediate } from '../../app/app.extends';
 
-import { 
-  AppActions, 
-  AppTasks, 
+import {
+  AppActions,
+  AppTasks,
   ErrorsService,
-  StateStore, 
+  StateStore,
   AppEngine,
 } from 'app-engine';
 
@@ -24,6 +24,7 @@ import { AppUtils } from '../../utils/app-utils';
 import { Geolocation } from '@ionic-native/geolocation';
 import { PopupService } from '../../providers/popup-service';
 import { TranslateService } from '@ngx-translate/core';
+import { MqttService } from '../../providers/mqtt-service';
 
 @IonicPage()
 @Component({
@@ -52,6 +53,8 @@ export class CapsuleDevicePage {
   money: string = "";
   gift: string = "";
   bank: string = "";
+  moneyCount: string = "";
+  giftCount: string = "";
   devicename: string = "";
   serial: string = "";
   latitude: number = 0;
@@ -72,11 +75,12 @@ export class CapsuleDevicePage {
     private popupService: PopupService,
     private stateStore: StateStore,
     private appEngine: AppEngine,
+    public mqttService: MqttService,
   ) {
     this.subs = [];
     this.deviceInfo$ = this.ngRedux.select(['ssidConfirm', 'deviceInfo']);
     this.wifiAp = { ssid: '', password: '', sec: WifiSecurityType.WPA2 };
-    
+
     const account$ = this.stateStore.account$;
     this.subs.push(
       account$
@@ -134,8 +138,25 @@ export class CapsuleDevicePage {
     }
   }
 
+  isMoneyCountValid(): boolean {
+    if (this.moneyCount && this.moneyCount !== '' && (parseInt(this.moneyCount) > 999999 || parseInt(this.moneyCount) < 0)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  isGiftCountValid(): boolean {
+    if (this.giftCount && this.giftCount !== '' && (parseInt(this.giftCount) > 999999 || parseInt(this.giftCount) < 0)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   isDevicenameValid(): boolean {
     if (this.devicename && this.devicename !== '') {
+      if (this.devicename.length > 10)
+        return false;
       var str = encodeURIComponent(this.devicename);
       var len = str.replace(/%[A-F\d]{2}/g, 'U').length;
       if (len > 30)
@@ -157,18 +178,19 @@ export class CapsuleDevicePage {
     if (this.wifiAp.password && this.wifiAp.password.length < 8)
       return false;
 
-    if (!this.money || this.money === '')
-      return false;
-    if (!this.gift || this.gift === '')
-      return false;
-      if (!this.bank || this.bank === '')
-        return false;
     if (!this.devicename || this.devicename === '')
       return false;
 
-    if (!this.isMoneyValid() || !this.isGiftValid()  || !this.isBankValid() || !this.isDevicenameValid())
+    if (!this.isMoneyValid()
+      || !this.isGiftValid()
+      || !this.isBankValid()
+      || !this.isMoneyValid()
+      || !this.isGiftValid()
+      || !this.isMoneyCountValid()
+      || !this.isGiftCountValid()
+      || !this.isDevicenameValid())
       return false;
-      
+
     return true;
   }
 
@@ -180,8 +202,8 @@ export class CapsuleDevicePage {
       }, (error) => {
         this.loading.dismiss();
         this.log += ("\r\n" + JSON.stringify(error));
-      });      
-      this.closePage();
+      });
+    this.closePage();
   }
 
   private localMode() {
@@ -194,7 +216,7 @@ export class CapsuleDevicePage {
 
   private localModePromise() {
     var url = this.appEngine.getBaseUrl();
-    let command = {
+    var command = {
       "DevSsid": this.wifiAp.ssid,
       "DevPass": this.wifiAp.password,
       "DevSec": this.wifiAp.sec,
@@ -204,12 +226,27 @@ export class CapsuleDevicePage {
       "Account": this.accountToken,
       "MqttUser": "ZWN0Y28uY29tMCAXDTE5MDcxODAzMzUyMVoYDzIxMTkwNjI0MDMzNTIxWjBlMQsw",
       "MqttPass": "CQYDVQQGEwJUVzEPMA0GA1UECAwGVGFpd2FuMRAwDgYDVQQHDAdIc2luY2h1MQ8w",
-      "H60": this.money,
-      "H61": this.bank,
-      "H62": this.gift,
       "S01": round(this.latitude, 7).toString(),
       "S02": round(this.longitude, 7).toString()
     };
+    if (this.money != '') {
+      command['H60'] = parseInt(this.money).toString();
+    }
+    if (this.bank != '') {
+      command['H61'] = parseInt(this.bank).toString();
+    }
+    if (this.gift != '') {
+      command['H62'] = parseInt(this.gift).toString();
+    }
+
+    if (this.moneyCount != '') {
+      command['H68'] = (parseInt(this.moneyCount) >> 16).toString();
+      command['H69'] = (parseInt(this.moneyCount) & 0xFFFF).toString();
+    }
+    if (this.giftCount != '') {
+      command['H6A'] = (parseInt(this.giftCount) >> 16).toString();
+      command['H6B'] = (parseInt(this.giftCount) & 0xFFFF).toString();
+    }
     this.log = JSON.stringify(command);
     return this.appTasks.localModeTask(JSON.stringify(command));
   }
@@ -228,6 +265,7 @@ export class CapsuleDevicePage {
 
   ionViewDidLoad() {
     this.checkNetworkService.pause();
+    this.mqttService.pause();
   }
 
   ionViewDidEnter() {
@@ -279,6 +317,7 @@ export class CapsuleDevicePage {
 
   ionViewWillUnload() {
     this.checkNetworkService.resume();
+    this.mqttService.resume();
   }
 
   compareFn(e1, e2): boolean {

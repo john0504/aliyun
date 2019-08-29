@@ -11,15 +11,13 @@ import { Storage } from '@ionic/storage';
 import {
   StateStore,
   AppTasks,
-  AppEngine
 } from 'app-engine';
 
 import { ThemeService } from '../../../providers/theme-service';
 import { HomePageBase } from '../home-page-base';
 import { ListGroupItemComponent } from "../../../components/list-group-item/list-group-item";
 import { LargeListItemComponent } from '../../../components/large-list-item/large-list-item';
-import { HttpClient } from '@angular/common/http';
-import { PopupService } from '../../../providers/popup-service';
+import { MqttService } from '../../../providers/mqtt-service';
 
 @IonicPage()
 @Component({
@@ -35,16 +33,14 @@ export class HomeListPage extends HomePageBase {
     stateStore: StateStore,
     translate: TranslateService,
     public translate2: TranslateService,
-    appEngine: AppEngine,
     public appTasks: AppTasks,
     storage: Storage,
     themeService: ThemeService,
     public alertCtrl: AlertController,
     public stateStore2: StateStore,
-    http: HttpClient,
-    popupService: PopupService,
+    public mqttService: MqttService,
   ) {
-    super(navCtrl, platform, stateStore, translate, storage, themeService, appEngine, http, appTasks, alertCtrl, popupService);
+    super(navCtrl, platform, stateStore, translate, storage, themeService, appTasks, alertCtrl, mqttService);
 
     this.deviceComponent = LargeListItemComponent;
     this.groupComponent = ListGroupItemComponent;
@@ -65,9 +61,9 @@ export class HomeListPage extends HomePageBase {
         {
           text: alertDelete,
           handler: () => {
-            var topic = `WAWA/${this.accountToken}/U`;
+            var topic = `WAWA/${this.mqttService.getAccountToken()}/U`;
             var paylod = JSON.stringify({ action: "delete", DevNo: deviceItem.DevNo });
-            this.client.publish(topic, paylod, { qos: 1, retain: false });
+            this.mqttService.publish(topic, paylod, { qos: 1, retain: false });
           },
         }
       ],
@@ -82,7 +78,8 @@ export class HomeListPage extends HomePageBase {
       deviceItem.showDetails = false;
     } else {
       deviceItem.showDetails = true;
-    }
+    }    
+    this.mqttService.saveUserList();
   }
 
   clearConfirm(name, deviceItem, callback) {
@@ -142,17 +139,15 @@ export class HomeListPage extends HomePageBase {
     });
   }
 
-  
-
   getGiftTimeList(deviceItem) {
-    var topic = `WAWA/${this.accountToken}/U`;
+    var topic = `WAWA/${this.mqttService.getAccountToken()}/U`;
     var paylod = JSON.stringify({ action: "gifttime", DevNo: deviceItem.DevNo });
-    this.client.publish(topic, paylod, { qos: 1, retain: false });
+    this.mqttService.publish(topic, paylod, { qos: 1, retain: false });
   }
 
   sendData(deviceItem, message) {
     var topic = `WAWA/${deviceItem.DevNo}/D`;
-    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: false });
+    this.mqttService.publish(topic, JSON.stringify(message), { qos: 1, retain: false });
   }
 
   goPayment(deviceItem) {
