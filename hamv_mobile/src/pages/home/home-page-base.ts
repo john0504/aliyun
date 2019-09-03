@@ -100,9 +100,13 @@ export abstract class HomePageBase {
         )
         .subscribe(latestValues => this.processValues(latestValues))
     );
-    this.updateOnline = setInterval(() => {
+    this.loadDeviceList();
+    setTimeout(() => {
       this.loadDeviceList();
     }, 1000);
+    this.updateOnline = setInterval(() => {
+      this.loadDeviceList();
+    }, 3000);
   }
 
   ionViewWillLeave() {
@@ -111,27 +115,26 @@ export abstract class HomePageBase {
     });
     this.subs.length = 0;
     clearInterval(this.updateOnline);
+    this.updateOnline = null;
     this._deviceList = [];
   }
 
-  loadDeviceList() {    
-    clearInterval(this.updateOnline);
-    this.updateOnline = setInterval(() => {
-      this.loadDeviceList();
-    }, 3000);
+  loadDeviceList() {
     if (this.mqttService.canLogout()) {
       this.logoutAlert();
       return;
     }
-    this._deviceList = this.mqttService.getDeviceList();
-    var offlineTime = Date.now() / 1000 - 60 * 2;
+    var isChange = this.mqttService.isListChange();
+    var newlist = this.mqttService.getDeviceList();
 
+    var offlineTime = Date.now() / 1000 - 60 * 2;
     var onlineList = [];
     var offlineList = [];
-    this._deviceList.forEach(device => {
+    newlist.forEach(device => {
       var online = device.UpdateDate > offlineTime;
       if (device.Online != online) {
         device.Online = online;
+        isChange = true;
       }
       if (device.Online) {
         onlineList.push(device);
@@ -144,7 +147,9 @@ export abstract class HomePageBase {
     offlineList.forEach(device => {
       onlineList.push(device);
     });
-    this._deviceList = onlineList;
+    if (isChange || this._deviceList.length == 0) {
+      this._deviceList = onlineList;
+    }
   }
 
   logoutAlert() {

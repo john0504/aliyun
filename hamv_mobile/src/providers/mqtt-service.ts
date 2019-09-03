@@ -35,6 +35,7 @@ export class MqttService {
   private _timestamp = 0;
   private needLogout = false;
   private isPaused: number = 0;
+  private isChange = false;
   private opts: IClientOptions = {
     port: 9001,
     host: this.appEngine.getBaseUrl(),
@@ -100,6 +101,7 @@ export class MqttService {
             this._deviceListDate = user.date;
             this._deviceList = user.list;
             tokenFound = true;
+            this.isChange = true;
           }
         });
         if (tokenFound == false) {
@@ -220,6 +222,7 @@ export class MqttService {
           this._deviceList.push(data);
         });
         this.saveUserList();
+        this.isChange = true;
         this.toggleToast(false);
       }
     } else if (topic == this.topicG) {
@@ -259,6 +262,7 @@ export class MqttService {
           Object.assign(this._deviceList[i], obj);
           console.log("topic: " + topic + " & message:" + message.toString());
           this.saveUserList();
+          this.isChange = true;
         } else if (topic == this._deviceList[i].topicU) {
           var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
           var view = new Uint8Array(arrayBuffer);
@@ -280,6 +284,7 @@ export class MqttService {
           this._deviceList[i].UpdateTime = this.getTime(timestamp);
           console.log("topic: " + topic + " & timestamp:" + timestamp);
           this.saveUserList();
+          this.isChange = true;
         } else if (topic == this._deviceList[i].topicS) {
           timestamp = 0;
           if (!timestamp) {
@@ -295,6 +300,12 @@ export class MqttService {
 
   public getAccountToken() {
     return this.accountToken;
+  }
+
+  public isListChange(): boolean {
+    var status = this.isChange;
+    this.isChange = false;
+    return status;
   }
 
   public getDeviceList() {
