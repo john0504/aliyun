@@ -1,4 +1,4 @@
-page-device-create {
+page-pre-device-create {
   .scroll-content {
     padding: 0px 8px 8px 8px;
   }
@@ -6,6 +6,7 @@ page-device-create {
     border-radius: 5px;
     min-height: 100%;
     display: flex;
+    text-align: center;
     flex-direction: column;
     align-content: stretch;
     background: map-get($colors, lightGrey);
@@ -30,6 +31,35 @@ page-device-create {
         * {
           stroke: color($colors, white) !important;
         }
+      }
+    }
+    .describe-text {
+      font-size: 1.4rem;
+      text-align: center;
+      display: block;
+    }
+    .control-item-text {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .step {
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-weight: 600;
+      }
+    }
+    .kanban-side {
+      text-align: center;
+      border-radius: 5px;
+      background: map-get($colors, lightGrey);
+      img {
+        max-height: 250px;
+        margin: 8px 0;
+      }
+      .describe-text {
+        font-weight: bold;
       }
     }
   }

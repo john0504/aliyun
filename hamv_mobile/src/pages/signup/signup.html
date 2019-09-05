@@ -28,14 +28,20 @@
         </ion-item>
         <ion-item>
           <ion-label floating color="darkGrey">{{ 'SIGNUP.PASSWORD' | translate }}</ion-label>
-          <ion-input [(ngModel)]="signup.password" name="password" type="password" #password="ngModel" required myTabIndex="3" clearOnEdit="false">
+          <ion-input [(ngModel)]="signup.password" name="password" [type]="inputType" #password="ngModel" required myTabIndex="3" clearOnEdit="false">
           </ion-input>
+          <button (click)="onShowHidePassword()" ion-button icon-only clear item-right type="button">
+            <ion-icon [name]="iconName" color="dark"></ion-icon>
+          </button>
         </ion-item>
         <span>{{ 'SIGNUP.NOT_VALID_MSG' | translate }}</span>
         <ion-item>
           <ion-label floating color="darkGrey">{{ 'SIGNUP.PASSWORDCHECK' | translate }}</ion-label>
-          <ion-input [(ngModel)]="signup.passwordcheck" name="passwordcheck" type="password" #password="ngModel" required myTabIndex="4" clearOnEdit="false">
+          <ion-input [(ngModel)]="signup.passwordcheck" name="passwordcheck" [type]="inputType" #password="ngModel" required myTabIndex="4" clearOnEdit="false">
           </ion-input>
+          <button (click)="onShowHidePassword()" ion-button icon-only clear item-right type="button">
+            <ion-icon [name]="iconName" color="dark"></ion-icon>
+          </button>
         </ion-item>
          <div class="divider"></div>
         <div class="userConsent">

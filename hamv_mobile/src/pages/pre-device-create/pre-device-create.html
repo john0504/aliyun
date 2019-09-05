@@ -1,0 +1,29 @@
+<ion-header no-border>
+  <ion-toolbar color="white">
+    <ion-title>{{ 'DEVICE_CREATE.ADD_DEVICE' | translate: { value: themeService.productName } }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closePage()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="main">
+      <h1 align="center">{{ 'PRE_DEVICE_CREATE.PRE_DEVICE_CREATE' | translate }}</h1>
+      <div class="container" padding>
+        <div padding margin-bottom class="kanban-side step">
+          <h3 align="center">{{ 'PRE_DEVICE_CREATE.TITLE' | translate }}</h3>
+          <img class="wifi-pic" src="assets/img/wifi_pic_ap.jpg">
+          <p align="center" [innerHTML]="'PRE_DEVICE_CREATE.DESCRIPTION' | translate: { productName: themeService.productName}"></p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button ion-button color="primary" class="bottom-button full-button" (click)="onNext()"
+        full>{{ 'PRE_DEVICE_CREATE.CONTINUE' | translate }}</button>
+    </div>
+  </div>
+  <extra-page-space></extra-page-space>
+</ion-content>

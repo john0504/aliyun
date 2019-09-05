@@ -79,7 +79,7 @@ export const appConfig: AppConfig = {
     },
     theme: {
       primaryColor: '#00baff',
-      productName: 'CECT智慧模組',
+      productName: '智慧型雲端模組',
       wifiName: 'CECTCO-XXXX',
     },
     amazonAlexa: {

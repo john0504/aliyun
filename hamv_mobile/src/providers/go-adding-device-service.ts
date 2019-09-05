@@ -5,6 +5,6 @@ import { NavController } from 'ionic-angular';
 export class GoAddingDeviceService {
 
   public goAddingDevicePage(navCtrl: NavController) {
-    return navCtrl.push('DeviceCreatePage');
+    return navCtrl.push('PreDeviceCreatePage');
   }
 }

@@ -1,0 +1,20 @@
+先刪除platform&plugins
+rd /q /s platforms,plugins
+
+加入platform
+ionic cordova platform add android
+
+cordova build --release android
+
+若build失敗 試著刪除platform重新加入android
+
+keytool -genkey -v -keystore my-release-key.keystore -alias wawa -keyalg RSA -keysize 2048 -validity 10000 
+若已有keystore則跳過
+
+複製apk至與key相同目錄下
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore app-release-unsigned.apk wawa
+
+cectco
+
+zipalign -v 4 app-release-unsigned.apk wawa.apk

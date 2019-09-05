@@ -23,7 +23,7 @@ describe('Service: Go Adding Device Service', () => {
   it('just go to Device Create page', () => {
     instance.goAddingDevicePage(navCtrl);
 
-    expect(navCtrl.push).toHaveBeenCalledWith('DeviceCreatePage');
+    expect(navCtrl.push).toHaveBeenCalledWith('PreDeviceCreatePage');
   });
 
 });

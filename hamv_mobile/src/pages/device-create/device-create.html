@@ -12,7 +12,7 @@
   <div class="container">
     <div class="main">
       <h1 align="center">{{ 'DEVICE_CREATE.CONNECT_TO_DEVICE' | translate }}</h1>      
-      <img src="assets/img/wifi_pic.jpg">
+      <img class="wifi-pic" src="assets/img/wifi_pic.jpg">
       <p align="center" [innerHTML]="'DEVICE_CREATE.HOW_TO_BEGIN' | translate: { productName: themeService.productName, wifiName: themeService.wifiName }"></p>
       <button ion-button color="primary" class="full-button" full round (click)="nativeSettings.open('wifi')" margin-vertical>
         {{ 'DEVICE_CREATE.GO_TO_SETTINGS' | translate }}

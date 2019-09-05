@@ -423,6 +423,12 @@
     "SETTING": "Your new <a ion-text color=\"bluish\"> {{ productName }}</a> is being set up and checking for the latest updates. During this time, please make sure your app is open and has a network connection.",
     "SETUP_TIME": "Setup typically takes 1-2 minutes."
   },
+  "PRE_DEVICE_CREATE": {
+    "PRE_DEVICE_CREATE": "Installation guide",
+    "TITLE": "How to compair device?",
+    "DESCRIPTION": "Press the <a ion-text color=\"bluish\"> {{productName}} </a> button and press and hold for 3 seconds to enter pairing mode.",    
+    "CONTINUE": "CONTINUE"
+  },
   "SCHEDULE_EDIT": {
     "CANCEL": "CANCEL",
     "CREATE": "Create",
@@ -498,16 +504,16 @@
     "CREATING_ACCOUNT": "Creating Account...",
     "EMAIL": "EMAIL",
     "ISSUE_HAPPENED_TITLE": "There was an issue with your request.",
-    "NOT_VALID_MSG": "Passwords must be between 8-20 characters and contain at least one uppercase letter, a combination of lowercase letters and numbers.",
+    "NOT_VALID_MSG": "Passwords must be between 8-20 characters.",
     "PASSWORD_NOT_SAME_MSG": "Please re-enter your password.",
-    "NOT_VALID_TITLE": "Password Too Short or Too Long or Not Complicated Enough",
+    "NOT_VALID_TITLE": "Password Too Short or Too Long",
     "PASSWORD_NOT_SAME_TITLE": "Inconsistent Password",
     "OK": "OK",
     "PASSWORD": "PASSWORD",
     "PASSWORDCHECK": "CONFIRM PASSWORD",
     "SENDING_MAIL": "Sending token to your E-mail...",
     "SENDMAIL_TITLE": "Register token has been sent to your mail",
-    "SENDMAIL_MSG": "Please go to your mailbox to view immediately",
+    "SENDMAIL_MSG": "Please go to the E-mail address to view the token",
     "SENDMAIL": "GET TOKEN",
     "TOKEN": "TOKEN",
     "TOKEN_NOT_VALID": "Token Not Valid",
