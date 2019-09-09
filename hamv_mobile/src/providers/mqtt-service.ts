@@ -135,6 +135,7 @@ export class MqttService {
 
           this.client.on('connect', () => {
             this.subscribeTopic();
+            this.toggleToast(false);
           });
 
           this.client.on('offline', () => {
@@ -223,7 +224,6 @@ export class MqttService {
         });
         this.saveUserList();
         this.isChange = true;
-        this.toggleToast(false);
       }
     } else if (topic == this.topicG) {
       obj = JSON.parse(message.toString());
