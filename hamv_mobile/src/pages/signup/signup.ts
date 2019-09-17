@@ -140,12 +140,12 @@ export class SignupPage {
     const sendsmsPromise = this.appTasks.sendSmsTask(account);
     this.popupService
       .loadingPopup(sendsmsPromise, {
-        content: this.translate.instant('SIGNUP.SENDING_MAIL')
+        content: this.translate.instant('SIGNUP.SENDING_SMS')
       })
       .then(() => {
         let alertOptions: AlertOptions = {
-          title: this.translate.instant('SIGNUP.SENDMAIL_TITLE'),
-          message: this.translate.instant('SIGNUP.SENDMAIL_MSG'),
+          title: this.translate.instant('SIGNUP.SENDSMS_TITLE'),
+          message: this.translate.instant('SIGNUP.SENDSMS_MSG'),
           buttons: [this.translate.instant('SIGNUP.OK')],
         };
         this.alertCtrl.create(alertOptions).present();

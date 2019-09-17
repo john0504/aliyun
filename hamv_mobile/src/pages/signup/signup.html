@@ -14,12 +14,12 @@
       <ion-list>
         <div></div>
         <ion-item>
-          <ion-label floating color="darkGrey">{{ 'SIGNUP.EMAIL' | translate }}</ion-label>
-          <ion-input [(ngModel)]="signup.username" name="username" type="email" #username="ngModel" spellcheck="false" autocapitalize="off"
+          <ion-label floating color="darkGrey">{{ 'SIGNUP.PHONE' | translate }}</ion-label>
+          <ion-input [(ngModel)]="signup.username" name="username" type="number" #username="ngModel" spellcheck="false" autocapitalize="off"
             maxlength="100" [pattern]="userV" required myTabIndex="1">
           </ion-input>
         </ion-item>
-        <button ion-button color="orange" class="full-button" full round [disabled]="!username.valid" (click)="onSendsms()" full>{{ 'SIGNUP.SENDMAIL' | translate }}</button>
+        <button ion-button color="orange" class="full-button" full round [disabled]="!username.valid" (click)="onSendsms()" full>{{ 'SIGNUP.SENDSMS' | translate }}</button>
         <ion-item>
           <ion-label floating color="darkGrey">{{ 'SIGNUP.TOKEN' | translate }}</ion-label>
           <ion-input [(ngModel)]="signup.token" name="token" type="text" #token="ngModel" spellcheck="false" autocapitalize="off"
