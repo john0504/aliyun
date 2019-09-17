@@ -34,6 +34,9 @@ export class AppActions {
     static SENDMAIL: string = 'sendmail';
     static SENDMAIL_DONE: string = 'sendmail-done';
 
+    static SENDSMS: string = 'sendsms';
+    static SENDSMS_DONE: string = 'sendsms-done';
+
     static ALLDEVICE: string = 'alldevice';
     static ALLDEVICE_DONE: string = 'alldevice-done';
 
@@ -59,6 +62,9 @@ export class AppActions {
 
     static REQUEST_RESET_PASSWORD: string = 'request-reset-password';
     static REQUEST_RESET_PASSWORD_DONE: string = 'request-reset-password-done';
+
+    static REQUEST_RESET_PASSWORD_SMS: string = 'request-reset-password-sms';
+    static REQUEST_RESET_PASSWORD_SMS_DONE: string = 'request-reset-password-sms-done';
     //logout action
     static LOGOUT: string = 'logout';
     static LOGOUT_DONE: string = 'logout-done';

@@ -163,6 +163,33 @@ export class AppTasks {
             });
     }
 
+    public sendSmsTask(account: string): Promise<any> {
+        this.dispatch(AppActions.action(AppActions.SENDSMS, { account }));
+
+        return this.appEngine.sendsms(account)
+            .then(() => {
+                this.dispatch(AppActions.action(AppActions.SENDSMS_DONE));
+                return;
+            })
+            .catch((error) => {
+                this.dispatch(AppActions.action(AppActions.SENDSMS_DONE, error, true));
+                throw error;
+            });
+    }
+
+    public requestResetPasswordSmsTask(phone: string): Promise<any> {
+        this.dispatch(AppActions.action(AppActions.REQUEST_RESET_PASSWORD_SMS, { phone }));
+
+        return this.appEngine.requestResetPasswordSms(phone)
+            .then(() => {
+                this.dispatch(AppActions.action(AppActions.REQUEST_RESET_PASSWORD_SMS_DONE));
+            })
+            .catch((error) => {
+                this.dispatch(AppActions.action(AppActions.REQUEST_RESET_PASSWORD_SMS_DONE, error, true));
+                throw error;
+            });
+    }
+
     public alldeviceTask(): Promise<any> {
         this.dispatch(AppActions.action(AppActions.ALLDEVICE, {}));
 

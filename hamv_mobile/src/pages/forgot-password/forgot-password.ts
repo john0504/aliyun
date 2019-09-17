@@ -27,7 +27,8 @@ import { PopupService } from '../../providers/popup-service';
 })
 export class ForgotPasswordPage {
 
-  userV = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}/i;
+  // userV = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}/i;  
+  userV = /^[0-9]{10}/i;
   fpw: { username?: string } = {};
 
   constructor(
@@ -43,8 +44,8 @@ export class ForgotPasswordPage {
 
   onForgotPassword(forgotPwForm) {
     if (forgotPwForm.valid) {
-      const email = this.fpw.username.trim();
-      const forgotPromise = this.appTasks.requestResetPasswordTask(email);
+      const phone = this.fpw.username.trim();
+      const forgotPromise = this.appTasks.requestResetPasswordSmsTask(phone);
       const sending = this.translate.instant('FORGOT_PASSWORD.SENDING');
       this.popupService
         .loadingPopup(forgotPromise, {

@@ -188,6 +188,24 @@ export class MuranoApiService {
         }
     }
 
+    public sendsms(account: string): Promise<any> {
+        const body = JSON.stringify({ phone: account });
+        const headers = this.getHeaders();
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/sendsms`;
+        const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
+        return this.executeHttpRequest(request);
+    }
+
+    
+
+    public requestResetPasswordSms(phone: string): Promise<any> {
+        const body = JSON.stringify({ phone: phone });
+        const headers = this.getHeaders();
+        const url = `https://${this.baseUrl}${MuranoApiService.MURANO_API_VERSION}/resetsms`;
+        const request: HttpRequest<string> = new HttpRequest(REQUEST_METHOD.POST, url, body, { headers });
+        return this.executeHttpRequest(request);
+    }
+
     public sendmail(account: string): Promise<any> {
         const body = JSON.stringify({ email: account });
         const headers = this.getHeaders();

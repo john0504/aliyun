@@ -31,8 +31,8 @@ import { PopupService } from '../../providers/popup-service';
 export class LoginPage {
   private subs: Array<Subscription>;
   private account;
-
-  userV = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}/i;
+  userV = /^[0-9]{10}/i;
+  // userV = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}/i;
   pwV = /^((?!.*\s)(?=[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\-\=\¡\£\_\+\`\~\.\,\<\>\/\?\;\:\'\"\\\|\[\]\{\}]).{8,20})$/;
   login: { username?: string, password?: string } = {};
   // {username:"guest@cect.com",password:"12345678"};

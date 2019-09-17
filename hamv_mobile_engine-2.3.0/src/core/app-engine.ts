@@ -120,6 +120,14 @@ export class AppEngine {
     public sendmail(account: string): Promise<any> {
         return this.appEngineTasks.sendmailTask(account);
     }
+    
+    public sendsms(account: string): Promise<any> {
+        return this.appEngineTasks.sendSmsTask(account);
+    }
+
+    public requestResetPasswordSms(phone: string): Promise<any> {
+        return this.appEngineTasks.requestResetPasswordSmsTask(phone);
+    }
 
     public alldevice(): Promise<any> {
         return this.appEngineTasks.alldeviceTask();

@@ -19,7 +19,7 @@
             maxlength="100" [pattern]="userV" required myTabIndex="1">
           </ion-input>
         </ion-item>
-        <button ion-button color="orange" class="full-button" full round [disabled]="!username.valid" (click)="onSendmail()" full>{{ 'SIGNUP.SENDMAIL' | translate }}</button>
+        <button ion-button color="orange" class="full-button" full round [disabled]="!username.valid" (click)="onSendsms()" full>{{ 'SIGNUP.SENDMAIL' | translate }}</button>
         <ion-item>
           <ion-label floating color="darkGrey">{{ 'SIGNUP.TOKEN' | translate }}</ion-label>
           <ion-input [(ngModel)]="signup.token" name="token" type="text" #token="ngModel" spellcheck="false" autocapitalize="off"

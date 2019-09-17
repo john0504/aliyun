@@ -62,6 +62,14 @@ export class AppEngineTasks {
         return this.muranoApiService.sendmail(account);
     }
 
+    public sendSmsTask(account: string): Promise<any> {
+        return this.muranoApiService.sendsms(account);
+    }
+
+    public requestResetPasswordSmsTask(phone: string): Promise<any> {
+        return this.muranoApiService.requestResetPasswordSms(phone);
+    }
+
     public alldeviceTask(): Promise<any> {
         return this.accountService.getAccount()
             .then((user) => {

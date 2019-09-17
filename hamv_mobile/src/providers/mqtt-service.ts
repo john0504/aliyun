@@ -279,17 +279,14 @@ export class MqttService {
           }
           Object.assign(this._deviceList[i], obj);
           if (this._deviceList[i].UpdateDate < timestamp) {
-            this._deviceList[i].UpdateDate = timestamp;
+          this._deviceList[i].UpdateDate = timestamp;
           }
           this._deviceList[i].UpdateTime = this.getTime(timestamp);
           console.log("topic: " + topic + " & timestamp:" + timestamp);
           this.saveUserList();
           this.isChange = true;
         } else if (topic == this._deviceList[i].topicS) {
-          timestamp = 0;
-          if (!timestamp) {
-            timestamp = parseInt((Date.now() / 1000).toString(), 10);
-          }
+          timestamp = parseInt((Date.now() / 1000).toString(), 10);
           this._deviceList[i].UpdateDate = timestamp;
           console.log("topic: " + topic + " & timestamp:" + timestamp);
           this.saveUserList();
