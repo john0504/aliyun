@@ -48,11 +48,13 @@ export class HomeListPage extends HomePageBase {
 
   deleteDeviceConfirm(deviceItem) {
     const alertTitle = this.translate2.instant('DEVICE_SETTINGS.DELETE_ALERT_TITLE', { deviceName: deviceItem.DevName });
+    const alertSubTitle = "用戶想要移轉此裝置到新的帳戶端則需要完成解綁定的程序來釋放出權限，若無完成解綁定的程序，將無法被其他帳號新增設定成功。";
     const alertCancel = this.translate2.instant('DEVICE_SETTINGS.CANCEL');
     const alertDelete = this.translate2.instant('DEVICE_SETTINGS.DELETE');
 
     let options: AlertOptions = {
       title: alertTitle,
+      subTitle: alertSubTitle,
       buttons: [
         {
           text: alertCancel,
@@ -78,7 +80,7 @@ export class HomeListPage extends HomePageBase {
       deviceItem.showDetails = false;
     } else {
       deviceItem.showDetails = true;
-    }    
+    }
     this.mqttService.saveUserList();
   }
 

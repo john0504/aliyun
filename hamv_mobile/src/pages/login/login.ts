@@ -17,6 +17,7 @@ import {
   StateStore,
   TimeoutError,
 } from 'app-engine';
+import { Storage } from '@ionic/storage';
 
 import { ThemeService } from '../../providers/theme-service';
 // import mixpanel from 'mixpanel-browser';
@@ -50,8 +51,13 @@ export class LoginPage {
     public navCtrl: NavController,
     public themeService: ThemeService,
     public viewCtrl: ViewController,
+    private storage: Storage,
   ) {
     this.subs = [];
+    this.storage.get("password")
+      .then(value => {
+        this.login.password = value;
+      });
   }
 
   ionViewWillEnter() {
@@ -64,6 +70,7 @@ export class LoginPage {
           }
         })
     );
+
   }
 
   ionViewDidLeave() {
@@ -88,6 +95,7 @@ export class LoginPage {
 
       loginPromise
         .then(() => {
+          this.storage.set("password", pw);
           // mixpanel.identify(this.login.username);
           // mixpanel.people.set({
           //   $name: this.login.username,

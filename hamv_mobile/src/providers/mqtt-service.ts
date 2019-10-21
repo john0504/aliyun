@@ -258,11 +258,13 @@ export class MqttService {
       // device topic
       for (var i = 0; i < this._deviceList.length; i++) {
         if (topic == this._deviceList[i].topicC) {
-          obj = JSON.parse(message.toString());
-          Object.assign(this._deviceList[i], obj);
-          console.log("topic: " + topic + " & message:" + message.toString());
-          this.saveUserList();
-          this.isChange = true;
+          if (message != "") {
+            obj = JSON.parse(message.toString());
+            Object.assign(this._deviceList[i], obj);
+            console.log("topic: " + topic + " & message:" + message.toString());
+            this.saveUserList();
+            this.isChange = true;
+          }
         } else if (topic == this._deviceList[i].topicU) {
           var arrayBuffer: ArrayBuffer = new ArrayBuffer(message.length);
           var view = new Uint8Array(arrayBuffer);
@@ -279,7 +281,7 @@ export class MqttService {
           }
           Object.assign(this._deviceList[i], obj);
           if (this._deviceList[i].UpdateDate < timestamp) {
-          this._deviceList[i].UpdateDate = timestamp;
+            this._deviceList[i].UpdateDate = timestamp;
           }
           this._deviceList[i].UpdateTime = this.getTime(timestamp);
           console.log("topic: " + topic + " & timestamp:" + timestamp);
@@ -346,12 +348,20 @@ export class MqttService {
 
   public getDate(timestamp) {
     var date = new Date(timestamp * 1000);
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+    const day = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+    return `${date.getFullYear()}-${month}-${day}`;
   }
 
   public getTime(timestamp) {
     var date = new Date(timestamp * 1000);
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+    const day = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+    const hour = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`;
+    const minute = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
+    const second = date.getSeconds() < 10 ? `0${date.getSeconds()}` : `${date.getSeconds()}`;
+
+    return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`;
   }
 
   private unsubscribeAllService() {

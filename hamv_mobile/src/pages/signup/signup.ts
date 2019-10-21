@@ -20,6 +20,7 @@ import {
 } from 'app-engine';
 
 import { PopupService } from '../../providers/popup-service';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -29,7 +30,7 @@ import { PopupService } from '../../providers/popup-service';
 export class SignupPage {
 
   // userV = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}/i;
-  userV = /^[0-9]{10}/i;
+  userV = /^09[0-9]{8}/i;
   pwV = /^((?!.*\s)(?=[A-Za-z0-9\!\@\#\$\%\^\&\*\(\)\-\=\¡\£\_\+\`\~\.\,\<\>\/\?\;\:\'\"\\\|\[\]\{\}]).{8,20})$/;
   signup: { username?: string, password?: string, passwordcheck?: string, token?: string } = {};
   usernameF: boolean = false;
@@ -49,6 +50,7 @@ export class SignupPage {
     public navCtrl: NavController,
     public themeService: ThemeService,
     public viewCtrl: ViewController,
+    private storage: Storage,
   ) {
   }
 
@@ -83,6 +85,7 @@ export class SignupPage {
           content: this.translate.instant('SIGNUP.CREATING_ACCOUNT')
         })
         .then(() => {
+          this.storage.set("password", pw);
           // mixpanel.identify(this.signup.username);
           // mixpanel.people.set({
           //   $name: this.signup.username,

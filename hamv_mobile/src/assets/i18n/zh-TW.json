@@ -132,7 +132,7 @@
     "CHECK_NETWORK_AGAIN": "請檢查您的網路設定並重試。",
     "DELETE_DEVICE": "刪除裝置",
     "DELETE": "刪除",
-    "DELETE_ALERT_TITLE": "您確定要刪除 {{ deviceName }} 嗎?",
+    "DELETE_ALERT_TITLE": "您確定要解除 {{ deviceName }} 綁定嗎?",
     "DEVICE_NAME": "裝置名稱",
     "GUEST_DELETE_MSG": "您將會失去所有權限，若您想要再次使用此裝置則必須被重新邀請。",
     "HAS_UPDATED": "裝置名稱更新成功",
